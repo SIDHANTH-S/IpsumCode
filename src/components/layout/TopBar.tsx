@@ -1,4 +1,5 @@
 import { Sparkles, Bell, Menu } from "lucide-react"
+
 import { GRADIENTS } from "../../data/mockData"
 
 export function TopBar() {

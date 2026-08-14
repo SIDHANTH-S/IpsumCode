@@ -1,6 +1,9 @@
 import { useState } from "react"
+
 import { ChevronRight, ChevronDown, X, Plus } from "lucide-react"
+
 import { WorkspaceTab } from "../../types"
+
 import {
   FieldLabel,
   Select,
@@ -9,6 +12,7 @@ import {
   TextArea,
   WeightToggle,
 } from "../components/ui"
+
 import {
   tagChips,
   editorTools,
@@ -21,10 +25,14 @@ import {
 
 const workspaceTabs: WorkspaceTab[] = [
   "Problem Details",
+
   "Test Cases",
+
   "Settings",
 ]
+
 const PANEL = "rounded-xl border border-[#262626] bg-[#141414]"
+
 const FIELD =
   "w-full rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none"
 

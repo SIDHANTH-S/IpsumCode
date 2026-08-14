@@ -1,4 +1,5 @@
 import { Search, Filter } from "lucide-react"
+
 import { classrooms, students } from "../data/mockData"
 
 function ClassroomCard({ room }: { room: typeof classrooms[number] }) {

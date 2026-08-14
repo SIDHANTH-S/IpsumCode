@@ -10,8 +10,11 @@ import {
   Tag,
   Code,
 } from "lucide-react"
+
 import { FilterMenu, FilterDefinition } from "../components/ui/FilterMenu"
+
 import { SectionLink } from "../components/ui"
+
 import {
   CARD_GRADIENTS,
   ARROW_COLORS,
@@ -23,6 +26,7 @@ import {
   TODAY,
   LEADING_BLANKS,
 } from "../data/mockData"
+
 import { LeaderboardBlock } from "../components/contest/LeaderboardBlock"
 
 function ContestCards() {
@@ -113,54 +117,85 @@ function UpcomingCard({ item }: { item: typeof upcoming[number] }) {
 
 const toolbarButtons = [
   { label: "Create test", icon: Plus },
+
   { label: "ADD question", icon: null },
+
   { label: "Create Classroom", icon: null },
 ]
 
 const contestFilters: FilterDefinition[] = [
   {
     id: "status",
+
     label: "Status",
+
     icon: CheckSquare,
+
     type: "select",
+
     options: [
       { value: "todo", label: "Todo" },
+
       { value: "solved", label: "Solved" },
+
       { value: "attempted", label: "Attempted" },
     ],
   },
+
   {
     id: "difficulty",
+
     label: "Difficulty",
+
     icon: Gauge,
+
     type: "multi-select",
+
     options: [
       { value: "easy", label: "Easy" },
+
       { value: "medium", label: "Medium" },
+
       { value: "hard", label: "Hard" },
     ],
   },
+
   {
     id: "topics",
+
     label: "Topics",
+
     icon: Tag,
+
     type: "multi-select",
+
     options: [
       { value: "arrays", label: "Arrays" },
+
       { value: "strings", label: "Strings" },
+
       { value: "dp", label: "Dynamic Programming" },
+
       { value: "graphs", label: "Graphs" },
     ],
   },
+
   {
     id: "language",
+
     label: "Language",
+
     icon: Code,
+
     type: "multi-select",
+
     options: [
       { value: "python", label: "Python" },
+
       { value: "cpp", label: "C++" },
+
       { value: "java", label: "Java" },
+
       { value: "js", label: "JavaScript" },
     ],
   },
@@ -264,8 +299,10 @@ function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
 function Calendar() {
   const cells: (number | null)[] = [
     ...Array(LEADING_BLANKS).fill(null),
+
     ...Array.from({ length: 31 }, (_, i) => i + 1),
   ]
+
   const weekdays = ["S", "M", "T", "W", "T", "F", "S"]
 
   return (
@@ -298,7 +335,9 @@ function Calendar() {
         ))}
         {cells.map((day, i) => {
           if (day === null) return <span key={i} className="h-8" />
+
           const isToday = day === TODAY
+
           return (
             <div
               key={i}
@@ -351,7 +390,11 @@ function LeaderboardPanel() {
   )
 }
 
-export function ContestPage({ onCreateContest }: { onCreateContest?: () => void }) {
+export function ContestPage({
+  onCreateContest,
+}: {
+  onCreateContest?: () => void
+}) {
   return (
     <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_256px]">
       <div className="min-w-0 space-y-8">

@@ -1,4 +1,5 @@
 import svgPaths from "../../assets/leaderboard/paths"
+
 import {
   imgContainer,
   imgGroup,
@@ -11679,8 +11680,14 @@ function Container85() {
     <div className="flex-[1_0_0] min-w-px relative" data-name="Container">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex gap-[13.05px] items-center relative size-full">
         <Container86 />
-        <div className="content-stretch flex flex-[1_0_0] items-center min-w-px overflow-clip relative" data-name="Container">
-          <div className="content-stretch flex flex-[1_0_0] items-center justify-between min-w-px overflow-clip relative" data-name="Container">
+        <div
+          className="content-stretch flex flex-[1_0_0] items-center min-w-px overflow-clip relative"
+          data-name="Container"
+        >
+          <div
+            className="content-stretch flex flex-[1_0_0] items-center justify-between min-w-px overflow-clip relative"
+            data-name="Container"
+          >
             <Container91 />
             <Margin4 />
           </div>

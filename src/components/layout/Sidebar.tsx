@@ -1,40 +1,60 @@
-import { BarChart3, BookOpenCheck, Database, ChevronLeft, ChevronRight } from "lucide-react"
+import {
+  BarChart3,
+  BookOpenCheck,
+  Database,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"
+
 import { Tab } from "../../types"
+
 import { useState, useEffect } from "react"
 
-const navItems: { label: Tab; icon: typeof BarChart3 }[] = [
+const navItems: { label: Tab icon: typeof BarChart3 }[] = [
   { label: "Contest", icon: BarChart3 },
+
   { label: "Classroom", icon: BookOpenCheck },
+
   { label: "Ques Bank", icon: Database },
 ]
 
 export function Sidebar({
   active,
+
   onSelect,
 }: {
   active: Tab
+
   onSelect: (tab: Tab) => void
 }) {
   const [width, setWidth] = useState(240)
+
   const [isCollapsed, setIsCollapsed] = useState(false)
+
   const [isResizing, setIsResizing] = useState(false)
+
   const [isXl, setIsXl] = useState(true)
 
   // Load user preferences
+
   useEffect(() => {
     const savedWidth = localStorage.getItem("sidebarWidth")
+
     if (savedWidth) setWidth(parseInt(savedWidth, 10))
 
     const savedCollapsed = localStorage.getItem("sidebarCollapsed")
+
     if (savedCollapsed) setIsCollapsed(savedCollapsed === "true")
   }, [])
 
   // Save collapsed state
+
   useEffect(() => {
     localStorage.setItem("sidebarCollapsed", isCollapsed.toString())
   }, [isCollapsed])
 
   // Save width when finished resizing
+
   useEffect(() => {
     if (!isResizing) {
       localStorage.setItem("sidebarWidth", width.toString())
@@ -42,24 +62,32 @@ export function Sidebar({
   }, [width, isResizing])
 
   // Screen size breakpoint detection
+
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 1280px)")
+
     const onChange = (e: MediaQueryListEvent) => setIsXl(e.matches)
+
     setIsXl(mql.matches)
-    
+
     // Fallback for Safari which might need addListener
+
     if (mql.addEventListener) {
       mql.addEventListener("change", onChange)
+
       return () => mql.removeEventListener("change", onChange)
     } else {
       mql.addListener(onChange)
+
       return () => mql.removeListener(onChange)
     }
   }, [])
 
   // Drag handle logic
+
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
+
     setIsResizing(true)
   }
 
@@ -68,7 +96,9 @@ export function Sidebar({
 
     const handleMouseMove = (e: MouseEvent) => {
       // Sidebar is on the left, so clientX maps directly to width
+
       let newWidth = e.clientX
+
       if (newWidth >= 180 && newWidth <= 400) {
         setWidth(newWidth)
       }
@@ -79,10 +109,12 @@ export function Sidebar({
     }
 
     document.addEventListener("mousemove", handleMouseMove)
+
     document.addEventListener("mouseup", handleMouseUp)
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove)
+
       document.removeEventListener("mouseup", handleMouseUp)
     }
   }, [isResizing])
@@ -90,7 +122,9 @@ export function Sidebar({
   const toggleCollapse = () => setIsCollapsed(!isCollapsed)
 
   // Compute active states
+
   const activeWidth = !isXl ? 56 : isCollapsed ? 56 : width
+
   const isIconOnly = !isXl || isCollapsed
 
   return (
@@ -117,7 +151,9 @@ export function Sidebar({
             >
               <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
               {!isIconOnly && (
-                <span className="whitespace-nowrap text-sm font-medium">{label}</span>
+                <span className="whitespace-nowrap text-sm font-medium">
+                  {label}
+                </span>
               )}
             </button>
           ))}

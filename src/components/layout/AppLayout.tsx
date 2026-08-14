@@ -1,15 +1,22 @@
 import { ReactNode } from "react"
+
 import { TopBar } from "./TopBar"
+
 import { Sidebar } from "./Sidebar"
+
 import { Tab } from "../../types"
 
 export function AppLayout({
   activeTab,
+
   onSelectTab,
+
   children,
 }: {
   activeTab: Tab
+
   onSelectTab: (tab: Tab) => void
+
   children: ReactNode
 }) {
   return (
