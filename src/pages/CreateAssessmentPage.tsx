@@ -10,7 +10,7 @@ import { QuestionBankSelector } from "../components/assessment/QuestionBankSelec
 import { AssessmentPool } from "../components/assessment/AssessmentPool"
 import { QuestionDelivery } from "../components/assessment/QuestionDelivery"
 import { AssessmentReview } from "../components/assessment/AssessmentReview"
-import { classrooms } from "../data/mockData"
+import { classrooms, upcoming } from "../data/mockData"
 
 const PANEL = "rounded-xl border border-[#262626] bg-[#141414]"
 const FIELD =
@@ -19,23 +19,83 @@ const FIELD =
 // Extract unique classroom names for the mock
 const uniqueClassrooms = Array.from(new Set(classrooms.map((c) => c.name)))
 
-export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
-  const [draft, setDraft] = useState<AssessmentDraft>({
-    name: "Data Structures Mid-Term",
-    classrooms: ["CSE-A"],
-    duration: 1800,
-    scheduledDate: "7 JUN 2025",
-    scheduledTime: "10:00 AM",
-    selectedQuestionIds: [1, 2, 4, 6, 9, 10], // Matches IDs in mock questions array
-    deliveryMode: "Random",
-    questionsPerStudent: 4,
+export function CreateAssessmentPage({ 
+  mode = "create",
+  assessmentId,
+  initialDate,
+  onModeChange,
+  onExit,
+  readonly
+}: { 
+  mode?: "create" | "view" | "edit"
+  assessmentId?: string
+  initialDate?: string
+  onModeChange?: (mode: "create" | "view" | "edit") => void
+  onExit: () => void 
+  readonly?: boolean
+}) {
+  const [draft, setDraft] = useState<AssessmentDraft>(() => {
+    if (assessmentId && (mode === "view" || mode === "edit")) {
+      const existing = upcoming.find(u => u.id === assessmentId)
+      if (existing) {
+        return {
+          name: existing.name,
+          classrooms: existing.classrooms,
+          duration: existing.duration,
+          scheduledDate: existing.scheduledDate,
+          scheduledTime: existing.scheduledTime,
+          selectedQuestionIds: existing.selectedQuestionIds,
+          deliveryMode: existing.deliveryMode,
+          questionsPerStudent: existing.questionsPerStudent,
+        }
+      }
+    }
+    return {
+      name: "Data Structures Mid-Term",
+      classrooms: ["CSE-A"],
+      duration: 1800,
+      scheduledDate: initialDate || "7 JUN 2025",
+      scheduledTime: "10:00 AM",
+      selectedQuestionIds: [1, 2, 4, 6, 9, 10], // Matches IDs in mock questions array
+      deliveryMode: "Random",
+      questionsPerStudent: 4,
+    }
   })
 
   const updateDraft = (updates: Partial<AssessmentDraft>) => {
+    if (mode === "view") return
     setDraft((prev) => ({ ...prev, ...updates }))
   }
 
+  const handleSave = () => {
+    if (mode === "edit" && assessmentId) {
+      // For local session persistence, mutate the mock data array
+      const idx = upcoming.findIndex(u => u.id === assessmentId)
+      if (idx !== -1) {
+        upcoming[idx] = {
+          ...upcoming[idx],
+          name: draft.name,
+          classrooms: draft.classrooms,
+          duration: draft.duration,
+          scheduledDate: draft.scheduledDate || "TBD",
+          scheduledTime: draft.scheduledTime || "TBD",
+          selectedQuestionIds: draft.selectedQuestionIds,
+          deliveryMode: draft.deliveryMode,
+          questionsPerStudent: draft.questionsPerStudent,
+        }
+      }
+      onModeChange?.("view")
+    } else {
+      onExit()
+    }
+  }
+
+  const handleEdit = () => {
+    onModeChange?.("edit")
+  }
+
   const handleToggleQuestion = (id: number) => {
+    if (mode === "view") return
     setDraft((prev) => {
       const isSelected = prev.selectedQuestionIds.includes(id)
       const nextIds = isSelected
@@ -58,6 +118,7 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
   }
 
   const handleDragEnd = useCallback((result: DropResult) => {
+    if (mode === "view") return
     const { source, destination, draggableId } = result
 
     if (!destination) return
@@ -101,9 +162,10 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
         questionsPerStudent: safePerStudent,
       }
     })
-  }, [])
+  }, [mode])
 
   const isDraft = !draft.scheduledDate || !draft.scheduledTime
+  const isView = mode === "view"
 
   return (
     <div className="space-y-5">
@@ -111,18 +173,64 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.5px] text-white/40">
-            Create
+            {mode === "create" ? "Create" : mode === "edit" ? "Edit" : "View"}
           </p>
           <h1 className="mt-1 text-[22px] font-semibold leading-tight text-white">
-            Create Assessment
+            {mode === "create" ? "Create Assessment" : mode === "edit" ? "Edit Assessment" : draft.name || "Assessment"}
           </h1>
         </div>
-        <button
-          onClick={onExit}
-          className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
-        >
-          Cancel
-        </button>
+          {mode === "view" ? (
+            readonly ? (
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={onExit}
+                  className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                >
+                  Close
+                </button>
+                <div className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.06] text-white/40">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={onExit}
+                  className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => onModeChange?.("edit")}
+                  className="shrink-0 rounded-md bg-[#5b4aef] px-4 py-[9px] text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+                >
+                  Edit Assessment
+                </button>
+              </div>
+            )
+          ) : mode === "edit" ? (
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => onModeChange?.("view")}
+                className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+              >
+                Discard Changes
+              </button>
+              <button
+                onClick={onExit}
+                className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={onExit}
+              className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+            >
+              Cancel
+            </button>
+          )}
       </div>
 
       {/* assessment details */}
@@ -141,6 +249,7 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
                 onChange={(e) => updateDraft({ name: e.target.value })}
                 className={`${FIELD} h-10`}
                 placeholder="e.g. Data Structures Mid-Term"
+                readOnly={isView}
               />
             </div>
             <div className="flex flex-wrap items-end gap-6">
@@ -149,6 +258,7 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
                 <DurationInput
                   valueSeconds={draft.duration}
                   onChange={(v) => updateDraft({ duration: v })}
+                  readonly={isView}
                 />
               </div>
               <div>
@@ -157,6 +267,7 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
                   availableClassrooms={uniqueClassrooms}
                   selectedClassrooms={draft.classrooms}
                   onChange={(classes) => updateDraft({ classrooms: classes })}
+                  readonly={isView}
                 />
               </div>
             </div>
@@ -173,6 +284,7 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
                 <DatePicker
                   value={draft.scheduledDate}
                   onChange={(date) => updateDraft({ scheduledDate: date })}
+                  readonly={isView}
                 />
               </div>
               <div className="flex-1">
@@ -182,6 +294,7 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
                 <TimePicker
                   value={draft.scheduledTime}
                   onChange={(time) => updateDraft({ scheduledTime: time })}
+                  readonly={isView}
                 />
               </div>
             </div>
@@ -201,18 +314,22 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {/* bank */}
-          <div className={`${PANEL} overflow-hidden`}>
-            <QuestionBankSelector
-              selectedIds={draft.selectedQuestionIds}
-              onToggle={handleToggleQuestion}
-            />
-          </div>
+          {!isView && (
+            <div className={`${PANEL} overflow-hidden`}>
+              <QuestionBankSelector
+                selectedIds={draft.selectedQuestionIds}
+                onToggle={handleToggleQuestion}
+                readonly={isView}
+              />
+            </div>
+          )}
 
           {/* pool */}
-          <div className={`${PANEL} overflow-hidden`}>
+          <div className={`${PANEL} overflow-hidden ${isView ? 'col-span-1 xl:col-span-2' : ''}`}>
             <AssessmentPool
               selectedIds={draft.selectedQuestionIds}
               onToggle={handleToggleQuestion}
+              readonly={isView}
             />
           </div>
         </div>
@@ -230,12 +347,19 @@ export function CreateAssessmentPage({ onExit }: { onExit: () => void }) {
             updateDraft({ questionsPerStudent: count })
           }
           maxQuestions={draft.selectedQuestionIds.length}
+          readonly={isView}
         />
       </div>
 
       {/* review */}
       <div className={`${PANEL} p-5`}>
-        <AssessmentReview draft={draft} onSave={onExit} onCancel={onExit} />
+        <AssessmentReview 
+          draft={draft} 
+          onSave={handleSave} 
+          onCancel={onExit} 
+          onEdit={handleEdit}
+          mode={mode}
+        />
       </div>
     </div>
   )

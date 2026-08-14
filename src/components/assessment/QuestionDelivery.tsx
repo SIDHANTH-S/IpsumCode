@@ -19,6 +19,7 @@ interface QuestionDeliveryProps {
   questionsPerStudent: number
   onChangePerStudent: (count: number) => void
   maxQuestions: number
+  readonly?: boolean
 }
 
 export function QuestionDelivery({
@@ -27,6 +28,7 @@ export function QuestionDelivery({
   questionsPerStudent,
   onChangePerStudent,
   maxQuestions,
+  readonly,
 }: QuestionDeliveryProps) {
   return (
     <>
@@ -41,12 +43,13 @@ export function QuestionDelivery({
           {deliveryModes.map(({ mode }) => (
             <button
               key={mode}
-              onClick={() => onChangeMode(mode)}
+              onClick={() => !readonly && onChangeMode(mode)}
+              disabled={readonly}
               className={`rounded-md px-4 py-2 text-[13px] font-medium transition-colors ${
                 deliveryMode === mode
                   ? "bg-[#5b4aef] text-white"
                   : "text-white/60 hover:text-white/90"
-              }`}
+              } ${readonly ? "opacity-70" : ""}`}
             >
               {mode}
             </button>
@@ -64,6 +67,7 @@ export function QuestionDelivery({
           min={maxQuestions > 0 ? 1 : 0}
           max={Math.max(1, maxQuestions)}
           className="lg:ml-auto"
+          disabled={readonly}
         />
         <p className="mt-2 text-[11px] text-white/30">
           Max available: {maxQuestions}

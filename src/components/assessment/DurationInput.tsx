@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react"
 interface DurationInputProps {
   valueSeconds: number
   onChange: (seconds: number) => void
+  readonly?: boolean
 }
 
-export function DurationInput({ valueSeconds, onChange }: DurationInputProps) {
+export function DurationInput({ valueSeconds, onChange, readonly }: DurationInputProps) {
   const [mins, setMins] = useState(
     String(Math.floor(valueSeconds / 60)).padStart(2, "0"),
   )
@@ -44,6 +45,7 @@ export function DurationInput({ valueSeconds, onChange }: DurationInputProps) {
         onBlur={handleBlur}
         className="w-7 bg-transparent text-center text-[14px] font-semibold text-white tabular-nums focus:outline-none"
         placeholder="00"
+        readOnly={readonly}
       />
       <span className="mx-0.5 text-white/40">:</span>
       <input
@@ -53,6 +55,7 @@ export function DurationInput({ valueSeconds, onChange }: DurationInputProps) {
         onBlur={handleBlur}
         className="w-7 bg-transparent text-center text-[14px] font-semibold text-white tabular-nums focus:outline-none"
         placeholder="00"
+        readOnly={readonly}
       />
     </div>
   )

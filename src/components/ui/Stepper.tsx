@@ -7,6 +7,7 @@ export function Stepper({
   className = "",
   min = -Infinity,
   max = Infinity,
+  disabled = false,
 }: {
   value: number
   onChange: (next: number) => void
@@ -14,6 +15,7 @@ export function Stepper({
   className?: string
   min?: number
   max?: number
+  disabled?: boolean
 }) {
   const handleDecrement = () => {
     if (value > min) {
@@ -33,7 +35,7 @@ export function Stepper({
     >
       <button
         onClick={handleDecrement}
-        disabled={value <= min}
+        disabled={disabled || value <= min}
         className="grid h-9 w-9 place-items-center text-white/60 transition-colors hover:text-white disabled:opacity-30 disabled:hover:text-white/60"
       >
         −
@@ -43,7 +45,7 @@ export function Stepper({
       </span>
       <button
         onClick={handleIncrement}
-        disabled={value >= max}
+        disabled={disabled || value >= max}
         className="grid h-9 w-9 place-items-center text-white/60 transition-colors hover:text-white disabled:opacity-30 disabled:hover:text-white/60"
       >
         +

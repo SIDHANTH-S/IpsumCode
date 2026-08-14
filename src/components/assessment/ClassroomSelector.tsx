@@ -6,12 +6,14 @@ interface ClassroomSelectorProps {
   availableClassrooms: string[]
   selectedClassrooms: string[]
   onChange: (selected: string[]) => void
+  readonly?: boolean
 }
 
 export function ClassroomSelector({
   availableClassrooms,
   selectedClassrooms,
   onChange,
+  readonly,
 }: ClassroomSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -67,13 +69,15 @@ export function ClassroomSelector({
 
   return (
     <div className="flex items-center gap-2">
-      <Popover
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        trigger={trigger}
-        content={content}
-        width="200px"
-      />
+      {!readonly && (
+        <Popover
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          trigger={trigger}
+          content={content}
+          width="200px"
+        />
+      )}
       {selectedClassrooms.length > 0 ? (
         <span className="flex h-9 items-center rounded-md border border-white/10 bg-white/[0.06] px-3.5 text-[12px] font-medium uppercase tracking-[0.5px] text-white/80">
           {selectedClassrooms.join(", ")}

@@ -1,18 +1,34 @@
 import React, { useState } from "react"
-import { Search, Check } from "lucide-react"
+import { Search, Check, Filter, Gauge, Tag } from "lucide-react"
 import { Droppable, Draggable } from "@hello-pangea/dnd"
 import { questions, DIFFICULTY_COLORS } from "../../data/mockData"
 import { Difficulty } from "../../types"
+import { FilterMenu, ActiveFilter, FilterDefinition } from "../ui/FilterMenu"
 
-const bankFilters = [
-  "All",
-  "Easy",
-  "Med.",
-  "Hard",
-  "Array",
-  "String",
-  "DP",
-] as const
+const availableFilters: FilterDefinition[] = [
+  {
+    id: "difficulty",
+    label: "Difficulty",
+    icon: Gauge,
+    type: "multi-select",
+    options: [
+      { value: "Easy", label: "Easy" },
+      { value: "Med.", label: "Medium" },
+      { value: "Hard", label: "Hard" },
+    ],
+  },
+  {
+    id: "topics",
+    label: "Topics",
+    icon: Tag,
+    type: "multi-select",
+    options: [
+      { value: "Array", label: "Array" },
+      { value: "String", label: "String" },
+      { value: "DP", label: "Dynamic Programming" },
+    ],
+  },
+]
 
 function DiffPill({ difficulty }: { difficulty: Difficulty }) {
   const color = DIFFICULTY_COLORS[difficulty]
@@ -35,25 +51,46 @@ function DiffPill({ difficulty }: { difficulty: Difficulty }) {
 export function QuestionBankSelector({
   selectedIds,
   onToggle,
+  readonly,
 }: {
   selectedIds: number[]
   onToggle: (id: number) => void
+  readonly?: boolean
 }) {
   const [query, setQuery] = useState("")
-  const [activeFilter, setActiveFilter] = useState<string>("All")
+  const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([
+    {
+      id: "default-diff",
+      definitionId: "difficulty",
+      operator: "is",
+      value: [],
+    },
+    {
+      id: "default-top",
+      definitionId: "topics",
+      operator: "is",
+      value: [],
+    },
+  ])
 
   const filtered = questions.filter((q) => {
     if (query && !q.title.toLowerCase().includes(query.toLowerCase()))
       return false
-    if (
-      activeFilter === "Easy" ||
-      activeFilter === "Med." ||
-      activeFilter === "Hard"
-    ) {
-      return q.difficulty === activeFilter
+
+    // Apply filters from activeFilters
+    for (const filter of activeFilters) {
+      if (filter.definitionId === "difficulty") {
+        const values = Array.isArray(filter.value)
+          ? filter.value
+          : [filter.value]
+        if (values.length > 0 && !values.includes(q.difficulty)) {
+          return false
+        }
+      }
+      // Note: tags like Array/String/DP are not in the mock question model,
+      // so this is a simplified stub. In a real app we'd check q.tags.
     }
-    // Note: tags like Array/String/DP are not in the mock question model,
-    // so this is a simplified stub. In a real app we'd check q.tags.includes(activeFilter).
+
     return true
   })
 
@@ -76,21 +113,16 @@ export function QuestionBankSelector({
             className="h-8 w-full rounded-full bg-white/[0.08] pl-9 pr-4 text-[13px] text-white placeholder:text-[#a8a8a8] focus:outline-none focus:ring-1 focus:ring-white/20"
           />
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {bankFilters.map((f) => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              className={`flex h-7 items-center rounded-full px-3 text-[12px] font-medium transition-colors ${
-                activeFilter === f
-                  ? "bg-[#635ce6] text-white"
-                  : "border border-white/10 bg-white/[0.06] text-white/65 hover:text-white/90"
-              }`}
-            >
-              {f}
+        <FilterMenu
+          availableFilters={availableFilters}
+          initialFilters={activeFilters}
+          onApply={(filters) => setActiveFilters(filters)}
+          trigger={
+            <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white cursor-pointer">
+              <Filter className="h-3.5 w-3.5" />
             </button>
-          ))}
-        </div>
+          }
+        />
       </div>
 
       <div className="flex items-center justify-between border-y border-white/[0.06] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.5px] text-white/40">
@@ -112,18 +144,19 @@ export function QuestionBankSelector({
                   key={`bank-${q.num}`}
                   draggableId={`bank-q-${q.num}`}
                   index={i}
+                  isDragDisabled={readonly}
                 >
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      onClick={() => onToggle(q.num)}
+                      onClick={() => !readonly && onToggle(q.num)}
                       style={{
                         ...provided.draggableProps.style,
                         opacity: snapshot.isDragging ? 0.8 : 1,
                       }}
-                      className={`flex h-10 w-full items-center justify-between px-4 text-left transition-colors cursor-pointer hover:bg-white/[0.05] ${
+                      className={`flex h-10 w-full items-center justify-between px-4 text-left transition-colors ${readonly ? '' : 'cursor-pointer hover:bg-white/[0.05]'} ${
                         i % 2 === 0 ? "bg-white/[0.02]" : ""
                       }`}
                     >

@@ -1,17 +1,23 @@
 import React from "react"
 import { AssessmentDraft } from "../../types"
 import { BADGE_GRADIENTS } from "../../data/mockData"
+import { CalendarWidget } from "./CalendarWidget"
+import { ClockWidget } from "./ClockWidget"
 
 interface AssessmentReviewProps {
   draft: AssessmentDraft
   onSave: () => void
   onCancel: () => void
+  onEdit?: () => void
+  mode?: "create" | "view" | "edit"
 }
 
 export function AssessmentReview({
   draft,
   onSave,
   onCancel,
+  onEdit,
+  mode = "create",
 }: AssessmentReviewProps) {
   const isDraft = !draft.scheduledDate || !draft.scheduledTime
 
@@ -21,6 +27,33 @@ export function AssessmentReview({
     draft.selectedQuestionIds.length > 0 &&
     draft.questionsPerStudent > 0 &&
     (!isDraft || (draft.scheduledDate === null && draft.scheduledTime === null))
+
+  let dayName = "Day"
+  let month = "Month"
+  let date = "1"
+  let timeStr = "12:00"
+  let periodStr = "AM"
+
+  if (!isDraft && draft.scheduledDate && draft.scheduledTime) {
+    const d = new Date(draft.scheduledDate)
+    if (!isNaN(d.getTime())) {
+      dayName = d.toLocaleDateString("en-US", { weekday: "short" })
+      month = d.toLocaleDateString("en-US", { month: "short" })
+      date = d.getDate().toString()
+    } else {
+      const parts = draft.scheduledDate.split(" ")
+      date = parts[0] || "1"
+      month = parts[1] || "Month"
+    }
+
+    const timeMatch = draft.scheduledTime.match(/(\d{1,2}:\d{2})\s*(AM|PM)/i)
+    if (timeMatch) {
+      timeStr = timeMatch[1]
+      periodStr = timeMatch[2].toUpperCase()
+    } else {
+      timeStr = draft.scheduledTime
+    }
+  }
 
   return (
     <>
@@ -34,20 +67,15 @@ export function AssessmentReview({
           </p>
         </div>
         {!isDraft && draft.scheduledDate && draft.scheduledTime && (
-          <div className="flex shrink-0 items-center gap-2">
-            <div className="flex flex-col items-center rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1.5 text-center">
-              <span className="text-[10px] font-medium uppercase tracking-[0.5px] text-white/45">
-                {draft.scheduledDate.split(" ").slice(1, 2).join(" ") || "Date"}
-              </span>
-              <span className="text-[18px] font-bold leading-none text-white">
-                {draft.scheduledDate.split(" ")[0]}
-              </span>
-            </div>
-            <div
-              className="grid h-[52px] w-[68px] place-items-center rounded-lg text-[17px] font-bold text-white"
-              style={{ background: BADGE_GRADIENTS.purple }}
-            >
-              {draft.scheduledTime.replace(/\s*(AM|PM)/i, "")}
+          <div className="flex shrink-0 flex-col items-end gap-1.5">
+            <span className="text-[10px] font-medium uppercase tracking-[0.5px] text-white/40">
+              Schedule
+            </span>
+            <div className="flex items-center gap-2">
+              <CalendarWidget dayName={dayName} month={month} date={date} />
+              <div className="h-[68px] w-[68px]">
+                <ClockWidget time={timeStr} period={periodStr} />
+              </div>
             </div>
           </div>
         )}
@@ -64,12 +92,6 @@ export function AssessmentReview({
           {
             label: "Questions",
             value: `${draft.selectedQuestionIds.length} selected · ${Math.floor(draft.duration / 60)}m ${draft.duration % 60}s est.`,
-          },
-          {
-            label: "Schedule",
-            value: isDraft
-              ? "Draft — not scheduled"
-              : `${draft.scheduledDate} · ${draft.scheduledTime}`,
           },
           { label: "Question delivery", value: draft.deliveryMode },
         ].map((row) => (
@@ -91,13 +113,15 @@ export function AssessmentReview({
             ? "All required fields are filled"
             : "Missing required fields"}
         </span>
-        <button
-          onClick={onSave}
-          disabled={!allRequiredFilled}
-          className="rounded-md bg-[#5b4aef] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isDraft ? "Save Draft" : "Schedule Assessment"}
-        </button>
+        {mode !== "view" && (
+          <button
+            onClick={onSave}
+            disabled={!allRequiredFilled}
+            className="rounded-md bg-[#5b4aef] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {mode === "edit" ? "Save Changes" : isDraft ? "Save Draft" : "Schedule Assessment"}
+          </button>
+        )}
       </div>
     </>
   )

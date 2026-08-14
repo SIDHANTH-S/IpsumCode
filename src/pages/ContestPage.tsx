@@ -11,9 +11,13 @@ import {
   Code,
 } from "lucide-react"
 
-import { FilterMenu, FilterDefinition } from "../components/ui/FilterMenu"
-
 import { SectionLink } from "../components/ui"
+import { FilterMenu, FilterDefinition } from "../components/ui/FilterMenu"
+import {
+  GraduationCap,
+  Calendar as CalendarIcon,
+  Calculator,
+} from "lucide-react"
 
 import {
   CARD_GRADIENTS,
@@ -25,17 +29,19 @@ import {
   dayDots,
   TODAY,
   LEADING_BLANKS,
+  classrooms,
 } from "../data/mockData"
 
 import { LeaderboardBlock } from "../components/contest/LeaderboardBlock"
 
-function ContestCards() {
+function ContestCards({ onView }: { onView: (id: string) => void }) {
   return (
     <div className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-2 rounded-r-2xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {liveCards.map((card, i) => (
         <div
           key={i}
-          className="relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-[11px] px-[17px] pt-4 pb-3 text-white shadow-[0px_9px_21px_-4px_rgba(23,28,41,0.28)]"
+          onClick={() => onView(`live-${i}`)}
+          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-[11px] px-[17px] pt-4 pb-3 text-white shadow-[0px_9px_21px_-4px_rgba(23,28,41,0.28)]"
           style={{ background: CARD_GRADIENTS[card.tone] }}
         >
           <div className="flex-1">
@@ -68,9 +74,18 @@ function ContestCards() {
   )
 }
 
-function UpcomingCard({ item }: { item: typeof upcoming[number] }) {
+function UpcomingCard({ 
+  item,
+  onView,
+}: { 
+  item: typeof upcoming[number] 
+  onView: (id: string) => void
+}) {
   return (
-    <div className="flex items-center gap-3.5 rounded-lg border border-white/[0.08] bg-white/[0.06] p-3 shadow-[0px_4px_16px_-8px_rgba(0,0,0,0.22)] transition-colors hover:border-white/[0.16]">
+    <div 
+      className="flex items-center gap-3.5 rounded-lg border border-white/[0.08] bg-white/[0.06] p-3 shadow-[0px_4px_16px_-8px_rgba(0,0,0,0.22)] transition-colors hover:border-white/[0.16] cursor-pointer"
+      onClick={() => onView(item.id)}
+    >
       <div className="relative h-[60px] w-14 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-white/[0.08]">
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
@@ -102,14 +117,16 @@ function UpcomingCard({ item }: { item: typeof upcoming[number] }) {
       </div>
       <div className="min-w-0">
         <p className="truncate text-[13px] font-semibold text-white">
-          {item.title}
+          {item.name}
         </p>
         <p className="mt-1 text-[11px] text-white/70">
-          {item.cls}
+          {item.classrooms.join(", ")}
           <span className="mx-1 text-white/40">·</span>
-          {item.time}
+          {item.scheduledTime}
         </p>
-        <p className="mt-1 text-[10px] text-white/45">{item.meta}</p>
+        <p className="mt-1 text-[10px] text-white/45">
+          {item.duration / 60} min · {item.questionsPerStudent} Questions
+        </p>
       </div>
     </div>
   )
@@ -125,83 +142,79 @@ const toolbarButtons = [
 
 const contestFilters: FilterDefinition[] = [
   {
-    id: "status",
-
-    label: "Status",
-
-    icon: CheckSquare,
-
-    type: "select",
-
-    options: [
-      { value: "todo", label: "Todo" },
-
-      { value: "solved", label: "Solved" },
-
-      { value: "attempted", label: "Attempted" },
-    ],
-  },
-
-  {
-    id: "difficulty",
-
-    label: "Difficulty",
-
-    icon: Gauge,
-
+    id: "class",
+    label: "Class",
+    icon: GraduationCap,
     type: "multi-select",
-
-    options: [
-      { value: "easy", label: "Easy" },
-
-      { value: "medium", label: "Medium" },
-
-      { value: "hard", label: "Hard" },
-    ],
+    options: Array.from(new Set(classrooms.map((c) => c.name))).map((name) => ({
+      value: name,
+      label: name,
+    })),
   },
-
   {
-    id: "topics",
-
-    label: "Topics",
-
-    icon: Tag,
-
-    type: "multi-select",
-
-    options: [
-      { value: "arrays", label: "Arrays" },
-
-      { value: "strings", label: "Strings" },
-
-      { value: "dp", label: "Dynamic Programming" },
-
-      { value: "graphs", label: "Graphs" },
-    ],
+    id: "date",
+    label: "Date",
+    icon: CalendarIcon,
+    type: "date-range",
   },
-
   {
-    id: "language",
-
-    label: "Language",
-
-    icon: Code,
-
-    type: "multi-select",
-
-    options: [
-      { value: "python", label: "Python" },
-
-      { value: "cpp", label: "C++" },
-
-      { value: "java", label: "Java" },
-
-      { value: "js", label: "JavaScript" },
-    ],
+    id: "avg_score",
+    label: "Average Score",
+    icon: Calculator,
+    type: "number",
   },
 ]
 
-function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
+import React, { useState } from "react"
+function CompletedTable({
+  onCreateContest,
+  onViewResults,
+  onViewAllCompleted,
+}: {
+  onCreateContest?: () => void
+  onViewResults?: (id: string) => void
+  onViewAllCompleted?: () => void
+}) {
+  const [activeFilters, setActiveFilters] = useState<any[]>([])
+
+  const getFilterSummary = (f: any) => {
+    const def = contestFilters.find((d) => d.id === f.definitionId)
+    if (!def) return null
+    if (def.type === "number") {
+      const op =
+        f.operator === "Greater than"
+          ? ">"
+          : f.operator === "Less than"
+            ? "<"
+            : f.operator
+      return `${def.label} ${op} ${f.value}`
+    }
+    if (def.type === "date-range") {
+      const start = f.value?.start
+        ? new Date(f.value.start).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+          })
+        : ""
+      const end = f.value?.end
+        ? new Date(f.value.end).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+          })
+        : ""
+      if (start && end) return `Date: ${start} – ${end}`
+      if (start) return `Date: from ${start}`
+      if (end) return `Date: until ${end}`
+      return `Date: Any`
+    }
+    if (def.type === "multi-select") {
+      const vals = Array.isArray(f.value) ? f.value : []
+      if (vals.length === 0) return `${def.label}: Any`
+      return `${def.label}: ${vals.join(", ")}`
+    }
+    return `${def.label}: ${f.value}`
+  }
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -219,8 +232,18 @@ function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
           </button>
         ))}
         <div className="ml-auto flex items-center gap-3">
+          {activeFilters.map((f) => (
+            <span
+              key={f.id}
+              className="flex items-center gap-1.5 rounded-full border border-neutral-700 bg-neutral-800/50 px-3 py-1 text-[11px] font-medium text-neutral-300"
+            >
+              {getFilterSummary(f)}
+            </span>
+          ))}
           <FilterMenu
             availableFilters={contestFilters}
+            initialFilters={activeFilters}
+            onApply={(filters) => setActiveFilters(filters)}
             trigger={
               <button className="grid h-8 w-8 place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white cursor-pointer">
                 <Filter className="h-3.5 w-3.5" />
@@ -230,7 +253,7 @@ function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
           <button className="grid h-8 w-8 place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white">
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
-          <SectionLink />
+          <SectionLink onClick={() => onViewAllCompleted?.()} />
         </div>
       </div>
 
@@ -254,7 +277,7 @@ function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
             </tr>
           </thead>
           <tbody>
-            {completed.map((row, i) => (
+            {completed.slice(0, 5).map((row, i) => (
               <tr
                 key={row.title}
                 className={`border-b border-white/[0.06] last:border-b-0 ${
@@ -278,13 +301,10 @@ function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
                 </td>
                 <td className="px-5 py-3.5">
                   <button
-                    className={`flex items-center gap-1 text-[12px] font-medium ${
-                      row.action === "Review"
-                        ? "text-amber-500 hover:text-amber-400"
-                        : "text-indigo-400 hover:text-indigo-300"
-                    }`}
+                    onClick={() => onViewResults?.(row.title)}
+                    className="flex items-center gap-1 text-[12px] font-medium text-indigo-400 hover:text-indigo-300"
                   >
-                    {row.action} <ArrowRight className="h-3.5 w-3.5" />
+                    Results <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 </td>
               </tr>
@@ -296,7 +316,7 @@ function CompletedTable({ onCreateContest }: { onCreateContest?: () => void }) {
   )
 }
 
-function Calendar() {
+function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
   const cells: (number | null)[] = [
     ...Array(LEADING_BLANKS).fill(null),
 
@@ -339,9 +359,10 @@ function Calendar() {
           const isToday = day === TODAY
 
           return (
-            <div
+            <button
               key={i}
-              className="relative flex h-8 items-center justify-center"
+              onClick={() => onDateClick?.(day)}
+              className="relative flex h-8 items-center justify-center hover:bg-white/[0.04] transition-colors rounded-full"
             >
               {isToday ? (
                 <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500 text-[12px] font-normal text-white">
@@ -349,7 +370,7 @@ function Calendar() {
                 </span>
               ) : (
                 <>
-                  <span className="text-[12px] font-normal text-white/60">
+                  <span className="text-[12px] font-normal text-white hover:text-white transition-colors">
                     {day}
                   </span>
                   {(dayDots[day] ?? []).length > 0 && (
@@ -365,7 +386,7 @@ function Calendar() {
                   )}
                 </>
               )}
-            </div>
+            </button>
           )
         })}
       </div>
@@ -392,33 +413,59 @@ function LeaderboardPanel() {
 
 export function ContestPage({
   onCreateContest,
+  onViewAssessment,
+  onViewResults,
+  onViewAllUpcoming,
+  onViewAllCompleted,
+  onViewLiveAssessment,
 }: {
-  onCreateContest?: () => void
+  onCreateContest?: (date?: string) => void
+  onViewAssessment?: (id: string) => void
+  onViewResults?: (id: string) => void
+  onViewAllUpcoming?: () => void
+  onViewAllCompleted?: (date?: number) => void
+  onViewLiveAssessment: (id: string) => void
 }) {
+  const handleDateClick = (day: number) => {
+    if (day < TODAY) {
+      // Past date -> show See All workspace for completed assessments
+      onViewAllCompleted?.(day)
+    } else {
+      // Future or present date -> Create new assessment
+      const formattedDate = `${day} MAY 2026`
+      onCreateContest?.(formattedDate)
+    }
+  }
+
   return (
     <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_256px]">
       <div className="min-w-0 space-y-8">
-        <ContestCards />
+        <ContestCards onView={onViewLiveAssessment} />
 
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-semibold text-white">Upcoming</h2>
-            <SectionLink />
+            <SectionLink onClick={() => onViewAllUpcoming?.()} />
           </div>
+          
           <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-            {upcoming.map((item) => (
-              <UpcomingCard key={item.title} item={item} />
+            {upcoming.slice(0, 3).map((item) => (
+              <UpcomingCard key={item.id} item={item} onView={() => onViewAssessment?.(item.id)} />
             ))}
           </div>
         </section>
 
-        <CompletedTable onCreateContest={onCreateContest} />
+        <CompletedTable
+          onCreateContest={onCreateContest}
+          onViewResults={onViewResults}
+          onViewAllCompleted={() => onViewAllCompleted?.()}
+        />
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
-          <Calendar />
-        </div>
+          <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+            <Calendar onDateClick={handleDateClick} />
+          </div>
         <LeaderboardPanel />
       </div>
     </div>

@@ -5,6 +5,7 @@ import { Popover } from "../ui"
 interface TimePickerProps {
   value: string | null
   onChange: (time: string) => void
+  readonly?: boolean
 }
 
 const HOURS = Array.from({ length: 12 }, (_, i) =>
@@ -13,7 +14,7 @@ const HOURS = Array.from({ length: 12 }, (_, i) =>
 const MINUTES = ["00", "15", "30", "45"]
 const PERIODS = ["AM", "PM"]
 
-export function TimePicker({ value, onChange }: TimePickerProps) {
+export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   // Default to 10:00 AM if no value
@@ -38,12 +39,12 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
   }
 
   const trigger = (
-    <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+    <div className={`relative ${readonly ? '' : 'cursor-pointer'}`} onClick={() => !readonly && setIsOpen(!isOpen)}>
       <input
         readOnly
         value={value || ""}
         placeholder="Select time"
-        className="h-10 w-full cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-3 pr-9 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none"
+        className={`h-10 w-full rounded-md border border-white/10 bg-white/[0.06] px-3 pr-9 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
       />
       <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/35">
         <Clock className="h-4 w-4" />
@@ -130,12 +131,14 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
   )
 
   return (
-    <Popover
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      trigger={trigger}
-      content={content}
-      width="220px"
-    />
+    readonly ? trigger : (
+      <Popover
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        trigger={trigger}
+        content={content}
+        width="220px"
+      />
+    )
   )
 }

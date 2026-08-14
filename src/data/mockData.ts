@@ -125,101 +125,87 @@ export const liveCards: {
   },
 ]
 
-export const upcoming: {
-  tone: Tone
-
-  day: number
-
-  title: string
-
-  cls: string
-
-  time: string
-
-  meta: string
-}[] = [
+export const upcoming = [
   {
-    tone: "purple",
-
+    id: "up-1",
+    tone: "purple" as Tone,
     day: 25,
-
-    title: "Top Interview 150",
-
-    cls: "CSE - D",
-
-    time: "07:00 PM",
-
-    meta: "90 min · 25 Questions",
+    name: "Top Interview 150",
+    classrooms: ["CSE - D"],
+    scheduledDate: "25 MAY 2026",
+    scheduledTime: "07:00 PM",
+    duration: 5400, // 90 min
+    selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    deliveryMode: "Random" as const,
+    questionsPerStudent: 25,
   },
 
   {
-    tone: "blue",
-
+    id: "up-2",
+    tone: "blue" as Tone,
     day: 26,
-
-    title: "LeetCode 75",
-
-    cls: "CSE - D",
-
-    time: "11:00 AM",
-
-    meta: "45 min · 15 Questions",
+    name: "LeetCode 75",
+    classrooms: ["CSE - D"],
+    scheduledDate: "26 MAY 2026",
+    scheduledTime: "11:00 AM",
+    duration: 2700, // 45 min
+    selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    deliveryMode: "Smart Shuffle" as const,
+    questionsPerStudent: 15,
   },
 
   {
-    tone: "orange",
-
+    id: "up-3",
+    tone: "orange" as Tone,
     day: 27,
-
-    title: "SQL 50",
-
-    cls: "CSE - B",
-
-    time: "10:00 AM",
-
-    meta: "60 min · 20 Questions",
+    name: "SQL 50",
+    classrooms: ["CSE - B"],
+    scheduledDate: "27 MAY 2026",
+    scheduledTime: "10:00 AM",
+    duration: 3600, // 60 min
+    selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    deliveryMode: "Sequential" as const,
+    questionsPerStudent: 20,
   },
 
   {
-    tone: "pink",
-
+    id: "up-4",
+    tone: "pink" as Tone,
     day: 28,
-
-    title: "30 Days of JavaScript",
-
-    cls: "CSE - A",
-
-    time: "06:00 PM",
-
-    meta: "60 min · 30 Questions",
+    name: "30 Days of JavaScript",
+    classrooms: ["CSE - A"],
+    scheduledDate: "28 MAY 2026",
+    scheduledTime: "06:00 PM",
+    duration: 3600, // 60 min
+    selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+    deliveryMode: "Random" as const,
+    questionsPerStudent: 30,
   },
-
   {
-    tone: "purple",
-
+    id: "up-5",
+    tone: "purple" as Tone,
     day: 29,
-
-    title: "Amazon Spring High",
-
-    cls: "Public",
-
-    time: "05:00 PM",
-
-    meta: "75 min · 25 Questions",
+    name: "Amazon Spring High",
+    classrooms: ["Public"],
+    scheduledDate: "29 MAY 2026",
+    scheduledTime: "05:00 PM",
+    duration: 4500, // 75 min
+    selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    deliveryMode: "Sequential" as const,
+    questionsPerStudent: 25,
   },
-
   {
-    tone: "orange",
-
+    id: "up-6",
+    tone: "orange" as Tone,
     day: 30,
-
-    title: "Algorithms & Complexity",
-
-    cls: "CSE - B",
-
-    time: "09:00 AM",
-
-    meta: "75 min · 20 Questions",
+    name: "Algorithms & Complexity",
+    classrooms: ["CSE - B"],
+    scheduledDate: "30 MAY 2026",
+    scheduledTime: "09:00 AM",
+    duration: 4500, // 75 min
+    selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    deliveryMode: "Random" as const,
+    questionsPerStudent: 20,
   },
 ]
 
@@ -233,35 +219,45 @@ export const completed: {
   score: string
 
   completion: string
-
   action: "Results" | "Review"
+  day?: number
 }[] = [
   {
     title: "Python Programming Test",
-
     cls: "CSE-D",
-
     participation: "92 / 120",
-
     score: "76.8%",
-
     completion: "81%",
-
     action: "Results",
+    day: 10,
   },
 
   {
     title: "System Design Mock Test",
-
     cls: "CSE-A",
-
     participation: "110 / 150",
-
     score: "84.2%",
-
     completion: "91%",
-
     action: "Results",
+    day: 11,
+  },
+  {
+    title: "Database Management Systems",
+    cls: "CSE-B",
+    participation: "105 / 130",
+    score: "79.5%",
+    completion: "85%",
+    action: "Results",
+    day: 10,
+  },
+  {
+    title: "Data Structures & Algorithms",
+    cls: "CSE-C",
+    participation: "118 / 140",
+    score: "88.1%",
+    completion: "94%",
+    action: "Results",
+    day: 12,
   },
 
   {
@@ -741,4 +737,163 @@ export const metadata: { label: string value: string }[] = [
   { label: "Last updated", value: "Aug 12, 2026 · 3:42 PM" },
 
   { label: "Question ID", value: "1" },
+]
+
+export const mockContestRanking = Array.from({ length: 35 }).map((_, i) => ({
+  id: `std-${i + 1}`,
+  rank: i + 1,
+  name: `Student ${i + 1}`,
+  cls: i % 3 === 0 ? "CSE-A" : i % 3 === 1 ? "CSE-B" : "ECE-A",
+  score: 100 - i * 2.5,
+  solved: 4 - Math.floor(i / 10),
+  time: `${45 + i * 2}m ${15 + (i % 45)}s`,
+}))
+
+export const mockStudentTimeline = [
+  { time: "10:00:00 AM", event: "Started contest", status: "info" },
+  { time: "10:01:15 AM", event: "Opened Question 1 (Two Sum)", status: "info" },
+  {
+    time: "10:05:30 AM",
+    event: "First compilation (Q1)",
+    status: "warning",
+    meta: "Runtime Error",
+  },
+  {
+    time: "10:08:45 AM",
+    event: "Accepted solution (Q1)",
+    status: "success",
+    meta: "35ms • 14.2MB",
+  },
+  { time: "10:09:10 AM", event: "Opened Question 2", status: "info" },
+  {
+    time: "10:25:20 AM",
+    event: "Accepted solution (Q2)",
+    status: "success",
+    meta: "12ms • 8.1MB",
+  },
+  {
+    time: "10:45:00 AM",
+    event: "Final submission completed",
+    status: "success",
+  },
+]
+
+export const mockStudentQuestions = [
+  {
+    id: "q1",
+    title: "Two Sum",
+    result: "Accepted",
+    opened: "10:01:15 AM",
+    firstCompile: "10:05:30 AM",
+    accepted: "10:08:45 AM",
+    compilations: 3,
+    submissions: 1,
+    history: [
+      {
+        id: "s1",
+        time: "10:05:30 AM",
+        type: "Compile",
+        result: "Runtime Error",
+        lang: "C++",
+        runtime: "-",
+        memory: "-",
+      },
+      {
+        id: "s2",
+        time: "10:07:15 AM",
+        type: "Compile",
+        result: "Accepted",
+        lang: "C++",
+        runtime: "40ms",
+        memory: "14.5MB",
+      },
+      {
+        id: "s3",
+        time: "10:08:45 AM",
+        type: "Submit",
+        result: "Accepted",
+        lang: "C++",
+        runtime: "35ms",
+        memory: "14.2MB",
+      },
+    ],
+  },
+  {
+    id: "q2",
+    title: "Median of Two Sorted Arrays",
+    result: "Accepted",
+    opened: "10:09:10 AM",
+    firstCompile: "10:20:15 AM",
+    accepted: "10:25:20 AM",
+    compilations: 5,
+    submissions: 2,
+    history: [
+      {
+        id: "s4",
+        time: "10:20:15 AM",
+        type: "Compile",
+        result: "Wrong Answer",
+        lang: "C++",
+        runtime: "-",
+        memory: "-",
+      },
+      {
+        id: "s5",
+        time: "10:23:40 AM",
+        type: "Submit",
+        result: "Time Limit Exceeded",
+        lang: "C++",
+        runtime: ">2000ms",
+        memory: "18.1MB",
+      },
+      {
+        id: "s6",
+        time: "10:25:20 AM",
+        type: "Submit",
+        result: "Accepted",
+        lang: "C++",
+        runtime: "12ms",
+        memory: "8.1MB",
+      },
+    ],
+  },
+  {
+    id: "q3",
+    title: "Zigzag Conversion",
+    result: "Attempted",
+    opened: "10:26:00 AM",
+    firstCompile: "10:40:00 AM",
+    accepted: "-",
+    compilations: 8,
+    submissions: 3,
+    history: [
+      {
+        id: "s7",
+        time: "10:40:00 AM",
+        type: "Compile",
+        result: "Wrong Answer",
+        lang: "C++",
+        runtime: "-",
+        memory: "-",
+      },
+      {
+        id: "s8",
+        time: "10:42:10 AM",
+        type: "Submit",
+        result: "Wrong Answer",
+        lang: "C++",
+        runtime: "15ms",
+        memory: "9.2MB",
+      },
+      {
+        id: "s9",
+        time: "10:44:50 AM",
+        type: "Submit",
+        result: "Wrong Answer",
+        lang: "C++",
+        runtime: "14ms",
+        memory: "9.2MB",
+      },
+    ],
+  },
 ]

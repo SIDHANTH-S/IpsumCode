@@ -5,6 +5,7 @@ import { Popover } from "../ui"
 interface DatePickerProps {
   value: string | null
   onChange: (date: string) => void
+  readonly?: boolean
 }
 
 const MONTHS = [
@@ -24,7 +25,7 @@ const MONTHS = [
 
 const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
+export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   // Basic mock date state for the calendar
@@ -56,12 +57,12 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
   }
 
   const trigger = (
-    <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+    <div className={`relative ${readonly ? '' : 'cursor-pointer'}`} onClick={() => !readonly && setIsOpen(!isOpen)}>
       <input
         readOnly
         value={value || ""}
         placeholder="Select date"
-        className="h-10 w-full cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-3 pr-9 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none"
+        className={`h-10 w-full rounded-md border border-white/10 bg-white/[0.06] px-3 pr-9 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
       />
       <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/35">
         <Calendar className="h-4 w-4" />
@@ -137,12 +138,14 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
   )
 
   return (
-    <Popover
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      trigger={trigger}
-      content={content}
-      width="260px"
-    />
+    readonly ? trigger : (
+      <Popover
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        trigger={trigger}
+        content={content}
+        width="260px"
+      />
+    )
   )
 }

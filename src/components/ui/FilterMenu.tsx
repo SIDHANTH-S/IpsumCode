@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react"
 import { createPortal } from "react-dom"
 
 import { ChevronDown, Plus, Minus, Check } from "lucide-react"
+import { DatePicker } from "../assessment/DatePicker"
 
 function useSmartSticky(
   triggerRef: React.RefObject<HTMLDivElement | null>,
@@ -88,7 +89,7 @@ function useSmartSticky(
   return style
 }
 
-export type FilterType = "select" | "multi-select"
+export type FilterType = "select" | "multi-select" | "number" | "date-range"
 
 export interface FilterOption {
   value: string
@@ -105,7 +106,7 @@ export interface FilterDefinition {
 
   type: FilterType
 
-  options: FilterOption[]
+  options?: FilterOption[]
 }
 
 export interface ActiveFilter {
@@ -115,7 +116,7 @@ export interface ActiveFilter {
 
   operator: string
 
-  value: string | string[]
+  value: any
 }
 
 export interface FilterMenuProps {
@@ -291,9 +292,15 @@ export function FilterMenu({
 
       definitionId: def.id,
 
-      operator: "is",
+      operator:
+        def.type === "number"
+          ? "Greater than"
+          : def.type === "date-range"
+            ? "is between"
+            : "is",
 
-      value: def.type === "multi-select" ? [] : "",
+      value:
+        def.type === "multi-select" ? [] : def.type === "date-range" ? {} : "",
     }
 
     setFilters([...filters, newFilter])
@@ -308,6 +315,12 @@ export function FilterMenu({
   }
 
   const handleReset = () => setFilters([])
+
+  useEffect(() => {
+    if (onApply) {
+      onApply(filters, matchType)
+    }
+  }, [filters, matchType, onApply])
 
   const unaddedFilters = availableFilters.filter(
     (def) => !filters.some((f) => f.definitionId === def.id),
@@ -370,26 +383,84 @@ export function FilterMenu({
                       <div className="w-[86px] shrink-0 text-xs text-neutral-300">
                         {def.label}
                       </div>
-                      <CustomSelect
-                        className="w-[84px] shrink-0"
-                        value={f.operator}
-                        onChange={(v) =>
-                          handleUpdateFilter(f.id, { operator: v })
-                        }
-                        options={[
-                          { value: "is", label: "is" },
+                      {(() => {
+                        const operatorOptions =
+                          def.type === "number"
+                            ? [
+                                {
+                                  value: "Greater than",
+                                  label: "Greater than",
+                                },
+                                { value: "Less than", label: "Less than" },
+                              ]
+                            : def.type === "date-range"
+                              ? [{ value: "is between", label: "is between" }]
+                              : [
+                                  { value: "is", label: "is" },
+                                  { value: "is not", label: "is not" },
+                                ]
 
-                          { value: "is not", label: "is not" },
-                        ]}
-                      />
-                      <CustomSelect
-                        className="flex-1"
-                        placeholder="Select..."
-                        multiple={def.type === "multi-select"}
-                        value={f.value}
-                        onChange={(v) => handleUpdateFilter(f.id, { value: v })}
-                        options={def.options}
-                      />
+                        return (
+                          <>
+                            <CustomSelect
+                              className="w-[110px] shrink-0"
+                              value={f.operator}
+                              onChange={(v) =>
+                                handleUpdateFilter(f.id, { operator: v })
+                              }
+                              options={operatorOptions}
+                            />
+                            {def.type === "select" ||
+                            def.type === "multi-select" ? (
+                              <CustomSelect
+                                className="flex-1"
+                                placeholder="Select..."
+                                multiple={def.type === "multi-select"}
+                                value={f.value}
+                                onChange={(v) =>
+                                  handleUpdateFilter(f.id, { value: v })
+                                }
+                                options={def.options || []}
+                              />
+                            ) : def.type === "number" ? (
+                              <input
+                                type="number"
+                                value={f.value || ""}
+                                onChange={(e) =>
+                                  handleUpdateFilter(f.id, {
+                                    value: e.target.value,
+                                  })
+                                }
+                                className="flex-1 h-8 min-w-[80px] rounded-md border border-neutral-700 bg-neutral-900/50 px-2.5 text-xs text-neutral-200 placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none"
+                                placeholder="Value"
+                              />
+                            ) : def.type === "date-range" ? (
+                              <div className="flex-1 flex gap-2">
+                                <div className="flex-1">
+                                  <DatePicker
+                                    value={f.value?.start || null}
+                                    onChange={(d) =>
+                                      handleUpdateFilter(f.id, {
+                                        value: { ...f.value, start: d },
+                                      })
+                                    }
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <DatePicker
+                                    value={f.value?.end || null}
+                                    onChange={(d) =>
+                                      handleUpdateFilter(f.id, {
+                                        value: { ...f.value, end: d },
+                                      })
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            ) : null}
+                          </>
+                        )
+                      })()}
                       <button
                         onClick={() => handleRemoveFilter(f.id)}
                         className="grid h-6 w-6 shrink-0 place-items-center rounded-md text-neutral-500 hover:bg-neutral-800 hover:text-red-400"
@@ -422,9 +493,6 @@ export function FilterMenu({
 
             {/* Footer */}
             <div className="flex shrink-0 items-center gap-4 border-t border-neutral-700/50 p-4">
-              <button className="flex-1 rounded-lg bg-neutral-800/50 py-2 text-sm font-medium text-purple-400 transition-colors hover:bg-neutral-800 hover:text-purple-300">
-                Save as Smart List
-              </button>
               <button
                 onClick={handleReset}
                 className="flex-1 rounded-lg border border-neutral-700 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-neutral-700 hover:text-white"

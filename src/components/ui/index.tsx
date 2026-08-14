@@ -11,11 +11,16 @@ import {
 
 export function SectionLink({
   children = "See all",
+  onClick,
 }: {
   children?: ReactNode
+  onClick?: () => void
 }) {
   return (
-    <button className="flex items-center gap-1 text-[13px] font-medium text-indigo-400 transition-colors hover:text-indigo-300">
+    <button 
+      onClick={onClick}
+      className="flex items-center gap-1 text-[13px] font-medium text-indigo-400 transition-colors hover:text-indigo-300"
+    >
       {children} <ArrowRight className="h-3.5 w-3.5" />
     </button>
   )
