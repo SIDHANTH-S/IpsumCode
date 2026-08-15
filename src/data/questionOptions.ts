@@ -158,7 +158,21 @@ export function createEmptyDraft(): QuestionDraft {
     title: "",
     difficulty: null,
     tags: [],
-    statement: "",
+    statement: `# Problem Description
+
+<!-- Describe the problem statement here -->
+
+## Input Format
+
+<!-- Describe the input format here -->
+
+## Output Format
+
+<!-- Describe the output format here -->
+
+## Constraints
+
+<!-- List constraints here -->`,
     inputFormat: "",
     outputFormat: "",
     constraints: "",
