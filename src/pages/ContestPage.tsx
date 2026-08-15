@@ -330,9 +330,6 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
       <div className="mb-3 flex h-9 items-center justify-between">
         <div className="flex items-baseline gap-1">
           <span className="text-[14px] font-normal text-white/75">Day 13</span>
-          <span className="text-[10px] font-normal text-white/30 tracking-tight">
-            19:57:53 left
-          </span>
         </div>
         <div className="flex items-center gap-[14px] text-neutral-400">
           <button className="grid h-[14px] w-[14px] place-items-center hover:text-white">
