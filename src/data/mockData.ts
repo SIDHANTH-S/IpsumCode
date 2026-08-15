@@ -164,7 +164,7 @@ export const upcoming = [
     scheduledTime: "10:00 AM",
     duration: 3600, // 60 min
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-    deliveryMode: "Sequential" as const,
+    deliveryMode: "Same Order" as const,
     questionsPerStudent: 20,
   },
 
@@ -191,7 +191,7 @@ export const upcoming = [
     scheduledTime: "05:00 PM",
     duration: 4500, // 75 min
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
-    deliveryMode: "Sequential" as const,
+    deliveryMode: "Same Order" as const,
     questionsPerStudent: 25,
   },
   {
@@ -897,3 +897,4 @@ export const mockStudentQuestions = [
     ],
   },
 ]
+
