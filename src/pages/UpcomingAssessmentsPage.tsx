@@ -1,13 +1,12 @@
 import { ChevronLeft } from "lucide-react"
 import { upcoming } from "../data/mockData"
+import { useNavigation } from "../hooks/useNavigation"
 
-export function UpcomingAssessmentsPage({
-  onBack,
-  onViewAssessment,
-}: {
-  onBack: () => void
-  onViewAssessment: (id: string) => void
-}) {
+export function UpcomingAssessmentsPage() {
+  const { navigate, toViewAssessment } = useNavigation()
+  const onBack = () => navigate(-1)
+  const onViewAssessment = (id: string) => toViewAssessment(id)
+
   return (
     <div className="flex h-full flex-col w-full max-w-[1200px] mx-auto pb-12">
       <div className="mb-6 flex flex-wrap items-center gap-4 border-b border-neutral-800 pb-4 min-h-[32px]">

@@ -4,6 +4,8 @@ import { completed } from "../data/mockData"
 import { FilterMenu, FilterDefinition } from "../components/ui/FilterMenu"
 import { GraduationCap, Calendar as CalendarIcon, Calculator } from "lucide-react"
 import { classrooms } from "../data/mockData"
+import { useNavigation } from "../hooks/useNavigation"
+import { useLocation } from "react-router-dom"
 
 const contestFilters: FilterDefinition[] = [
   {
@@ -30,15 +32,14 @@ const contestFilters: FilterDefinition[] = [
   },
 ]
 
-export function CompletedAssessmentsPage({
-  onBack,
-  onViewResults,
-  initialDate,
-}: {
-  onBack: () => void
-  onViewResults: (id: string) => void
-  initialDate?: number | null
-}) {
+export function CompletedAssessmentsPage() {
+  const { navigate, toContestResults } = useNavigation()
+  const location = useLocation()
+  const initialDate = location.state?.date as number | undefined
+
+  const onBack = () => navigate(-1)
+  const onViewResults = (id: string) => toContestResults(id)
+
   const [activeFilters, setActiveFilters] = useState<any[]>([])
   const [selectedDate, setSelectedDate] = useState<number | null>(initialDate || null)
 

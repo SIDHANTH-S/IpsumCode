@@ -10,9 +10,13 @@ import { TestCasesTab } from "./components/TestCasesTab"
 import { useQuestionDraft } from "./hooks/useQuestionDraft"
 import { validateDraft } from "./lib/validation"
 
+import { useNavigation } from "../../hooks/useNavigation"
+
 const WORKSPACE_TABS: readonly WorkspaceTab[] = ["Problem Details", "Test Cases", "Settings"]
 
-export function NewQuestionPage({ onExit }: { onExit: () => void }) {
+export function NewQuestionPage() {
+  const { navigate } = useNavigation()
+  const onExit = () => navigate(-1)
   const [tab, setTab] = useState<WorkspaceTab>("Problem Details")
   const { draft, actions } = useQuestionDraft(createEmptyDraft())
 

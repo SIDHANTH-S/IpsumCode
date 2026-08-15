@@ -22,6 +22,7 @@ import {
   mockStudentTimeline,
   mockStudentQuestions,
 } from "../data/mockData"
+import { useParams, useNavigate } from "react-router-dom"
 
 const FOCUS_RING =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
@@ -585,13 +586,12 @@ function StudentDetailReport({
   )
 }
 
-export function ContestResultsPage({
-  contestId,
-  onBack,
-}: {
-  contestId: string
-  onBack: () => void
-}) {
+export function ContestResultsPage() {
+  const { id } = useParams()
+  const contestId = id || "Unknown Contest"
+  const navigate = useNavigate()
+  const onBack = () => navigate(-1)
+
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
 
   return (

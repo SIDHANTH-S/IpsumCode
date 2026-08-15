@@ -11,6 +11,8 @@ import { AssessmentPool } from "../components/assessment/AssessmentPool"
 import { QuestionDelivery } from "../components/assessment/QuestionDelivery"
 import { AssessmentReview } from "../components/assessment/AssessmentReview"
 import { classrooms, upcoming } from "../data/mockData"
+import { useParams, useLocation } from "react-router-dom"
+import { useNavigation } from "../hooks/useNavigation"
 
 const PANEL = "rounded-xl border border-[#262626] bg-[#141414]"
 const FIELD =
@@ -19,21 +21,24 @@ const FIELD =
 // Extract unique classroom names for the mock
 const uniqueClassrooms = Array.from(new Set(classrooms.map((c) => c.name)))
 
-export function CreateAssessmentPage({ 
-  mode = "create",
-  assessmentId,
-  initialDate,
-  onModeChange,
-  onExit,
-  readonly
-}: { 
-  mode?: "create" | "view" | "edit"
-  assessmentId?: string
-  initialDate?: string
-  onModeChange?: (mode: "create" | "view" | "edit") => void
-  onExit: () => void 
-  readonly?: boolean
-}) {
+export function CreateAssessmentPage() {
+  const { id } = useParams()
+  const location = useLocation()
+  const { navigate } = useNavigation()
+
+  // Determine initial mode based on route
+  const isEditRoute = location.pathname.endsWith("/edit")
+  const initialMode = isEditRoute ? "edit" : (id ? "view" : "create")
+  const initialDateProp = location.state?.initialDate
+
+  const [mode, setMode] = useState<"create" | "view" | "edit">(initialMode)
+  
+  const assessmentId = id
+  const initialDate = initialDateProp
+  const onModeChange = setMode
+  const onExit = () => navigate(-1)
+  const readonly = mode === "view"
+
   const [draft, setDraft] = useState<AssessmentDraft>(() => {
     if (assessmentId && (mode === "view" || mode === "edit")) {
       const existing = upcoming.find(u => u.id === assessmentId)
