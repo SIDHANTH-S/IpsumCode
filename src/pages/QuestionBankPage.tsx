@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { FilterMenu } from "../components/ui"
 
 import {
   Search,
@@ -6,7 +7,8 @@ import {
   Plus,
   ArrowUpDown,
   Filter,
-  ChevronDown,
+  BarChart2,
+  Tag,
   Check,
 } from "lucide-react"
 
@@ -16,13 +18,36 @@ import {
   DIFFICULTY_COLORS,
 } from "../data/mockData"
 
+const AVAILABLE_FILTERS = [
+  {
+    id: "difficulty",
+    label: "Difficulty",
+    icon: BarChart2,
+    type: "multi-select" as const,
+    options: [
+      { value: "Easy", label: "Easy" },
+      { value: "Medium", label: "Medium" },
+      { value: "Hard", label: "Hard" },
+    ],
+  },
+  {
+    id: "topics",
+    label: "Topics",
+    icon: Tag,
+    type: "multi-select" as const,
+    options: [
+      { value: "Arrays", label: "Arrays" },
+      { value: "Strings", label: "Strings" },
+      { value: "Trees", label: "Trees" },
+    ],
+  },
+]
+
 export function QuestionBankPage({
   onNewQuestion,
 }: {
   onNewQuestion: () => void
 }) {
-  const [status, setStatus] = useState<"Active" | "Archived">("Active")
-
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -66,52 +91,22 @@ export function QuestionBankPage({
           <ArrowUpDown className="h-3.5 w-3.5" />
           Sort
         </button>
-        <button className="relative flex h-8 items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 text-[13px] text-white/85 transition-colors hover:bg-white/[0.12]">
-          <Filter className="h-3.5 w-3.5" />
-          Filter
-          <span className="absolute -right-1 -top-[3px] h-[5px] w-[5px] rounded-full bg-[#ef4743]" />
-        </button>
-      </div>
+        <FilterMenu
+          trigger={
+            <button className="relative flex h-8 items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 text-[13px] text-white/85 transition-colors hover:bg-white/[0.12]">
+              <Filter className="h-3.5 w-3.5" />
+              Filter
+              <span className="absolute -right-1 -top-[3px] h-[5px] w-[5px] rounded-full bg-[#ef4743]" />
+            </button>
+          }
+          availableFilters={AVAILABLE_FILTERS}
+        />
 
-      <div className="flex flex-wrap items-center gap-2.5">
-        <button className="flex h-[30px] items-center rounded-full bg-[#635ce6] px-3.5 text-[12.5px] font-medium text-white">
-          All
-        </button>
-        {difficultyFilters.map((label) => (
-          <button
-            key={label}
-            className="flex h-[30px] items-center rounded-full border border-white/10 bg-white/[0.06] px-3.5 text-[12.5px] font-medium text-white/65 transition-colors hover:text-white/90"
-          >
-            {label}
-          </button>
-        ))}
-        <button className="flex h-[30px] w-[110px] items-center justify-between rounded-md border border-white/10 bg-white/[0.06] px-3 text-[12.5px] font-medium text-white/65 transition-colors hover:text-white/90">
-          Topics
-          <ChevronDown className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="ml-auto flex items-center gap-4">
-          <div className="flex h-[30px] w-[160px] items-center rounded-md border border-white/[0.08] bg-white/[0.04] p-[3px]">
-            {(["Active", "Archived"] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setStatus(s)}
-                className={`flex h-full flex-1 items-center justify-center rounded-[5px] text-[12px] transition-colors ${
-                  status === s
-                    ? "bg-white/10 text-white"
-                    : "text-white/45 hover:text-white/70"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-2 text-[14px] text-[#a8a8a8]">
-            <span className="grid h-4 w-4 place-items-center rounded-full border-2 border-[#635ce6]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#635ce6]" />
-            </span>
-            17/4018 Assigned
-          </div>
+        <div className="ml-auto flex items-center gap-2 text-[14px] text-[#a8a8a8]">
+          <span className="grid h-4 w-4 place-items-center rounded-full border-2 border-[#635ce6]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#635ce6]" />
+          </span>
+          17/4018 Assigned
         </div>
       </div>
 
