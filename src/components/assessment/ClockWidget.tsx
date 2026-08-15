@@ -482,7 +482,7 @@ function Ticks() {
   )
 }
 
-function WidgetContainer({ time, period }: { time: string period: string }) {
+function WidgetContainer({ time, period }: { time: string; period: string }) {
   return (
     <div
       className="-translate-x-1/2 absolute left-1/2 overflow-clip rounded-[11.62px] size-[68px] top-0"
@@ -511,7 +511,7 @@ function WidgetContainer({ time, period }: { time: string period: string }) {
   )
 }
 
-export function ClockWidget({ time, period }: { time: string period: string }) {
+export function ClockWidget({ time, period }: { time: string; period: string }) {
   return (
     <div className="relative size-full" data-name="Clock">
       <WidgetContainer time={time} period={period} />

@@ -23,8 +23,7 @@ export function Sidebar({
 
   onSelect,
 }: {
-  active: Tab
-
+  active: Tab;
   onSelect: (tab: Tab) => void
 }) {
   const [width, setWidth] = useState(240)
@@ -184,3 +183,4 @@ export function Sidebar({
     </aside>
   )
 }
+
