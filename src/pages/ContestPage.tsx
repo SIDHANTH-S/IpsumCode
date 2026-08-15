@@ -415,56 +415,43 @@ function LeaderboardPanel({ assessmentTitle }: { assessmentTitle?: string | null
   )
 }
 
-export function ContestPage({
-  onCreateContest,
-  onViewAssessment,
-  onViewResults,
-  onViewAllUpcoming,
-  onViewAllCompleted,
-  onViewLiveAssessment,
-}: {
-  onCreateContest?: (date?: string) => void
-  onViewAssessment?: (id: string) => void
-  onViewResults?: (id: string) => void
-  onViewAllUpcoming?: () => void
-  onViewAllCompleted?: (date?: number) => void
-  onViewLiveAssessment: (id: string) => void
-}) {
+import { useNavigation } from "../hooks/useNavigation"
+
+export function ContestPage() {
+  const { toCreateAssessment, toViewAssessment, toContestResults, toUpcomingAssessments, toCompletedAssessments } = useNavigation()
   const [selectedAssessmentId, setSelectedAssessmentId] = useState<string | null>(null)
 
   const handleDateClick = (day: number) => {
     if (day < TODAY) {
-      // Past date -> show See All workspace for completed assessments
-      onViewAllCompleted?.(day)
+      toCompletedAssessments(day)
     } else {
-      // Future or present date -> Create new assessment
       const formattedDate = `${day} MAY 2026`
-      onCreateContest?.(formattedDate)
+      toCreateAssessment(formattedDate)
     }
   }
 
   return (
     <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_256px]">
       <div className="min-w-0 space-y-8">
-        <ContestCards onView={onViewLiveAssessment} />
+        <ContestCards onView={() => {}} />
 
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-semibold text-white">Upcoming</h2>
-            <SectionLink onClick={() => onViewAllUpcoming?.()} />
+            <SectionLink onClick={toUpcomingAssessments} />
           </div>
           
           <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {upcoming.slice(0, 3).map((item) => (
-              <UpcomingCard key={item.id} item={item} onView={() => onViewAssessment?.(item.id)} />
+              <UpcomingCard key={item.id} item={item} onView={() => toViewAssessment(item.id)} />
             ))}
           </div>
         </section>
 
         <CompletedTable
-          onCreateContest={onCreateContest}
-          onViewResults={onViewResults}
-          onViewAllCompleted={() => onViewAllCompleted?.()}
+          onCreateContest={() => toCreateAssessment()}
+          onViewResults={toContestResults}
+          onViewAllCompleted={() => toCompletedAssessments()}
           selectedAssessmentId={selectedAssessmentId}
           onSelectAssessment={setSelectedAssessmentId}
         />
