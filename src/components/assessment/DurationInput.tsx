@@ -37,23 +37,23 @@ export function DurationInput({ valueSeconds, onChange, readonly }: DurationInpu
   }
 
   return (
-    <div className="flex h-10 w-[90px] items-center justify-center rounded-md border border-white/10 bg-white/6 px-2 focus-within:border-white/25">
+    <div className="flex h-10 w-[90px] items-center justify-center rounded-md border border-border-default bg-surface-base px-2 focus-within:border-white/25">
       <input
         type="text"
         value={mins}
         onChange={handleMinChange}
         onBlur={handleBlur}
-        className="w-7 bg-transparent text-center text-text-md font-semibold text-white tabular-nums focus:outline-none"
+        className="w-7 bg-transparent text-center text-text-md font-semibold text-text-primary tabular-nums focus:outline-none"
         placeholder="00"
         readOnly={readonly}
       />
-      <span className="mx-0.5 text-white/40">:</span>
+      <span className="mx-0.5 text-text-muted">:</span>
       <input
         type="text"
         value={secs}
         onChange={handleSecChange}
         onBlur={handleBlur}
-        className="w-7 bg-transparent text-center text-text-md font-semibold text-white tabular-nums focus:outline-none"
+        className="w-7 bg-transparent text-center text-text-md font-semibold text-text-primary tabular-nums focus:outline-none"
         placeholder="00"
         readOnly={readonly}
       />

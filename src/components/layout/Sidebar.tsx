@@ -10,7 +10,7 @@ import { Tab } from "../../types"
 
 import { useState, useEffect } from "react"
 
-const navItems: { label: Tab icon: typeof BarChart3 }[] = [
+const navItems: { label: Tab; icon: typeof BarChart3 }[] = [
   { label: "Contest", icon: BarChart3 },
 
   { label: "Classroom", icon: BookOpenCheck },

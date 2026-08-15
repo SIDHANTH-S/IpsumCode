@@ -2,7 +2,7 @@ import React from "react"
 import { Stepper } from "../ui"
 import { DeliveryMode } from "../../types"
 
-const deliveryModes: { mode: DeliveryMode desc: string }[] = [
+const deliveryModes: { mode: DeliveryMode; desc: string }[] = [
   { mode: "Random", desc: "Questions are randomly ordered for each student." },
   {
     mode: "Smart Shuffle",
@@ -33,10 +33,10 @@ export function QuestionDelivery({
   return (
     <>
       <div>
-        <h3 className="text-text-lg font-semibold text-white">
+        <h3 className="text-text-lg font-semibold text-text-primary">
           Question delivery
         </h3>
-        <p className="mt-1 text-text-sm text-white/45">
+        <p className="mt-1 text-text-sm text-text-muted">
           Choose how questions are distributed to students
         </p>
         <div className="mt-3 inline-flex gap-1 rounded-lg border border-white/8 bg-white/[0.04] p-1">
@@ -47,7 +47,7 @@ export function QuestionDelivery({
               disabled={readonly}
               className={`cursor-pointer rounded-md px-4 py-2 text-text-base font-medium transition-colors ${
                 deliveryMode === mode
-                  ? "bg-accent-base text-white"
+                  ? "bg-accent-base text-text-primary"
                   : "text-white/60 hover:text-white/90"
               } ${readonly ? "opacity-70" : ""}`}
             >
@@ -55,12 +55,12 @@ export function QuestionDelivery({
             </button>
           ))}
         </div>
-        <p className="mt-2.5 max-w-[280px] text-text-xs leading-relaxed text-white/40">
+        <p className="mt-2.5 max-w-[280px] text-text-xs leading-relaxed text-text-muted">
           {deliveryModes.find((m) => m.mode === deliveryMode)?.desc}
         </p>
       </div>
       <div className="lg:text-right">
-        <p className="mb-2 text-text-sm text-white/55">Questions per student</p>
+        <p className="mb-2 text-text-sm text-text-muted">Questions per student</p>
         <Stepper
           value={questionsPerStudent}
           onChange={onChangePerStudent}

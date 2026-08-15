@@ -408,7 +408,7 @@ function LeaderboardPanel({ assessmentTitle }: { assessmentTitle?: string | null
         <h2 className="text-base font-semibold text-text-primary shrink-0">Leaderboard</h2>
         {assessmentTitle && <span className="ml-auto text-right text-text-base font-medium text-indigo-400">{assessmentTitle}</span>}
       </div>
-      <div className="relative h-[600px] w-full">
+      <div className="relative h-[600px] w-full rounded-[10.74px] overflow-hidden border border-border-default">
         <LeaderboardBlock />
       </div>
     </div>

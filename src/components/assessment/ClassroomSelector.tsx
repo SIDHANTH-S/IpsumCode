@@ -28,7 +28,7 @@ export function ClassroomSelector({
   const trigger = (
     <button
       onClick={() => setIsOpen(!isOpen)}
-      className="flex h-9 cursor-pointer items-center gap-1.5 rounded-md bg-accent-base px-3.5 text-text-sm font-semibold uppercase tracking-[0.5px] text-white transition-colors hover:bg-accent-hover"
+      className="flex h-9 cursor-pointer items-center gap-1.5 rounded-md bg-accent-base px-3.5 text-text-sm font-semibold uppercase tracking-[0.5px] text-text-primary transition-colors hover:bg-accent-hover"
     >
       Select
       <ChevronDown
@@ -47,7 +47,7 @@ export function ClassroomSelector({
           <button
             key={cls}
             onClick={() => toggleClassroom(cls)}
-            className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-text-base text-white/85 hover:bg-white/10"
+            className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-text-base text-text-secondary hover:bg-white/10"
           >
             <div
               className={`grid h-4 w-4 shrink-0 place-items-center rounded-radius-md border ${
@@ -57,7 +57,7 @@ export function ClassroomSelector({
               }`}
             >
               {isSelected && (
-                <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                <Check className="h-3 w-3 text-text-primary" strokeWidth={3} />
               )}
             </div>
             {cls}
@@ -79,11 +79,11 @@ export function ClassroomSelector({
         />
       )}
       {selectedClassrooms.length > 0 ? (
-        <span className="flex h-9 items-center rounded-md border border-white/10 bg-white/6 px-3.5 text-text-sm font-medium uppercase tracking-[0.5px] text-white/80">
+        <span className="flex h-9 items-center rounded-md border border-border-default bg-surface-base px-3.5 text-text-sm font-medium uppercase tracking-[0.5px] text-white/80">
           {selectedClassrooms.join(", ")}
         </span>
       ) : (
-        <span className="flex h-9 items-center rounded-md border border-white/10 bg-white/[0.02] px-3.5 text-text-sm font-medium uppercase tracking-[0.5px] text-white/30">
+        <span className="flex h-9 items-center rounded-md border border-border-default bg-white/[0.02] px-3.5 text-text-sm font-medium uppercase tracking-[0.5px] text-white/30">
           None selected
         </span>
       )}
