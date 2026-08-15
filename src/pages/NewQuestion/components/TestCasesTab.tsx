@@ -22,14 +22,14 @@ export function TestCasesTab({
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-[15px] font-semibold text-white">
+              <h3 className="text-text-lg font-semibold text-white">
                 General / Sample Test Cases
               </h3>
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1.5 text-[11px] font-medium text-white/70">
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1.5 text-text-xs font-medium text-white/70">
                 {draft.sampleTestCases.length}
               </span>
             </div>
-            <p className="mt-1 text-[12px] text-white/45">
+            <p className="mt-1 text-text-sm text-white/45">
               Visible to students while solving — at least one is required to
               save this question.
             </p>
@@ -37,7 +37,7 @@ export function TestCasesTab({
           <button
             type="button"
             onClick={() => actions.addCase("sample")}
-            className="flex shrink-0 items-center gap-1.5 rounded-md bg-[#5b4aef] px-3.5 py-2 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+            className="flex shrink-0 items-center gap-1.5 rounded-md bg-accent-base px-3.5 py-2 text-text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
             Add Test Case
@@ -67,7 +67,7 @@ export function TestCasesTab({
           <button
             type="button"
             onClick={() => actions.addCase("sample")}
-            className="w-full rounded-lg border border-dashed border-white/15 py-3 text-[12.5px] font-medium text-white/60 transition-colors hover:border-white/30 hover:text-white"
+            className="w-full rounded-lg border border-dashed border-white/15 py-3 text-text-sm font-medium text-white/60 transition-colors hover:border-white/30 hover:text-white"
           >
             + Add Another General Test Case
           </button>
@@ -78,15 +78,15 @@ export function TestCasesTab({
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-[15px] font-semibold text-white">Hidden Test Cases</h3>
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1.5 text-[11px] font-medium text-white/70">
+              <h3 className="text-text-lg font-semibold text-white">Hidden Test Cases</h3>
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1.5 text-text-xs font-medium text-white/70">
                 {draft.hiddenTestCases.length}
               </span>
-              <span className="flex h-[18px] items-center rounded bg-white/10 px-1.5 text-[10px] font-semibold uppercase tracking-[0.5px] text-white/55">
+              <span className="flex h-[18px] items-center rounded bg-white/10 px-1.5 text-text-xs font-semibold uppercase tracking-[0.5px] text-white/55">
                 Optional
               </span>
             </div>
-            <p className="mt-1 text-[12px] text-white/45">
+            <p className="mt-1 text-text-sm text-white/45">
               Used privately by the judge to evaluate submissions — never shown
               to students.
             </p>
@@ -94,7 +94,7 @@ export function TestCasesTab({
           <button
             type="button"
             onClick={() => actions.addCase("hidden")}
-            className="flex shrink-0 items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[12.5px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="flex shrink-0 items-center gap-1.5 rounded-md border border-white/10 bg-white/6 px-3.5 py-2 text-text-sm font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
             Add Hidden Test Case
@@ -102,7 +102,7 @@ export function TestCasesTab({
         </div>
 
         {draft.hiddenTestCases.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-white/10 py-6 text-center text-[12.5px] text-white/35">
+          <p className="rounded-lg border border-dashed border-white/10 py-6 text-center text-text-sm text-white/35">
             No hidden test cases yet. They're optional, but stronger judges usually
             add a few edge cases students never see.
           </p>

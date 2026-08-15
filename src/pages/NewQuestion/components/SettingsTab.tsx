@@ -35,51 +35,51 @@ export function SettingsTab({
   return (
     <div className="space-y-5">
       <div className={`${PANEL_BASE} p-5`}>
-        <h3 className="text-[15px] font-semibold text-white">Execution</h3>
-        <p className="mt-1 text-[12px] text-white/45">
+        <h3 className="text-text-lg font-semibold text-white">Execution</h3>
+        <p className="mt-1 text-text-sm text-white/45">
           Controls how the judge compiles and runs submissions.
         </p>
 
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[520px] border-collapse text-left">
             <thead>
-              <tr className="text-[12px] text-white/45">
-                <th className="border-b border-white/[0.08] pb-2.5 pr-4 font-normal">Language</th>
-                <th className="border-b border-white/[0.08] pb-2.5 pr-4 font-normal">
+              <tr className="text-text-sm text-white/45">
+                <th className="border-b border-white/8 pb-2.5 pr-4 font-normal">Language</th>
+                <th className="border-b border-white/8 pb-2.5 pr-4 font-normal">
                   Reference Solution
                 </th>
-                <th className="border-b border-white/[0.08] pb-2.5 font-normal">Action</th>
+                <th className="border-b border-white/8 pb-2.5 font-normal">Action</th>
               </tr>
             </thead>
             <tbody>
               {draft.languages.length === 0 && (
                 <tr>
-                  <td colSpan={3} className="py-4 text-[13px] text-white/40">
+                  <td colSpan={3} className="py-4 text-text-base text-white/40">
                     No languages enabled yet. Add at least one so students can submit.
                   </td>
                 </tr>
               )}
               {draft.languages.map((lang) => (
                 <Fragment key={lang.id}>
-                  <tr className="border-b border-white/[0.06]">
-                    <td className="py-2.5 pr-4 text-[13px] text-white/85">{lang.name}</td>
-                    <td className="py-2.5 pr-4 text-[13px]">
+                  <tr className="border-b border-white/6">
+                    <td className="py-2.5 pr-4 text-text-base text-white/85">{lang.name}</td>
+                    <td className="py-2.5 pr-4 text-text-base">
                       <span
                         className={
-                          lang.hasReferenceSolution ? "text-[#1cbaba]" : "text-white/35"
+                          lang.hasReferenceSolution ? "text-status-success" : "text-white/35"
                         }
                       >
                         {lang.hasReferenceSolution ? "Added" : "Not added"}
                       </span>
                     </td>
                     <td className="py-2.5">
-                      <span className="flex items-center gap-2 text-[13px] text-[#7c6cf5]">
+                      <span className="flex items-center gap-2 text-text-base text-accent-text">
                         <button
                           type="button"
                           onClick={() =>
                             setOpenReferenceId((current) => (current === lang.id ? null : lang.id))
                           }
-                          className="transition-colors hover:text-[#9b8dff]"
+                          className="transition-colors hover:text-accent-text-muted"
                         >
                           {openReferenceId === lang.id
                             ? "Close"
@@ -91,7 +91,7 @@ export function SettingsTab({
                         <button
                           type="button"
                           onClick={() => actions.removeLanguage(lang.id)}
-                          className="text-white/50 transition-colors hover:text-[#ff9b9b]"
+                          className="text-white/50 transition-colors hover:text-status-danger"
                         >
                           Remove
                         </button>
@@ -99,7 +99,7 @@ export function SettingsTab({
                     </td>
                   </tr>
                   {openReferenceId === lang.id && (
-                    <tr className="border-b border-white/[0.06]">
+                    <tr className="border-b border-white/6">
                       <td colSpan={3} className="py-3">
                         <FieldLabel htmlFor={`${lang.id}-reference`}>
                           {lang.name} reference solution
@@ -112,7 +112,7 @@ export function SettingsTab({
                           }
                           rows={8}
                           placeholder={`A correct ${lang.name} solution, used to validate test cases.`}
-                          className="w-full resize-y rounded-md border border-white/10 bg-white/[0.04] px-3 py-2.5 font-mono text-[12.5px] leading-relaxed text-white/85 placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none"
+                          className="w-full resize-y rounded-md border border-white/10 bg-white/[0.04] px-3 py-2.5 font-mono text-text-sm leading-relaxed text-white/85 placeholder:text-text-muted focus:border-white/25 focus:outline-none"
                         />
                       </td>
                     </tr>
@@ -130,7 +130,7 @@ export function SettingsTab({
               onClick={onClick}
               aria-expanded={expanded}
               disabled={addableLanguages.length === 0}
-              className="mt-4 flex items-center gap-1.5 rounded-md border border-[#5b4aef]/60 bg-[#5b4aef]/[0.18] px-3.5 py-2 text-[12.5px] font-medium text-[#b3a8ff] transition-colors hover:bg-[#5b4aef]/25 disabled:cursor-not-allowed disabled:opacity-40"
+              className="mt-4 flex items-center gap-1.5 rounded-md border border-accent-base/60 bg-accent-base/[0.18] px-3.5 py-2 text-text-sm font-medium text-accent-text-muted transition-colors hover:bg-accent-base/25 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
               Add Languages
@@ -175,8 +175,8 @@ export function SettingsTab({
       </div>
 
       <div className={`${PANEL_BASE} p-5`}>
-        <h3 className="text-[15px] font-semibold text-white">Status &amp; Metadata</h3>
-        <p className="mt-1 text-[12px] text-white/45">
+        <h3 className="text-text-lg font-semibold text-white">Status &amp; Metadata</h3>
+        <p className="mt-1 text-text-sm text-white/45">
           Publishing status is editable here; the rest is administrative
           information about this question.
         </p>
@@ -193,10 +193,10 @@ export function SettingsTab({
                   role="radio"
                   aria-checked={isSelected}
                   onClick={() => actions.setStatus(option.value)}
-                  className={`flex h-8 items-center rounded-full border px-4 text-[12.5px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/60 ${
+                  className={`flex h-8 items-center rounded-full border px-4 text-text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/60 ${
                     isSelected
-                      ? "border-[#5b4aef]/50 bg-[#5b4aef]/15 text-[#b3a8ff]"
-                      : "border-white/10 bg-white/[0.06] text-white/65 hover:text-white/90"
+                      ? "border-accent-base/50 bg-accent-base/15 text-accent-text-muted"
+                      : "border-white/10 bg-white/6 text-white/65 hover:text-white/90"
                   }`}
                 >
                   {option.label}
@@ -214,8 +214,8 @@ export function SettingsTab({
           ].map((item, index, all) => (
             <div
               key={item.label}
-              className={`flex items-center gap-4 py-2.5 text-[13px] ${
-                index < all.length - 1 ? "border-b border-white/[0.06]" : ""
+              className={`flex items-center gap-4 py-2.5 text-text-base ${
+                index < all.length - 1 ? "border-b border-white/6" : ""
               }`}
             >
               <dt className="w-40 shrink-0 text-white/45">{item.label}</dt>

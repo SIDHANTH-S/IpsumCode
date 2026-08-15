@@ -15,7 +15,7 @@ export function LivePreview({ draft }: { draft: QuestionDraft }) {
           <RenderMarkdown source={draft.statement} />
         </div>
       ) : (
-        <p className="text-[13px] leading-relaxed text-white/35">
+        <p className="text-text-base leading-relaxed text-white/35">
           Start filling in the problem details and the student-facing preview will
           appear here as you type.
         </p>

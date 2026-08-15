@@ -15,12 +15,12 @@ import { AlertCircle, ChevronDown, ChevronRight, X, ArrowRight } from "lucide-re
 // instead of each tab redefining its own slightly-different classes.
 // ---------------------------------------------------------------------------
 
-export const PANEL_BASE = "rounded-xl border border-[#262626] bg-[#141414]"
+export const PANEL_BASE = "rounded-xl border border-border-default bg-surface-base"
 export const FIELD_BASE =
-  "w-full rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/50"
+  "w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
 
-const ERROR_TEXT = "text-[#ff9b9b]"
-const ERROR_BORDER = "border-[#ff9b9b]/50"
+const ERROR_TEXT = "text-status-danger"
+const ERROR_BORDER = "border-status-danger/50"
 
 // ---------------------------------------------------------------------------
 // FieldLabel
@@ -39,16 +39,16 @@ export function FieldLabel({
 }) {
   return (
     <div className="mb-1.5 flex items-baseline justify-between gap-2">
-      <label htmlFor={htmlFor} className="text-[12.5px] font-medium text-white/70">
+      <label htmlFor={htmlFor} className="text-text-sm font-medium text-white/70">
         {children}
         {required && (
-          <span className="ml-1 text-[#8f7dff]" aria-hidden="true">
+          <span className="ml-1 text-accent-text-muted" aria-hidden="true">
             *
           </span>
         )}
         {required && <span className="sr-only"> (required)</span>}
       </label>
-      {hint && <span className="text-[11px] text-white/35">{hint}</span>}
+      {hint && <span className="text-text-xs text-white/35">{hint}</span>}
     </div>
   )
 }
@@ -60,7 +60,7 @@ export function FieldLabel({
 export function InlineError({ id, message }: { id?: string; message?: string }) {
   if (!message) return null
   return (
-    <p id={id} role="alert" className={`mt-1.5 flex items-center gap-1.5 text-[12px] ${ERROR_TEXT}`}>
+    <p id={id} role="alert" className={`mt-1.5 flex items-center gap-1.5 text-text-sm ${ERROR_TEXT}`}>
       <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       {message}
     </p>
@@ -105,16 +105,16 @@ export function Select({
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value)}
         className={`${FIELD_BASE} h-10 w-full appearance-none pr-9 ${
-          value ? "text-white" : "text-[#8a8a8a]"
+          value ? "text-white" : "text-text-muted"
         } ${error ? ERROR_BORDER : ""}`}
       >
         {placeholder && (
-          <option value="" disabled className="bg-[#141414] text-[#8a8a8a]">
+          <option value="" disabled className="bg-surface-base text-text-muted">
             {placeholder}
           </option>
         )}
         {options.map((option) => (
-          <option key={option.value} value={option.value} className="bg-[#141414] text-white">
+          <option key={option.value} value={option.value} className="bg-surface-base text-white">
             {option.label}
           </option>
         ))}
@@ -207,13 +207,13 @@ export function CaseHeader({
         aria-expanded={expanded}
         aria-controls={controlsId}
         onClick={onToggle}
-        className="flex min-w-0 flex-1 items-center gap-2 rounded text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/60"
+        className="flex min-w-0 flex-1 items-center gap-2 rounded text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/60"
       >
         <ChevronRight
           className={`h-4 w-4 shrink-0 text-white/40 transition-transform ${expanded ? "rotate-90" : ""}`}
           aria-hidden="true"
         />
-        <span className="truncate text-[13.5px] font-medium text-white/90">{title}</span>
+        <span className="truncate text-text-base font-medium text-white/90">{title}</span>
         {badge}
       </button>
       {right && (
@@ -231,7 +231,7 @@ export function CaseHeader({
 
 export function SampleBadge() {
   return (
-    <span className="flex h-5 shrink-0 items-center rounded-full border border-[#1cbaba]/40 bg-[#1cbaba]/10 px-2 text-[10.5px] font-medium text-[#1cbaba]">
+    <span className="flex h-5 shrink-0 items-center rounded-full border border-status-success/40 bg-status-success/10 px-2 text-text-xs font-medium text-status-success">
       Sample
     </span>
   )
@@ -239,7 +239,7 @@ export function SampleBadge() {
 
 export function HiddenBadge() {
   return (
-    <span className="flex h-5 shrink-0 items-center rounded-full border border-white/15 bg-white/[0.06] px-2 text-[10.5px] font-medium text-white/55">
+    <span className="flex h-5 shrink-0 items-center rounded-full border border-white/15 bg-white/6 px-2 text-text-xs font-medium text-white/55">
       Hidden
     </span>
   )
@@ -265,7 +265,7 @@ export function WeightToggle({
   return (
     <div className="flex shrink-0 items-center gap-3">
       <div className="flex items-center gap-1.5">
-        <span className="text-[11px] text-white/40">Weight</span>
+        <span className="text-text-xs text-white/40">Weight</span>
         <div className="flex items-center overflow-hidden rounded-md border border-white/10">
           <button
             type="button"
@@ -277,7 +277,7 @@ export function WeightToggle({
             −
           </button>
           <span
-            className="grid h-6 w-7 place-items-center text-[12px] font-medium text-white/80"
+            className="grid h-6 w-7 place-items-center text-text-sm font-medium text-white/80"
             aria-hidden="true"
           >
             ×{weight}
@@ -299,7 +299,7 @@ export function WeightToggle({
         aria-label={`${enabled ? "Disable" : "Enable"} ${label}`}
         onClick={() => onEnabledChange(!enabled)}
         className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
-          enabled ? "bg-[#5b4aef]" : "bg-white/15"
+          enabled ? "bg-accent-base" : "bg-white/15"
         }`}
       >
         <span
@@ -345,7 +345,7 @@ export function TabBar<T extends string>({
     <div
       role="tablist"
       aria-label="Question sections"
-      className="flex gap-1 rounded-lg border border-[#262626] bg-white/[0.03] p-1"
+      className="flex gap-1 rounded-lg border border-border-default bg-white/3 p-1"
     >
       {tabs.map((tab) => {
         const isActive = tab === activeTab
@@ -361,19 +361,19 @@ export function TabBar<T extends string>({
             tabIndex={isActive ? 0 : -1}
             onClick={() => onChange(tab)}
             onKeyDown={handleKeyDown}
-            className={`relative flex flex-1 items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/60 sm:flex-none ${
-              isActive ? "bg-white/[0.06] text-white" : "text-white/55 hover:text-white/85"
+            className={`relative flex flex-1 items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/60 sm:flex-none ${
+              isActive ? "bg-white/6 text-white" : "text-white/55 hover:text-white/85"
             }`}
           >
             {tab}
             {hasError && (
               <span
-                className="h-[5px] w-[5px] rounded-full bg-[#ff9b9b]"
+                className="h-[5px] w-[5px] rounded-full bg-status-danger"
                 aria-label="Needs attention"
               />
             )}
             {isActive && (
-              <span className="absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-[#5b4aef]" aria-hidden="true" />
+              <span className="absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-accent-base" aria-hidden="true" />
             )}
           </button>
         )
@@ -467,7 +467,7 @@ export function TopicPicker({
         {tags.map((tag) => (
           <span
             key={tag}
-            className="group flex h-7 items-center gap-1 rounded-full bg-white/[0.06] pl-3 pr-2 text-[13px] font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
+            className="group flex h-7 items-center gap-1 rounded-full bg-white/6 pl-3 pr-2 text-text-base font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
           >
             {tag}
             <button
@@ -518,7 +518,7 @@ export function TopicPicker({
               }
             }}
             placeholder="Type tag..."
-            className={`h-7 w-[120px] rounded-full bg-white/[0.06] px-3 text-[13px] text-white focus:outline-none focus:ring-1 ${
+            className={`h-7 w-[120px] rounded-full bg-white/6 px-3 text-text-base text-white focus:outline-none focus:ring-1 ${
               error ? "focus:ring-[#ff9b9b]" : "focus:ring-white/30"
             }`}
           />
@@ -526,7 +526,7 @@ export function TopicPicker({
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="flex h-7 items-center gap-1 rounded-full bg-white/[0.06] px-3 text-[13px] font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
+            className="flex h-7 items-center gap-1 rounded-full bg-white/6 px-3 text-text-base font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="h-3.5 w-3.5">
               <path fillRule="evenodd" d="M13 11h7a1 1 0 110 2h-7v7a1 1 0 11-2 0v-7H4a1 1 0 110-2h7V4a1 1 0 112 0v7z" clipRule="evenodd"></path>
@@ -572,12 +572,12 @@ export function Menu({
         <ul
           id={menuId}
           role="menu"
-          className={`absolute z-20 mt-1.5 min-w-[180px] overflow-hidden rounded-md border border-[#262626] bg-[#1a1a1a] py-1 shadow-xl ${
+          className={`absolute z-20 mt-1.5 min-w-[180px] overflow-hidden rounded-md border border-border-default bg-surface-base py-1 shadow-xl ${
             align === "end" ? "right-0" : "left-0"
           }`}
         >
           {options.length === 0 && emptyLabel && (
-            <li className="px-3 py-1.5 text-[12.5px] text-white/40">{emptyLabel}</li>
+            <li className="px-3 py-1.5 text-text-sm text-white/40">{emptyLabel}</li>
           )}
           {options.map((option) => (
             <li key={option.id}>
@@ -589,7 +589,7 @@ export function Menu({
                   option.onSelect()
                   close()
                 }}
-                className="block w-full px-3 py-1.5 text-left text-[13px] text-white/85 transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:text-white/30 disabled:hover:bg-transparent"
+                className="block w-full px-3 py-1.5 text-left text-text-base text-white/85 transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:text-white/30 disabled:hover:bg-transparent"
               >
                 {option.label}
               </button>
@@ -612,7 +612,7 @@ export function SectionLink({
   return (
     <button 
       onClick={onClick}
-      className="flex items-center gap-1 cursor-pointer text-[13px] font-medium text-indigo-400 transition-colors hover:text-indigo-300"
+      className="flex items-center gap-1 cursor-pointer text-text-base font-medium text-indigo-400 transition-colors hover:text-indigo-300"
     >
       {children} <ArrowRight className="h-3.5 w-3.5" />
     </button>

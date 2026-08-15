@@ -62,7 +62,7 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
         readOnly
         value={value || ""}
         placeholder="Select date"
-        className={`h-10 w-full rounded-md border border-white/10 bg-white/[0.06] px-3 pr-9 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
+        className={`h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 pr-9 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
       />
       <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/35">
         <Calendar className="h-4 w-4" />
@@ -83,7 +83,7 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <span className="text-[13px] font-medium text-white">
+        <span className="text-text-base font-medium text-white">
           {MONTHS[currentMonth]} {currentYear}
         </span>
         <button
@@ -98,7 +98,7 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <div
             key={d}
-            className="text-center text-[11px] font-medium text-white/40"
+            className="text-center text-text-xs font-medium text-white/40"
           >
             {d}
           </div>
@@ -121,9 +121,9 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
             <button
               key={day}
               onClick={() => handleSelectDate(day)}
-              className={`grid h-7 w-7 place-items-center rounded-full text-[12px] transition-colors ${
+              className={`grid h-7 w-7 place-items-center rounded-full text-text-sm transition-colors ${
                 isSelected
-                  ? "bg-[#5b4aef] text-white font-medium shadow-md shadow-[#5b4aef]/30"
+                  ? "bg-accent-base text-white font-medium shadow-md shadow-accent-base/30"
                   : isToday
                     ? "bg-white/10 text-white font-medium"
                     : "text-white/70 hover:bg-white/10 hover:text-white"

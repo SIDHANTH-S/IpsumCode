@@ -41,12 +41,12 @@ function ContestCards({ onView }: { onView: (id: string) => void }) {
         <div
           key={i}
           onClick={() => onView(`live-${i}`)}
-          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-[11px] px-[17px] pt-4 pb-3 text-white shadow-[0px_9px_21px_-4px_rgba(23,28,41,0.28)]"
+          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-radius-xl px-[17px] pt-4 pb-3 text-white shadow-shadow-elevated"
           style={{ background: CARD_GRADIENTS[card.tone] }}
         >
           <div className="flex-1">
-            <p className="text-[14px] font-bold leading-none">{card.title}</p>
-            <div className="mt-2 space-y-[3px] text-[11px] leading-[15px] text-white/80">
+            <p className="text-text-md font-bold leading-none">{card.title}</p>
+            <div className="mt-2 space-y-[3px] text-text-xs leading-[15px] text-white/80">
               {card.lines.map((line) => (
                 <p key={line} className="whitespace-pre">
                   {line}
@@ -56,7 +56,7 @@ function ContestCards({ onView }: { onView: (id: string) => void }) {
           </div>
           <div className="mt-auto border-t border-white/25 pt-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] leading-none text-white/80">
+              <span className="text-text-xs leading-none text-white/80">
                 {card.time}
               </span>
               <button className="grid h-[26px] w-[26px] place-items-center rounded-full bg-white shadow-sm transition-transform hover:scale-105">
@@ -83,10 +83,10 @@ function UpcomingCard({
 }) {
   return (
     <div 
-      className="flex items-center gap-3.5 rounded-lg border border-white/[0.08] bg-white/[0.06] p-3 shadow-[0px_4px_16px_-8px_rgba(0,0,0,0.22)] transition-colors hover:border-white/[0.16] cursor-pointer"
+      className="flex items-center gap-3.5 rounded-lg border border-border-default bg-surface-base p-3 shadow-shadow-floating transition-colors hover:bg-surface-hover cursor-pointer"
       onClick={() => onView(item.id)}
     >
-      <div className="relative h-[60px] w-14 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-white/[0.08]">
+      <div className="relative h-[60px] w-14 shrink-0 overflow-hidden rounded-xl border border-border-default bg-surface-hover">
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
@@ -109,22 +109,22 @@ function UpcomingCard({
             MAY
           </span>
         </div>
-        <div className="relative flex h-10 items-center justify-center bg-[#0d0d0d]/60 backdrop-blur-sm">
-          <span className="relative z-10 text-[20px] font-bold leading-none text-[#f5f5f5]">
+        <div className="relative flex h-10 items-center justify-center bg-bg-base/60 backdrop-blur-sm">
+          <span className="relative z-10 text-text-xl font-bold leading-none text-text-primary">
             {item.day}
           </span>
         </div>
       </div>
       <div className="min-w-0">
-        <p className="truncate text-[13px] font-semibold text-white">
+        <p className="truncate text-text-base font-semibold text-text-primary">
           {item.name}
         </p>
-        <p className="mt-1 text-[11px] text-white/70">
+        <p className="mt-1 text-text-xs text-text-secondary">
           {item.classrooms.join(", ")}
-          <span className="mx-1 text-white/40">·</span>
+          <span className="mx-1 text-text-muted">·</span>
           {item.scheduledTime}
         </p>
-        <p className="mt-1 text-[10px] text-white/45">
+        <p className="mt-1 text-text-xs text-text-muted">
           {item.duration / 60} min · {item.questionsPerStudent} Questions
         </p>
       </div>
@@ -222,14 +222,14 @@ function CompletedTable({
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-neutral-900">
+        <span className="rounded-full bg-accent-base px-4 py-1.5 text-xs font-semibold text-white">
           COMPLETED
         </span>
         {toolbarButtons.map(({ label, icon: Icon }) => (
           <button
             key={label}
             onClick={() => label === "Create test" && onCreateContest?.()}
-            className="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-700 px-3.5 py-1.5 text-xs font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+            className="flex cursor-pointer items-center gap-1.5 rounded-full border border-border-default px-3.5 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-accent-base hover:text-text-primary"
           >
             {Icon && <Icon className="h-3.5 w-3.5 text-indigo-400" />}
             {label}
@@ -239,7 +239,7 @@ function CompletedTable({
           {activeFilters.map((f) => (
             <span
               key={f.id}
-              className="flex items-center gap-1.5 rounded-full border border-neutral-700 bg-neutral-800/50 px-3 py-1 text-[11px] font-medium text-neutral-300"
+              className="flex items-center gap-1.5 rounded-full border border-border-default bg-surface-hover px-3 py-1 text-text-xs font-medium text-text-secondary"
             >
               {getFilterSummary(f)}
             </span>
@@ -249,22 +249,22 @@ function CompletedTable({
             initialFilters={activeFilters}
             onApply={(filters) => setActiveFilters(filters)}
             trigger={
-              <button className="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white">
+              <button className="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-border-default text-text-muted transition-colors hover:text-text-primary">
                 <Filter className="h-3.5 w-3.5" />
               </button>
             }
           />
-          <button className="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white">
+          <button className="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-border-default text-text-muted transition-colors hover:text-text-primary">
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
           <SectionLink onClick={() => onViewAllCompleted?.()} />
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-[#262626] bg-[#141414]">
+      <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-base">
         <table className="w-full min-w-[560px] border-collapse text-sm">
           <thead>
-            <tr className="bg-white/[0.04] text-left text-[11px] font-medium uppercase tracking-wide text-[#808080]">
+            <tr className="bg-white/[0.04] text-left text-text-xs font-medium uppercase tracking-wide text-text-muted">
               <th className="px-5 py-3 font-semibold">Assessment</th>
               <th className="px-5 py-3 font-semibold">Participation</th>
               <th className="px-5 py-3 font-semibold">Avg. Score</th>
@@ -281,28 +281,28 @@ function CompletedTable({
                 onClick={() => onSelectAssessment?.(row.title)}
                 onDoubleClick={() => onViewResults?.(row.title)}
                 className={`cursor-pointer transition-colors ${
-                  i % 2 === 1 ? "bg-white/[0.03] hover:bg-white/[0.06]" : "hover:bg-white/[0.03]"
+                  i % 2 === 1 ? "bg-surface-hover/50 hover:bg-surface-hover" : "hover:bg-surface-hover/50"
                 }`}
               >
                 <td className="px-5 py-3.5">
-                  <p className="font-semibold text-[#f5f5f5]">{row.title}</p>
-                  <p className="mt-0.5 text-[11px] text-neutral-500">
+                  <p className="font-semibold text-text-primary">{row.title}</p>
+                  <p className="mt-0.5 text-text-xs text-neutral-500">
                     {row.cls}
                   </p>
                 </td>
-                <td className="px-5 py-3.5 text-[13px] text-neutral-400">
+                <td className="px-5 py-3.5 text-text-base text-text-secondary">
                   {row.participation}
                 </td>
-                <td className="px-5 py-3.5 text-[13px] font-semibold text-white">
+                <td className="px-5 py-3.5 text-text-base font-semibold text-text-primary">
                   {row.score}
                 </td>
-                <td className="px-5 py-3.5 text-[13px] text-neutral-400">
+                <td className="px-5 py-3.5 text-text-base text-text-secondary">
                   {row.completion}
                 </td>
                 <td className="px-5 py-3.5">
                   <button
                     onClick={() => onViewResults?.(row.title)}
-                    className="flex cursor-pointer items-center gap-1 text-[12px] font-medium text-indigo-400 hover:text-indigo-300"
+                    className="flex cursor-pointer items-center gap-1 text-text-sm font-medium text-indigo-400 hover:text-indigo-300"
                   >
                     Results <ArrowRight className="h-3.5 w-3.5" />
                   </button>
@@ -330,13 +330,13 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
     <>
       <div className="mb-3 flex h-9 items-center justify-between">
         <div className="flex items-baseline gap-1">
-          <span className="text-[14px] font-normal text-white/75">Day 13</span>
+          <span className="text-text-md font-normal text-text-secondary">Day 13</span>
         </div>
-        <div className="flex items-center gap-[14px] text-neutral-400">
-          <button className="grid h-[14px] w-[14px] cursor-pointer place-items-center hover:text-white">
+        <div className="flex items-center gap-[14px] text-text-muted">
+          <button className="grid h-[14px] w-[14px] cursor-pointer place-items-center hover:text-text-primary">
             <ChevronLeft className="h-[14px] w-[14px]" />
           </button>
-          <button className="grid h-[14px] w-[14px] cursor-pointer place-items-center hover:text-white">
+          <button className="grid h-[14px] w-[14px] cursor-pointer place-items-center hover:text-text-primary">
             <ChevronRight className="h-[14px] w-[14px]" />
           </button>
         </div>
@@ -346,7 +346,7 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
         {weekdays.map((d, i) => (
           <span
             key={i}
-            className="flex h-[26px] items-center justify-center text-[12px] font-normal text-white/30"
+            className="flex h-[26px] items-center justify-center text-text-sm font-normal text-text-muted"
           >
             {d}
           </span>
@@ -363,12 +363,12 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
               className="relative flex h-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-white/[0.04]"
             >
               {isToday ? (
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500 text-[12px] font-normal text-white">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500 text-text-sm font-normal text-white">
                   {day}
                 </span>
               ) : (
                 <>
-                  <span className="text-[12px] font-normal text-white hover:text-white transition-colors">
+                  <span className="text-text-sm font-normal text-text-primary hover:text-accent-text transition-colors">
                     {day}
                   </span>
                   {(dayDots[day] ?? []).length > 0 && (
@@ -389,11 +389,11 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
         })}
       </div>
 
-      <div className="mt-2 flex h-9 items-center justify-between border-t border-neutral-800 pt-2 text-[12px]">
+      <div className="mt-2 flex h-9 items-center justify-between border-t border-border-default pt-2 text-text-sm">
         <button className="cursor-pointer font-normal text-emerald-500 hover:text-emerald-400">
           Lorem
         </button>
-        <button className="cursor-pointer font-normal text-white/60 hover:text-white">
+        <button className="cursor-pointer font-normal text-text-secondary hover:text-text-primary">
           Rules
         </button>
       </div>
@@ -405,8 +405,8 @@ function LeaderboardPanel({ assessmentTitle }: { assessmentTitle?: string | null
   return (
     <div className="w-full">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-base font-semibold text-white shrink-0">Leaderboard</h2>
-        {assessmentTitle && <span className="ml-auto text-right text-[13px] font-medium text-indigo-400">{assessmentTitle}</span>}
+        <h2 className="text-base font-semibold text-text-primary shrink-0">Leaderboard</h2>
+        {assessmentTitle && <span className="ml-auto text-right text-text-base font-medium text-indigo-400">{assessmentTitle}</span>}
       </div>
       <div className="relative h-[600px] w-full">
         <LeaderboardBlock />
@@ -437,7 +437,7 @@ export function ContestPage() {
 
         <section>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-white">Upcoming</h2>
+            <h2 className="text-base font-semibold text-text-primary">Upcoming</h2>
             <SectionLink onClick={toUpcomingAssessments} />
           </div>
           
@@ -458,7 +458,7 @@ export function ContestPage() {
       </div>
 
       <div className="space-y-6">
-          <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+          <div className="rounded-xl border border-border-default bg-surface-base p-4">
             <Calendar onDateClick={handleDateClick} />
           </div>
         <LeaderboardPanel assessmentTitle={selectedAssessmentId} />

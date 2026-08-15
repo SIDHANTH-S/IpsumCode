@@ -93,20 +93,20 @@ export function NewQuestionPage() {
               onChange={(event) => actions.setTitle(event.target.value.slice(0, 150))}
               onBlur={() => markTouched("title")}
               placeholder="Enter your title"
-              className="block w-full outline-none placeholder:text-white/30 border-none text-white bg-transparent text-[22px] font-semibold"
+              className="block w-full outline-none placeholder:text-white/30 border-none text-white bg-transparent text-text-2xl font-semibold"
               autoComplete="off"
             />
           </div>
           <div className="flex gap-2 items-center shrink-0">
             <button
               onClick={onExit}
-              className="py-1.5 focus:outline-none inline-flex bg-white/[0.06] hover:bg-white/[0.1] text-white/85 h-8 items-center rounded-lg px-4 text-[13px] font-medium transition-colors"
+              className="py-1.5 focus:outline-none inline-flex bg-white/6 hover:bg-white/[0.1] text-white/85 h-8 items-center rounded-lg px-4 text-text-base font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={() => handleSave()}
-              className="py-1.5 focus:outline-none bg-[#5b4aef] hover:bg-[#4d3ee0] text-white flex h-8 items-center gap-1.5 rounded-lg px-4 text-[13px] font-medium transition-colors"
+              className="py-1.5 focus:outline-none bg-accent-base hover:bg-accent-hover text-white flex h-8 items-center gap-1.5 rounded-lg px-4 text-text-base font-medium transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="h-3.5 w-3.5">
                 <path fillRule="evenodd" d="M22.707 1.293a1 1 0 01.237 1.037l-7 20a1 1 0 01-1.858.076l-3.844-8.648-8.648-3.844a1 1 0 01.076-1.858l20-7a1 1 0 011.037.237zM12.193 13.22l2.696 6.068 4.72-13.483-7.416 7.416zm6.001-8.83L4.711 9.111l6.067 2.696 7.416-7.416z" clipRule="evenodd"></path>
@@ -134,10 +134,10 @@ export function NewQuestionPage() {
                     actions.setDifficulty(diff as any)
                     markTouched("difficulty")
                   }}
-                  className={`flex h-7 items-center rounded-full border px-3 text-[11.5px] font-medium transition-colors focus-visible:outline-none ${
+                  className={`flex h-7 items-center rounded-full border px-3 text-text-xs font-medium transition-colors focus-visible:outline-none ${
                     isSelected
-                      ? "border-[#1cbaba]/50 bg-[#1cbaba]/10 text-[#1cbaba]"
-                      : "border-white/10 bg-white/[0.06] text-white/65 hover:text-white/90"
+                      ? "border-status-success/50 bg-status-success/10 text-status-success"
+                      : "border-white/10 bg-white/6 text-white/65 hover:text-white/90"
                   }`}
                 >
                   {diff}
@@ -162,7 +162,7 @@ export function NewQuestionPage() {
           ref={summaryRef}
           tabIndex={-1}
           role="alert"
-          className="flex items-start gap-2.5 rounded-lg border border-[#ff9b9b]/30 bg-[#ff9b9b]/[0.06] px-4 py-3 text-[13px] text-[#ff9b9b] focus:outline-none"
+          className="flex items-start gap-2.5 rounded-lg border border-status-danger/30 bg-status-danger/[0.06] px-4 py-3 text-text-base text-status-danger focus:outline-none"
         >
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>

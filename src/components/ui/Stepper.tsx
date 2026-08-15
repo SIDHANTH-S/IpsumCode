@@ -31,7 +31,7 @@ export function Stepper({
 
   return (
     <div
-      className={`flex items-center rounded-md border border-white/10 bg-white/[0.06] ${className}`}
+      className={`flex items-center rounded-md border border-white/10 bg-white/6 ${className}`}
     >
       <button
         onClick={handleDecrement}
@@ -40,7 +40,7 @@ export function Stepper({
       >
         −
       </button>
-      <span className="min-w-[52px] text-center text-[14px] font-semibold text-white tabular-nums">
+      <span className="min-w-[52px] text-center text-text-md font-semibold text-white tabular-nums">
         {format ? format(value) : value}
       </span>
       <button

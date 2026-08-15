@@ -14,9 +14,9 @@ import { classrooms, upcoming } from "../data/mockData"
 import { useParams, useLocation } from "react-router-dom"
 import { useNavigation } from "../hooks/useNavigation"
 
-const PANEL = "rounded-xl border border-[#262626] bg-[#141414]"
+const PANEL = "rounded-xl border border-border-default bg-surface-base"
 const FIELD =
-  "w-full rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none"
+  "w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none"
 
 // Extract unique classroom names for the mock
 const uniqueClassrooms = Array.from(new Set(classrooms.map((c) => c.name)))
@@ -177,10 +177,10 @@ export function CreateAssessmentPage() {
       {/* header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.5px] text-white/40">
+          <p className="text-text-xs font-medium uppercase tracking-[0.5px] text-white/40">
             {mode === "create" ? "Create" : mode === "edit" ? "Edit" : "View"}
           </p>
-          <h1 className="mt-1 text-[22px] font-semibold leading-tight text-white">
+          <h1 className="mt-1 text-text-2xl font-semibold leading-tight text-white">
             {mode === "create" ? "Create Assessment" : mode === "edit" ? "Edit Assessment" : draft.name || "Assessment"}
           </h1>
         </div>
@@ -189,11 +189,11 @@ export function CreateAssessmentPage() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={onExit}
-                  className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                  className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/6 px-4 py-spacing-btn-y text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
                 >
                   Close
                 </button>
-                <div className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.06] text-white/40">
+                <div className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/6 text-white/40">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </div>
               </div>
@@ -201,13 +201,13 @@ export function CreateAssessmentPage() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={onExit}
-                  className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                  className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/6 px-4 py-spacing-btn-y text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
                 >
                   Close
                 </button>
                 <button
                   onClick={() => onModeChange?.("edit")}
-                  className="shrink-0 cursor-pointer rounded-md bg-[#5b4aef] px-4 py-[9px] text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+                  className="shrink-0 cursor-pointer rounded-md bg-accent-base px-4 py-spacing-btn-y text-text-base font-semibold text-white transition-colors hover:bg-accent-hover"
                 >
                   Edit Assessment
                 </button>
@@ -217,13 +217,13 @@ export function CreateAssessmentPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => onModeChange?.("view")}
-                className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/6 px-4 py-spacing-btn-y text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
               >
                 Discard Changes
               </button>
               <button
                 onClick={onExit}
-                className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/6 px-4 py-spacing-btn-y text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
               >
                 Cancel
               </button>
@@ -231,7 +231,7 @@ export function CreateAssessmentPage() {
           ) : (
             <button
               onClick={onExit}
-              className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+              className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/6 px-4 py-spacing-btn-y text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
             >
               Cancel
             </button>
@@ -240,13 +240,13 @@ export function CreateAssessmentPage() {
 
       {/* assessment details */}
       <div className={`${PANEL} p-5`}>
-        <h2 className="mb-4 text-[15px] font-semibold text-white">
+        <h2 className="mb-4 text-text-lg font-semibold text-white">
           Assessment details
         </h2>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_1px_320px]">
           <div className="space-y-4">
             <div>
-              <p className="mb-1.5 text-[12px] text-white/55">
+              <p className="mb-1.5 text-text-sm text-white/55">
                 Assessment name
               </p>
               <input
@@ -259,7 +259,7 @@ export function CreateAssessmentPage() {
             </div>
             <div className="flex flex-wrap items-end gap-6">
               <div>
-                <p className="mb-1.5 text-[12px] text-white/55">Duration</p>
+                <p className="mb-1.5 text-text-sm text-white/55">Duration</p>
                 <DurationInput
                   valueSeconds={draft.duration}
                   onChange={(v) => updateDraft({ duration: v })}
@@ -267,7 +267,7 @@ export function CreateAssessmentPage() {
                 />
               </div>
               <div>
-                <p className="mb-1.5 text-[12px] text-white/55">Class</p>
+                <p className="mb-1.5 text-text-sm text-white/55">Class</p>
                 <ClassroomSelector
                   availableClassrooms={uniqueClassrooms}
                   selectedClassrooms={draft.classrooms}
@@ -283,7 +283,7 @@ export function CreateAssessmentPage() {
           <div className="space-y-4">
             <div className="flex gap-4">
               <div className="flex-1">
-                <p className="mb-1.5 text-[11px] font-medium uppercase tracking-[0.5px] text-white/45">
+                <p className="mb-1.5 text-text-xs font-medium uppercase tracking-[0.5px] text-white/45">
                   Date
                 </p>
                 <DatePicker
@@ -293,7 +293,7 @@ export function CreateAssessmentPage() {
                 />
               </div>
               <div className="flex-1">
-                <p className="mb-1.5 text-[11px] font-medium uppercase tracking-[0.5px] text-white/45">
+                <p className="mb-1.5 text-text-xs font-medium uppercase tracking-[0.5px] text-white/45">
                   Time
                 </p>
                 <TimePicker
@@ -303,11 +303,11 @@ export function CreateAssessmentPage() {
                 />
               </div>
             </div>
-            <p className="text-[12px] text-white/45">
+            <p className="text-text-sm text-white/45">
               Leave date and time as empty to keep as draft.
             </p>
             {isDraft && (
-              <span className="inline-flex h-6 items-center rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 text-[11px] font-medium text-amber-400">
+              <span className="inline-flex h-6 items-center rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 text-text-xs font-medium text-amber-400">
                 Draft
               </span>
             )}

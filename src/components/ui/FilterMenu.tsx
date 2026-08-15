@@ -341,7 +341,7 @@ export function FilterMenu({
           <div
             ref={menuRef}
             style={stickyStyle}
-            className="z-[9999] flex h-[464px] w-[355px] flex-col rounded-lg border border-neutral-700 bg-[#262626] shadow-xl lc-md:w-[478px] animate-in fade-in-0 zoom-in-95 data-[side=right]:slide-in-from-left-2"
+            className="z-[9999] flex h-[464px] w-[355px] flex-col rounded-lg border border-neutral-700 bg-surface-hover shadow-xl lc-md:w-[478px] animate-in fade-in-0 zoom-in-95 data-[side=right]:slide-in-from-left-2"
             data-state="open"
             data-side="right"
           >

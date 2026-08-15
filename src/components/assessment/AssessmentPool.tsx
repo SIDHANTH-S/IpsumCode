@@ -19,16 +19,16 @@ export function AssessmentPool({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
-        <h3 className="text-[14px] font-semibold text-white">
+      <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
+        <h3 className="text-text-md font-semibold text-white">
           Assessment Pool
         </h3>
-        <span className="flex h-5 items-center rounded-full bg-[#5b4aef]/25 px-2 text-[11px] font-medium text-[#b3a8ff]">
+        <span className="flex h-5 items-center rounded-full bg-accent-base/25 px-2 text-text-xs font-medium text-accent-text-muted">
           {selectedQuestions.length} added
         </span>
       </div>
       {!readonly && (
-        <p className="border-b border-white/[0.06] px-4 py-2 text-[11px] text-white/40">
+        <p className="border-b border-white/6 px-4 py-2 text-text-xs text-white/40">
           Drag questions from the left to add them here
         </p>
       )}
@@ -41,7 +41,7 @@ export function AssessmentPool({
             {...provided.droppableProps}
           >
             {selectedQuestions.length === 0 ? (
-              <div className="flex h-full min-h-[200px] items-center justify-center text-[12px] text-white/30">
+              <div className="flex h-full min-h-[200px] items-center justify-center text-text-sm text-white/30">
                 {readonly ? "No questions selected." : "Drag new questions here."}
               </div>
             ) : (
@@ -61,7 +61,7 @@ export function AssessmentPool({
                           ...provided.draggableProps.style,
                           opacity: snapshot.isDragging ? 0.8 : 1,
                         }}
-                        className={`flex items-center gap-3 rounded-md border border-white/[0.08] bg-white/[0.04] px-3 py-2 ${
+                        className={`flex items-center gap-3 rounded-md border border-white/8 bg-white/[0.04] px-3 py-2 ${
                           snapshot.isDragging ? "shadow-xl shadow-black/50" : ""
                         }`}
                       >
@@ -73,10 +73,10 @@ export function AssessmentPool({
                             <GripVertical className="h-4 w-4 cursor-grab text-white/25" />
                           </div>
                         )}
-                        <span className="w-4 shrink-0 text-[11px] text-white/35 tabular-nums">
+                        <span className="w-4 shrink-0 text-text-xs text-white/35 tabular-nums">
                           {i + 1}
                         </span>
-                        <span className="min-w-0 flex-1 truncate text-[13px] text-white/85">
+                        <span className="min-w-0 flex-1 truncate text-text-base text-white/85">
                           {q.title}
                         </span>
                         <DiffPill difficulty={q.difficulty} />
@@ -99,12 +99,12 @@ export function AssessmentPool({
         )}
       </Droppable>
 
-      <div className="flex items-center justify-between border-t border-white/[0.06] px-4 py-2.5">
-        <span className="text-[11px] text-white/45">
+      <div className="flex items-center justify-between border-t border-white/6 px-4 py-2.5">
+        <span className="text-text-xs text-white/45">
           {selectedQuestions.length} questions selected
         </span>
         {!readonly && (
-          <button className="flex cursor-pointer items-center gap-1.5 rounded-md bg-[#5b4aef] px-3.5 py-1.5 text-[12px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]">
+          <button className="flex cursor-pointer items-center gap-1.5 rounded-md bg-accent-base px-3.5 py-1.5 text-text-sm font-semibold text-white transition-colors hover:bg-accent-hover">
             Confirm <ArrowRight className="h-3.5 w-3.5" />
           </button>
         )}

@@ -116,7 +116,7 @@ function ContestRankingReport({
         </button>
         <div className="h-4 w-px bg-neutral-800" aria-hidden="true" />
         <h1 className="text-lg font-bold text-white">{contestId}</h1>
-        <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-emerald-400 uppercase">
+        <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-text-xs font-semibold tracking-wide text-emerald-400 uppercase">
           Completed
         </span>
         <div className="ml-auto flex items-center gap-4 text-xs font-medium text-neutral-400">
@@ -131,29 +131,29 @@ function ContestRankingReport({
       </div>
 
       {/* Summary Strip */}
-      <dl className="grid grid-cols-2 gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 sm:grid-cols-4">
+      <dl className="grid grid-cols-2 gap-4 rounded-xl border border-white/6 bg-white/[0.02] p-4 sm:grid-cols-4">
         <div className="space-y-1.5">
-          <dt className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-neutral-500">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
             <Users className="h-3.5 w-3.5" aria-hidden="true" /> Joined
           </dt>
           <dd className="text-xl font-semibold text-white">
             {mockContestRanking.length}
           </dd>
         </div>
-        <div className="space-y-1.5 border-white/[0.06] sm:border-l sm:pl-4">
-          <dt className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="space-y-1.5 border-white/6 sm:border-l sm:pl-4">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
             <FileCode className="h-3.5 w-3.5" aria-hidden="true" /> Submitted
           </dt>
           <dd className="text-xl font-semibold text-white">32</dd>
         </div>
-        <div className="space-y-1.5 border-white/[0.06] sm:border-l sm:pl-4">
-          <dt className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="space-y-1.5 border-white/6 sm:border-l sm:pl-4">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
             <Target className="h-3.5 w-3.5" aria-hidden="true" /> Average Score
           </dt>
           <dd className="text-xl font-semibold text-white">78.5</dd>
         </div>
-        <div className="space-y-1.5 border-white/[0.06] sm:border-l sm:pl-4">
-          <dt className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="space-y-1.5 border-white/6 sm:border-l sm:pl-4">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
             <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" /> Incomplete
           </dt>
           <dd className="text-xl font-semibold text-amber-400">3</dd>
@@ -179,11 +179,11 @@ function ContestRankingReport({
               setCurrentPage(1)
             }}
             placeholder="Search students..."
-            className={`h-9 w-full rounded-md border border-neutral-800 bg-neutral-900/50 pl-9 pr-4 text-[13px] text-white placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none ${FOCUS_RING}`}
+            className={`h-9 w-full rounded-md border border-neutral-800 bg-neutral-900/50 pl-9 pr-4 text-text-base text-white placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none ${FOCUS_RING}`}
           />
         </div>
         <button
-          className={`flex h-9 items-center gap-2 rounded-md border border-neutral-800 bg-neutral-900/50 px-3 text-[12px] font-medium text-neutral-300 hover:text-white transition-colors ${FOCUS_RING}`}
+          className={`flex h-9 items-center gap-2 rounded-md border border-neutral-800 bg-neutral-900/50 px-3 text-text-sm font-medium text-neutral-300 hover:text-white transition-colors ${FOCUS_RING}`}
         >
           <Filter className="h-3.5 w-3.5" aria-hidden="true" /> Filters
         </button>
@@ -196,23 +196,23 @@ function ContestRankingReport({
             Contest ranking for {contestId}, {filteredRows.length} students
           </caption>
           <thead>
-            <tr className="text-left text-[11px] font-medium uppercase tracking-wide text-neutral-500">
-              <th scope="col" className="border-b border-white/[0.06] px-5 py-3 w-16">
+            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <th scope="col" className="border-b border-white/6 px-5 py-3 w-16">
                 Rank
               </th>
-              <th scope="col" className="border-b border-white/[0.06] px-5 py-3">
+              <th scope="col" className="border-b border-white/6 px-5 py-3">
                 Student
               </th>
-              <th scope="col" className="border-b border-white/[0.06] px-5 py-3">
+              <th scope="col" className="border-b border-white/6 px-5 py-3">
                 Score
               </th>
-              <th scope="col" className="border-b border-white/[0.06] px-5 py-3">
+              <th scope="col" className="border-b border-white/6 px-5 py-3">
                 Solved
               </th>
-              <th scope="col" className="border-b border-white/[0.06] px-5 py-3">
+              <th scope="col" className="border-b border-white/6 px-5 py-3">
                 Time
               </th>
-              <th scope="col" className="border-b border-white/[0.06] px-5 py-3">
+              <th scope="col" className="border-b border-white/6 px-5 py-3">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -220,7 +220,7 @@ function ContestRankingReport({
           <tbody>
             {pageRows.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-10 text-center text-[13px] text-neutral-500">
+                <td colSpan={6} className="px-5 py-10 text-center text-text-base text-neutral-500">
                   No students match "{searchQuery}".
                 </td>
               </tr>
@@ -228,13 +228,13 @@ function ContestRankingReport({
             {pageRows.map((row, i) => (
               <tr
                 key={row.id}
-                className={`border-b border-white/[0.06] last:border-b-0 ${
-                  i % 2 === 0 ? "bg-white/[0.03]" : "bg-transparent"
+                className={`border-b border-white/6 last:border-b-0 ${
+                  i % 2 === 0 ? "bg-white/3" : "bg-transparent"
                 } hover:bg-white/[0.05] transition-colors`}
               >
                 <td className="px-5 py-3">
                   <span
-                    className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold ${
+                    className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-text-xs font-bold ${
                       row.rank === 1
                         ? "bg-amber-500/20 text-amber-500"
                         : row.rank === 2
@@ -248,22 +248,22 @@ function ContestRankingReport({
                   </span>
                 </td>
                 <td className="px-5 py-3">
-                  <p className="font-semibold text-white text-[13px]">{row.name}</p>
-                  <p className="text-[11px] text-neutral-500 mt-0.5">{row.cls}</p>
+                  <p className="font-semibold text-white text-text-base">{row.name}</p>
+                  <p className="text-text-xs text-neutral-500 mt-0.5">{row.cls}</p>
                 </td>
                 <td className="px-5 py-3">
-                  <span className="font-semibold text-white text-[13px]">
+                  <span className="font-semibold text-white text-text-base">
                     {row.score}
                   </span>
                 </td>
-                <td className="px-5 py-3 text-[13px] text-neutral-400">
+                <td className="px-5 py-3 text-text-base text-neutral-400">
                   {row.solved} / 4
                 </td>
-                <td className="px-5 py-3 text-[13px] text-neutral-400">{row.time}</td>
+                <td className="px-5 py-3 text-text-base text-neutral-400">{row.time}</td>
                 <td className="px-5 py-3 text-right">
                   <button
                     onClick={() => onViewStudent(row.id)}
-                    className={`cursor-pointer rounded-md text-[12px] font-medium text-indigo-400 hover:text-indigo-300 ${FOCUS_RING}`}
+                    className={`cursor-pointer rounded-md text-text-sm font-medium text-indigo-400 hover:text-indigo-300 ${FOCUS_RING}`}
                   >
                     View Detail
                     <span className="sr-only"> for {row.name}</span>
@@ -346,7 +346,7 @@ function StudentDetailReport({
         </button>
         <div className="h-4 w-px bg-neutral-800" aria-hidden="true" />
         <h1 className="text-lg font-bold text-white">{student.name}</h1>
-        <span className="rounded-full border border-neutral-700 bg-neutral-800/50 px-2.5 py-0.5 text-[11px] font-medium text-neutral-300">
+        <span className="rounded-full border border-neutral-700 bg-neutral-800/50 px-2.5 py-0.5 text-text-xs font-medium text-neutral-300">
           {student.cls}
         </span>
       </div>
@@ -356,21 +356,21 @@ function StudentDetailReport({
       <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-[300px_minmax(0,1fr)]">
         {/* Left Column: Summary & Timeline */}
         <div className="space-y-6">
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5">
+          <div className="rounded-xl border border-white/6 bg-white/[0.02] p-5">
             <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-neutral-500">
               Contest Summary
             </h2>
             <dl className="space-y-4">
               <div>
-                <dt className="text-[11px] text-neutral-500 mb-0.5">Global Rank</dt>
+                <dt className="text-text-xs text-neutral-500 mb-0.5">Global Rank</dt>
                 <dd className="text-lg font-semibold text-white">#{student.rank}</dd>
               </div>
               <div>
-                <dt className="text-[11px] text-neutral-500 mb-0.5">Final Score</dt>
+                <dt className="text-text-xs text-neutral-500 mb-0.5">Final Score</dt>
                 <dd className="text-lg font-semibold text-white">{student.score}</dd>
               </div>
               <div>
-                <dt className="text-[11px] text-neutral-500 mb-0.5">
+                <dt className="text-text-xs text-neutral-500 mb-0.5">
                   Questions Solved
                 </dt>
                 <dd className="text-lg font-semibold text-white">
@@ -378,11 +378,11 @@ function StudentDetailReport({
                 </dd>
               </div>
               <div>
-                <dt className="text-[11px] text-neutral-500 mb-0.5">Total Time</dt>
+                <dt className="text-text-xs text-neutral-500 mb-0.5">Total Time</dt>
                 <dd className="text-lg font-semibold text-white">{student.time}</dd>
               </div>
-              <div className="pt-4 border-t border-white/[0.06]">
-                <dt className="text-[11px] text-neutral-500 mb-1">
+              <div className="pt-4 border-t border-white/6">
+                <dt className="text-text-xs text-neutral-500 mb-1">
                   Total Submissions
                 </dt>
                 <dd className="text-sm font-medium text-white">
@@ -401,7 +401,7 @@ function StudentDetailReport({
             bottom), the icon shape (not just its color) carries the status, and the
             timestamp sits directly above the event instead of in 10px corner text.
           */}
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5">
+          <div className="rounded-xl border border-white/6 bg-white/[0.02] p-5">
             <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-neutral-500">
               Activity Timeline
             </h2>
@@ -427,15 +427,15 @@ function StudentDetailReport({
                       )}
                     </div>
                     <div className={`flex-1 ${isLast ? "pb-0" : "pb-5"}`}>
-                      <time className="block text-[11px] font-medium text-neutral-400">
+                      <time className="block text-text-xs font-medium text-neutral-400">
                         {item.time}
                       </time>
-                      <p className="text-[13px] font-medium text-neutral-200 mt-0.5">
+                      <p className="text-text-base font-medium text-neutral-200 mt-0.5">
                         <span className="sr-only">{meta.label}: </span>
                         {item.event}
                       </p>
                       {item.meta && (
-                        <p className="text-[11px] text-neutral-500 mt-0.5 font-mono">
+                        <p className="text-text-xs text-neutral-500 mt-0.5 font-mono">
                           {item.meta}
                         </p>
                       )}
@@ -458,7 +458,7 @@ function StudentDetailReport({
               return (
                 <div
                   key={q.id}
-                  className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden transition-colors hover:border-white/[0.12]"
+                  className="rounded-xl border border-white/6 bg-white/[0.02] overflow-hidden transition-colors hover:border-white/[0.12]"
                 >
                   <button
                     type="button"
@@ -481,16 +481,16 @@ function StudentDetailReport({
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-[13px] font-semibold text-white truncate">
+                        <p className="text-text-base font-semibold text-white truncate">
                           {q.title}
                         </p>
-                        <p className="text-[11px] text-neutral-500 mt-0.5">
+                        <p className="text-text-xs text-neutral-500 mt-0.5">
                           {q.result} · {q.submissions} submits · {q.compilations}{" "}
                           compiles
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-6 text-[11px] text-neutral-400 shrink-0">
+                    <div className="flex items-center gap-6 text-text-xs text-neutral-400 shrink-0">
                       <div className="text-right hidden sm:block">
                         <p className="text-neutral-500 mb-0.5">Opened</p>
                         <p className="font-mono text-neutral-300">{q.opened}</p>
@@ -514,7 +514,7 @@ function StudentDetailReport({
                       id={panelId}
                       role="region"
                       aria-label={`Submission history for ${q.title}`}
-                      className="border-t border-white/[0.06] bg-black/20 p-4"
+                      className="border-t border-white/6 bg-black/20 p-4"
                     >
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[520px] text-sm">
@@ -522,7 +522,7 @@ function StudentDetailReport({
                             Submission history for {q.title}
                           </caption>
                           <thead>
-                            <tr className="text-left text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+                            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-neutral-500">
                               <th scope="col" className="pb-2 font-medium">
                                 Time
                               </th>
@@ -543,7 +543,7 @@ function StudentDetailReport({
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="text-[12px]">
+                          <tbody className="text-text-sm">
                             {q.history.map((h) => {
                               const rm = resultMeta(h.result)
                               const ResultIcon = rm.icon

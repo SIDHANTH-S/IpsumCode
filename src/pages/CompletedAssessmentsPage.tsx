@@ -99,7 +99,7 @@ export function CompletedAssessmentsPage() {
         
         <div className="ml-auto flex items-center gap-3">
           {selectedDate && (
-            <span className="flex items-center gap-1.5 rounded-full bg-white/[0.08] px-3 py-1 text-[12px] text-white/80">
+            <span className="flex items-center gap-1.5 rounded-full bg-white/[0.08] px-3 py-1 text-text-sm text-white/80">
               Date: {selectedDate} MAY
               <button 
                 onClick={() => setSelectedDate(null)}
@@ -113,7 +113,7 @@ export function CompletedAssessmentsPage() {
           {activeFilters.map((f) => (
             <span
               key={f.id}
-              className="flex items-center gap-1.5 rounded-full border border-neutral-700 bg-neutral-800/50 px-3 py-1 text-[11px] font-medium text-neutral-300"
+              className="flex items-center gap-1.5 rounded-full border border-neutral-700 bg-neutral-800/50 px-3 py-1 text-text-xs font-medium text-neutral-300"
             >
               {getFilterSummary(f)}
             </span>
@@ -137,49 +137,49 @@ export function CompletedAssessmentsPage() {
       <div className="overflow-x-auto rounded-xl border border-neutral-800 bg-white/[0.04] flex-1">
         <table className="w-full min-w-[560px] border-collapse text-sm">
           <thead>
-            <tr className="text-left text-[11px] font-medium uppercase tracking-wide text-neutral-500">
-              <th className="border-b border-white/[0.06] px-5 py-4 font-medium">
+            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <th className="border-b border-white/6 px-5 py-4 font-medium">
                 Assessment
               </th>
-              <th className="border-b border-white/[0.06] px-5 py-4 font-medium">
+              <th className="border-b border-white/6 px-5 py-4 font-medium">
                 Participation
               </th>
-              <th className="border-b border-white/[0.06] px-5 py-4 font-medium">
+              <th className="border-b border-white/6 px-5 py-4 font-medium">
                 Avg. Score
               </th>
-              <th className="border-b border-white/[0.06] px-5 py-4 font-medium">
+              <th className="border-b border-white/6 px-5 py-4 font-medium">
                 Completion
               </th>
-              <th className="border-b border-white/[0.06] px-5 py-4 font-medium" />
+              <th className="border-b border-white/6 px-5 py-4 font-medium" />
             </tr>
           </thead>
           <tbody>
             {filteredCompleted.map((row, i) => (
               <tr
                 key={row.title}
-                className={`border-b border-white/[0.06] last:border-b-0 ${
-                  i % 2 === 0 ? "bg-white/[0.03]" : "bg-transparent"
+                className={`border-b border-white/6 last:border-b-0 ${
+                  i % 2 === 0 ? "bg-white/3" : "bg-transparent"
                 }`}
               >
                 <td className="px-5 py-4">
-                  <p className="font-semibold text-[#f5f5f5]">{row.title}</p>
-                  <p className="mt-0.5 text-[11px] text-neutral-500">
+                  <p className="font-semibold text-text-primary">{row.title}</p>
+                  <p className="mt-0.5 text-text-xs text-neutral-500">
                     {row.cls}
                   </p>
                 </td>
-                <td className="px-5 py-4 text-[13px] text-neutral-400">
+                <td className="px-5 py-4 text-text-base text-neutral-400">
                   {row.participation}
                 </td>
-                <td className="px-5 py-4 text-[13px] font-semibold text-white">
+                <td className="px-5 py-4 text-text-base font-semibold text-white">
                   {row.score}
                 </td>
-                <td className="px-5 py-4 text-[13px] text-neutral-400">
+                <td className="px-5 py-4 text-text-base text-neutral-400">
                   {row.completion}
                 </td>
                 <td className="px-5 py-4 text-right">
                   <button
                     onClick={() => onViewResults(row.title)}
-                    className="rounded-md text-[12px] font-medium text-indigo-400 hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                    className="rounded-md text-text-sm font-medium text-indigo-400 hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     Results
                   </button>

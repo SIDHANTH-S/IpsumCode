@@ -34,14 +34,14 @@ function DiffPill({ difficulty }: { difficulty: Difficulty }) {
   const color = DIFFICULTY_COLORS[difficulty]
 
   const getStyle = (hex: string) => {
-    if (difficulty === "Easy") return "text-[#1cbaba]"
-    if (difficulty === "Med.") return "text-[#ffb700]"
-    return "text-[#ef4743]"
+    if (difficulty === "Easy") return "text-status-success"
+    if (difficulty === "Med.") return "text-status-warning"
+    return "text-status-danger-dark"
   }
 
   return (
     <span
-      className={`w-12 text-right text-[12px] font-medium ${getStyle(color)}`}
+      className={`w-12 text-right text-text-sm font-medium ${getStyle(color)}`}
     >
       {difficulty}
     </span>
@@ -96,21 +96,21 @@ export function QuestionBankSelector({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
-        <h3 className="text-[14px] font-semibold text-white">Question Bank</h3>
-        <span className="text-[11px] text-white/45">
+      <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
+        <h3 className="text-text-md font-semibold text-white">Question Bank</h3>
+        <span className="text-text-xs text-white/45">
           {questions.length} questions
         </span>
       </div>
 
       <div className="flex flex-wrap items-center gap-2 px-4 py-3">
         <div className="relative min-w-[160px] flex-1">
-          <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#a8a8a8]" />
+          <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search questions..."
-            className="h-8 w-full rounded-full bg-white/[0.08] pl-9 pr-4 text-[13px] text-white placeholder:text-[#a8a8a8] focus:outline-none focus:ring-1 focus:ring-white/20"
+            className="h-8 w-full rounded-full bg-white/[0.08] pl-9 pr-4 text-text-base text-white placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-white/20"
           />
         </div>
         <FilterMenu
@@ -125,7 +125,7 @@ export function QuestionBankSelector({
         />
       </div>
 
-      <div className="flex items-center justify-between border-y border-white/[0.06] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.5px] text-white/40">
+      <div className="flex items-center justify-between border-y border-white/6 px-4 py-2 text-text-xs font-medium uppercase tracking-[0.5px] text-white/40">
         <span>Question Title</span>
         <span>Difficulty</span>
       </div>
@@ -162,9 +162,9 @@ export function QuestionBankSelector({
                     >
                       <div className="flex min-w-0 flex-1 items-center gap-3">
                         <div
-                          className={`grid h-4 w-4 shrink-0 place-items-center rounded-[3px] border ${
+                          className={`grid h-4 w-4 shrink-0 place-items-center rounded-radius-md border ${
                             isSel
-                              ? "border-[#5b4aef] bg-[#5b4aef]"
+                              ? "border-accent-base bg-accent-base"
                               : "border-white/20 bg-transparent"
                           }`}
                         >
@@ -176,7 +176,7 @@ export function QuestionBankSelector({
                           )}
                         </div>
                         <span
-                          className={`truncate text-[13px] ${
+                          className={`truncate text-text-base ${
                             isSel ? "text-white" : "text-white/85"
                           }`}
                         >
@@ -194,7 +194,7 @@ export function QuestionBankSelector({
         )}
       </Droppable>
 
-      <div className="border-t border-white/[0.06] px-4 py-2.5 text-[11px] text-white/40">
+      <div className="border-t border-white/6 px-4 py-2.5 text-text-xs text-white/40">
         Showing {filtered.length} of {questions.length}
       </div>
     </div>

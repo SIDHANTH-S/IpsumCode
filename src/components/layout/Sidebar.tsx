@@ -128,7 +128,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`group relative hidden shrink-0 select-none flex-col border-r border-neutral-800 bg-[#1a1a1a] lg:flex ${
+      className={`group relative hidden shrink-0 select-none flex-col border-r border-border-default bg-surface-base lg:flex ${
         isResizing ? "" : "transition-[width] duration-300 ease-in-out"
       }`}
       style={{ width: activeWidth }}
@@ -144,8 +144,8 @@ export function Sidebar({
                 isIconOnly ? "justify-center px-0" : "gap-3 px-3"
               } ${
                 active === label
-                  ? "bg-neutral-800/70 text-white"
-                  : "text-neutral-400 hover:bg-neutral-900 hover:text-neutral-200"
+                  ? "bg-accent-base/10 text-text-primary"
+                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
@@ -163,7 +163,7 @@ export function Sidebar({
       {isXl && (
         <button
           onClick={toggleCollapse}
-          className="absolute -right-3 top-6 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-neutral-700 bg-[#1a1a1a] text-neutral-400 opacity-0 transition-opacity hover:border-neutral-500 hover:text-white group-hover:opacity-100"
+          className="absolute -right-3 top-6 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-border-default bg-surface-base text-text-muted opacity-0 transition-opacity hover:border-border-default hover:text-text-primary group-hover:opacity-100"
         >
           {isCollapsed ? (
             <ChevronRight className="h-3 w-3" />

@@ -1,12 +1,23 @@
-import { Sparkles, Bell, Menu } from "lucide-react"
+import { Sparkles, Bell, Menu, Sun, Moon } from "lucide-react"
+import { useState, useEffect } from "react"
 
 import { GRADIENTS } from "../../data/mockData"
 
 export function TopBar() {
+  const [theme, setTheme] = useState("dark")
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+  }
+
   return (
-    <header className="sticky top-0 z-50 flex h-[50px] items-center justify-between border-b border-neutral-800 bg-[#1e1e1e] px-5 lg:px-8">
+    <header className="sticky top-0 z-50 flex h-[50px] items-center justify-between border-b border-border-default bg-surface-base px-5 lg:px-8">
       <div className="flex items-center gap-4">
-        <button className="text-neutral-400 hover:text-white lg:hidden">
+        <button className="text-text-muted hover:text-text-primary lg:hidden">
           <Menu className="h-6 w-6" />
         </button>
         <div className="flex items-center gap-2.5">
@@ -16,13 +27,19 @@ export function TopBar() {
           >
             <Sparkles className="h-4 w-4 text-white" fill="white" />
           </span>
-          <span className="font-display text-lg tracking-wide text-white">
+          <span className="font-display text-lg tracking-wide text-text-primary">
             IPSUM&lt;CODE&gt;
           </span>
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <button className="relative text-neutral-400 transition-colors hover:text-white">
+        <button
+          onClick={toggleTheme}
+          className="text-text-muted transition-colors hover:text-text-primary cursor-pointer"
+        >
+          {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+        </button>
+        <button className="relative text-text-muted transition-colors hover:text-text-primary cursor-pointer">
           <Bell className="h-5 w-5" />
           <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-[#0a0a0a]" />
         </button>

@@ -41,12 +41,12 @@ export function StatementEditor({
   }
 
   return (
-    <div className="flex min-h-[600px] flex-col overflow-hidden rounded-md border border-white/10 bg-[#1a1a1a]">
+    <div className="flex min-h-[600px] flex-col overflow-hidden rounded-md border border-white/10 bg-surface-base">
       <div
         role="toolbar"
         aria-label="Formatting"
         aria-controls={fieldId}
-        className="flex flex-wrap items-center gap-0.5 border-b border-white/10 px-2 py-1.5 bg-[#1a1a1a]"
+        className="flex flex-wrap items-center gap-0.5 border-b border-white/10 px-2 py-1.5 bg-surface-base"
       >
         {STATEMENT_TOOLBAR.map((tool) => (
           <button
@@ -65,14 +65,14 @@ export function StatementEditor({
       </div>
 
       <div className="flex flex-1 flex-col xl:flex-row">
-        <div className="relative flex w-full flex-col border-b border-white/10 text-[13px] leading-relaxed xl:w-[575px] xl:shrink-0 xl:border-b-0 xl:border-r">
+        <div className="relative flex w-full flex-col border-b border-white/10 text-text-base leading-relaxed xl:w-[575px] xl:shrink-0 xl:border-b-0 xl:border-r">
           <textarea
             id={fieldId}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             placeholder="Describe the problem. Select text and use the toolbar to format it."
-            className="flex-1 resize-none bg-transparent p-4 font-sans text-white/85 focus:outline-none placeholder:text-[#8a8a8a]"
+            className="flex-1 resize-none bg-transparent p-4 font-sans text-white/85 focus:outline-none placeholder:text-text-muted"
             spellCheck={false}
           />
           {error && (

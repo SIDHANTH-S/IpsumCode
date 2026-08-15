@@ -32,7 +32,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-neutral-100">
+    <div className="min-h-screen bg-bg-base text-text-primary">
       <TopBar />
       <div className="flex">
         <Sidebar active={getActiveTab()} onSelect={handleSelectTab} />

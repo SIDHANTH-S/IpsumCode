@@ -91,10 +91,10 @@ function parseEmails(raw: string, enrolledEmails: string[]): ParsedEmail[] {
 }
 
 const STATUS_STYLE: Record<EmailStatus, string> = {
-  valid: "border-[#1cbaba]/40 bg-[#1cbaba]/10 text-[#1cbaba]",
-  duplicate: "border-white/15 bg-white/[0.06] text-white/50",
-  enrolled: "border-[#f5a524]/40 bg-[#f5a524]/10 text-[#f5a524]",
-  invalid: "border-[#ff9b9b]/40 bg-[#ff9b9b]/10 text-[#ff9b9b]",
+  valid: "border-status-success/40 bg-status-success/10 text-status-success",
+  duplicate: "border-white/15 bg-white/6 text-white/50",
+  enrolled: "border-status-warning/40 bg-status-warning/10 text-status-warning",
+  invalid: "border-status-danger/40 bg-status-danger/10 text-status-danger",
 }
 
 const STATUS_LABEL: Record<EmailStatus, string> = {
@@ -147,24 +147,24 @@ function AddStudentsModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-xl border border-[#262626] bg-[#141414] shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#262626] px-6 py-4">
+      <div className="w-full max-w-lg rounded-xl border border-border-default bg-surface-base shadow-2xl">
+        <div className="flex items-center justify-between border-b border-border-default px-6 py-4">
           <div>
-            <h2 className="text-[16px] font-semibold text-white">Add Students</h2>
-            <p className="mt-0.5 text-[12px] text-white/40">to {classroom.name} · {classroom.year}</p>
+            <h2 className="text-text-lg font-semibold text-white">Add Students</h2>
+            <p className="mt-0.5 text-text-sm text-white/40">to {classroom.name} · {classroom.year}</p>
           </div>
           <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white">
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="flex gap-1 border-b border-[#262626] px-6 pt-3">
+        <div className="flex gap-1 border-b border-border-default px-6 pt-3">
           {(["paste", "csv"] as const).map((m) => (
             <button
               key={m}
               onClick={() => setMode(m)}
-              className={`border-b-2 px-1 pb-2.5 text-[13px] font-medium transition-colors ${
-                mode === m ? "border-[#5b4aef] text-white" : "border-transparent text-white/40 hover:text-white/70"
+              className={`border-b-2 px-1 pb-2.5 text-text-base font-medium transition-colors ${
+                mode === m ? "border-accent-base text-white" : "border-transparent text-white/40 hover:text-white/70"
               }`}
             >
               {m === "paste" ? "Paste Emails" : "Import CSV"}
@@ -181,9 +181,9 @@ function AddStudentsModal({
                 onChange={(e) => setRaw(e.target.value)}
                 placeholder={"aarav@college.edu\nananya@college.edu, arjun@college.edu\ndiya@college.edu"}
                 rows={6}
-                className="w-full resize-none rounded-md border border-white/10 bg-white/[0.04] px-3 py-2.5 font-mono text-[13px] leading-relaxed text-white placeholder:text-[#8a8a8a] focus:border-white/20 focus:outline-none"
+                className="w-full resize-none rounded-md border border-white/10 bg-white/[0.04] px-3 py-2.5 font-mono text-text-base leading-relaxed text-white placeholder:text-text-muted focus:border-white/20 focus:outline-none"
               />
-              <p className="text-[11.5px] text-white/35">
+              <p className="text-text-xs text-white/35">
                 Paste one email per line, or comma / space separated. We'll validate each one.
               </p>
             </>
@@ -193,33 +193,33 @@ function AddStudentsModal({
               className="flex h-36 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-white/15 text-white/40 transition-colors hover:border-white/30 hover:text-white/60"
             >
               <Upload className="h-7 w-7" />
-              <p className="text-[13px]">Click to upload a CSV file</p>
-              <p className="text-[11px]">One email address per row</p>
-              {csvFile && <p className="text-[11px] text-[#1cbaba]">{csvFile.name}</p>}
+              <p className="text-text-base">Click to upload a CSV file</p>
+              <p className="text-text-xs">One email address per row</p>
+              {csvFile && <p className="text-text-xs text-status-success">{csvFile.name}</p>}
               <input ref={fileRef} type="file" accept=".csv,.txt" className="hidden" onChange={handleCsvChange} />
             </div>
           )}
 
           {parsed.length > 0 && (
             <div className="space-y-2">
-              <div className="flex flex-wrap gap-2 text-[12px]">
+              <div className="flex flex-wrap gap-2 text-text-sm">
                 {counts.valid > 0 && (
-                  <span className="flex items-center gap-1 rounded-full border border-[#1cbaba]/40 bg-[#1cbaba]/10 px-2.5 py-0.5 text-[#1cbaba]">
+                  <span className="flex items-center gap-1 rounded-full border border-status-success/40 bg-status-success/10 px-2.5 py-0.5 text-status-success">
                     <Check className="h-3 w-3" /> {counts.valid} valid
                   </span>
                 )}
                 {counts.enrolled > 0 && (
-                  <span className="flex items-center gap-1 rounded-full border border-[#f5a524]/40 bg-[#f5a524]/10 px-2.5 py-0.5 text-[#f5a524]">
+                  <span className="flex items-center gap-1 rounded-full border border-status-warning/40 bg-status-warning/10 px-2.5 py-0.5 text-status-warning">
                     <AlertCircle className="h-3 w-3" /> {counts.enrolled} already in class
                   </span>
                 )}
                 {counts.duplicate > 0 && (
-                  <span className="flex items-center gap-1 rounded-full border border-white/15 bg-white/[0.06] px-2.5 py-0.5 text-white/50">
+                  <span className="flex items-center gap-1 rounded-full border border-white/15 bg-white/6 px-2.5 py-0.5 text-white/50">
                     {counts.duplicate} duplicate
                   </span>
                 )}
                 {counts.invalid > 0 && (
-                  <span className="flex items-center gap-1 rounded-full border border-[#ff9b9b]/40 bg-[#ff9b9b]/10 px-2.5 py-0.5 text-[#ff9b9b]">
+                  <span className="flex items-center gap-1 rounded-full border border-status-danger/40 bg-status-danger/10 px-2.5 py-0.5 text-status-danger">
                     <X className="h-3 w-3" /> {counts.invalid} invalid
                   </span>
                 )}
@@ -227,10 +227,10 @@ function AddStudentsModal({
               <div className="max-h-40 divide-y divide-white/[0.04] overflow-y-auto rounded-md border border-white/10">
                 {parsed.map((p, i) => (
                   <div key={i} className="flex items-center justify-between px-3 py-2">
-                    <span className={`font-mono text-[13px] ${p.status === "valid" ? "text-white" : "text-white/50"}`}>
+                    <span className={`font-mono text-text-base ${p.status === "valid" ? "text-white" : "text-white/50"}`}>
                       {p.email}
                     </span>
-                    <span className={`rounded-full border px-2 py-0.5 text-[11px] ${STATUS_STYLE[p.status]}`}>
+                    <span className={`rounded-full border px-2 py-0.5 text-text-xs ${STATUS_STYLE[p.status]}`}>
                       {STATUS_LABEL[p.status]}
                     </span>
                   </div>
@@ -240,14 +240,14 @@ function AddStudentsModal({
           )}
         </div>
 
-        <div className="flex items-center justify-end gap-3 border-t border-[#262626] px-6 py-4">
-          <button onClick={onClose} className="rounded-lg border border-white/10 bg-white/[0.06] px-4 py-2 text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+        <div className="flex items-center justify-end gap-3 border-t border-border-default px-6 py-4">
+          <button onClick={onClose} className="rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
             Cancel
           </button>
           <button
             disabled={validEmails.length === 0}
             onClick={() => { onAdd(validEmails); onClose() }}
-            className="rounded-lg bg-[#5b4aef] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg bg-accent-base px-4 py-2 text-text-base font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
             {validEmails.length > 0 ? `Add ${validEmails.length} Student${validEmails.length !== 1 ? "s" : ""}` : "Add Students"}
           </button>
@@ -274,24 +274,24 @@ function RemoveConfirmModal({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-xl border border-[#262626] bg-[#141414] shadow-2xl">
+      <div className="w-full max-w-sm rounded-xl border border-border-default bg-surface-base shadow-2xl">
         <div className="p-6 space-y-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ff9b9b]/30 bg-[#ff9b9b]/10">
-            <Trash2 className="h-[18px] w-[18px] text-[#ff9b9b]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-status-danger/30 bg-status-danger/10">
+            <Trash2 className="h-[18px] w-[18px] text-status-danger" />
           </div>
           <div>
-            <h2 className="text-[15px] font-semibold text-white">Remove Student</h2>
-            <p className="mt-1.5 text-[13px] text-white/50">
+            <h2 className="text-text-lg font-semibold text-white">Remove Student</h2>
+            <p className="mt-1.5 text-text-base text-white/50">
               Remove <span className="font-medium text-white">{student.name}</span> from{" "}
               <span className="font-medium text-white">{classroom.name}</span>? This action cannot be undone.
             </p>
           </div>
         </div>
-        <div className="flex gap-3 border-t border-[#262626] px-6 py-4">
-          <button onClick={onCancel} className="flex-1 rounded-lg border border-white/10 bg-white/[0.06] px-4 py-2 text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+        <div className="flex gap-3 border-t border-border-default px-6 py-4">
+          <button onClick={onCancel} className="flex-1 rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
             Cancel
           </button>
-          <button onClick={onConfirm} className="flex-1 rounded-lg bg-[#ef4743] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#d63f3b]">
+          <button onClick={onConfirm} className="flex-1 rounded-lg bg-status-danger-dark px-4 py-2 text-text-base font-semibold text-white transition-colors hover:bg-status-danger-dark">
             Remove
           </button>
         </div>
@@ -332,9 +332,9 @@ function CreateClassroomModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-xl border border-[#262626] bg-[#141414] shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#262626] px-6 py-4">
-          <h2 className="text-[16px] font-semibold text-white">Create Classroom</h2>
+      <div className="w-full max-w-sm rounded-xl border border-border-default bg-surface-base shadow-2xl">
+        <div className="flex items-center justify-between border-b border-border-default px-6 py-4">
+          <h2 className="text-text-lg font-semibold text-white">Create Classroom</h2>
           <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white">
             <X className="h-4 w-4" />
           </button>
@@ -342,8 +342,8 @@ function CreateClassroomModal({
 
         <div className="space-y-5 p-6">
           <div>
-            <label className="mb-1.5 block text-[12.5px] font-medium text-white/70">
-              Class name <span className="text-[#8f7dff]">*</span>
+            <label className="mb-1.5 block text-text-sm font-medium text-white/70">
+              Class name <span className="text-accent-text-muted">*</span>
             </label>
             <input
               value={name}
@@ -351,13 +351,13 @@ function CreateClassroomModal({
               onKeyDown={(e) => { if (e.key === "Enter" && name.trim()) handleCreate() }}
               placeholder="e.g. CSE-A IV Year"
               autoFocus
-              className="h-10 w-full rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none"
+              className="h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none"
             />
-            <p className="mt-1.5 text-[11.5px] text-white/35">Include year and section in the name, e.g. "CSE-A IV Year"</p>
+            <p className="mt-1.5 text-text-xs text-white/35">Include year and section in the name, e.g. "CSE-A IV Year"</p>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-[12.5px] font-medium text-white/70">Accent color</label>
+            <label className="mb-1.5 block text-text-sm font-medium text-white/70">Accent color</label>
             <div className="flex gap-2.5">
               {ACCENT_COLORS.map((c) => (
                 <button
@@ -372,14 +372,14 @@ function CreateClassroomModal({
           </div>
         </div>
 
-        <div className="flex gap-3 border-t border-[#262626] px-6 py-4">
-          <button onClick={onClose} className="flex-1 rounded-lg border border-white/10 bg-white/[0.06] px-4 py-2 text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+        <div className="flex gap-3 border-t border-border-default px-6 py-4">
+          <button onClick={onClose} className="flex-1 rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
             Cancel
           </button>
           <button
             disabled={!name.trim()}
             onClick={handleCreate}
-            className="flex-1 rounded-lg bg-[#5b4aef] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex-1 rounded-lg bg-accent-base px-4 py-2 text-text-base font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
             Create Classroom
           </button>
@@ -406,9 +406,9 @@ function RenameModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-xl border border-[#262626] bg-[#141414] shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#262626] px-6 py-4">
-          <h2 className="text-[15px] font-semibold text-white">Rename Classroom</h2>
+      <div className="w-full max-w-sm rounded-xl border border-border-default bg-surface-base shadow-2xl">
+        <div className="flex items-center justify-between border-b border-border-default px-6 py-4">
+          <h2 className="text-text-lg font-semibold text-white">Rename Classroom</h2>
           <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white">
             <X className="h-4 w-4" />
           </button>
@@ -421,17 +421,17 @@ function RenameModal({
               if (e.key === "Enter" && name.trim()) { onRename(name.trim()); onClose() }
             }}
             autoFocus
-            className="h-10 w-full rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-white focus:border-white/25 focus:outline-none"
+            className="h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white focus:border-white/25 focus:outline-none"
           />
         </div>
-        <div className="flex gap-3 border-t border-[#262626] px-6 py-4">
-          <button onClick={onClose} className="flex-1 rounded-lg border border-white/10 bg-white/[0.06] px-4 py-2 text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+        <div className="flex gap-3 border-t border-border-default px-6 py-4">
+          <button onClick={onClose} className="flex-1 rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
             Cancel
           </button>
           <button
             disabled={!name.trim()}
             onClick={() => { onRename(name.trim()); onClose() }}
-            className="flex-1 rounded-lg bg-[#5b4aef] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex-1 rounded-lg bg-accent-base px-4 py-2 text-text-base font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
           >
             Rename
           </button>
@@ -462,16 +462,16 @@ function ManageMenu({ onRename, onArchive }: { onRename: () => void; onArchive: 
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex h-9 items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.06] px-4 text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+        className="flex h-9 items-center gap-1.5 rounded-lg border border-white/10 bg-white/6 px-4 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
       >
         Manage Classroom <ChevronDown className="h-3.5 w-3.5 text-white/40" />
       </button>
       {open && (
-        <ul className="absolute right-0 z-20 mt-1.5 w-48 overflow-hidden rounded-md border border-[#262626] bg-[#1a1a1a] py-1 shadow-xl">
+        <ul className="absolute right-0 z-20 mt-1.5 w-48 overflow-hidden rounded-md border border-border-default bg-surface-base py-1 shadow-xl">
           <li>
             <button
               onClick={() => { setOpen(false); onRename() }}
-              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-white/85 hover:bg-white/10"
+              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-text-base text-white/85 hover:bg-white/10"
             >
               <Pencil className="h-3.5 w-3.5 text-white/40" /> Rename
             </button>
@@ -479,7 +479,7 @@ function ManageMenu({ onRename, onArchive }: { onRename: () => void; onArchive: 
           <li>
             <button
               onClick={() => { setOpen(false); onArchive() }}
-              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-white/85 hover:bg-white/10"
+              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-text-base text-white/85 hover:bg-white/10"
             >
               <Archive className="h-3.5 w-3.5 text-white/40" /> Archive
             </button>
@@ -487,7 +487,7 @@ function ManageMenu({ onRename, onArchive }: { onRename: () => void; onArchive: 
           <li>
             <button
               disabled
-              className="flex w-full cursor-not-allowed items-center gap-2.5 px-3 py-2 text-left text-[13px] text-white/30"
+              className="flex w-full cursor-not-allowed items-center gap-2.5 px-3 py-2 text-left text-text-base text-white/30"
               title="Backend support needed"
             >
               <Trash2 className="h-3.5 w-3.5" /> Delete
@@ -531,22 +531,22 @@ function StudentsTab({
           onCancel={() => setPending(null)}
         />
       )}
-      <div className="overflow-hidden rounded-xl border border-[#262626] bg-[#141414]">
+      <div className="overflow-hidden rounded-xl border border-border-default bg-surface-base">
         <div className="flex flex-wrap items-center gap-3 px-5 py-4">
           <div className="relative w-full max-w-[275px]">
-            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#a8a8a8]" />
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search name, email…"
-              className="h-8 w-full rounded border border-white/10 bg-white/[0.07] pl-8 pr-3 text-[13px] text-white placeholder:text-[#b8b8b8] focus:border-white/20 focus:outline-none"
+              className="h-8 w-full rounded border border-white/10 bg-white/[0.07] pl-8 pr-3 text-text-base text-white placeholder:text-text-secondary focus:border-white/20 focus:outline-none"
             />
           </div>
-          <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/[0.08] text-[#a8a8a8] transition-colors hover:text-white">
+          <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/[0.08] text-text-secondary transition-colors hover:text-white">
             <Filter className="h-3.5 w-3.5" />
           </button>
-          <button className="ml-auto flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-[#333] bg-[#141414] px-3 text-[13px] text-white/70 transition-colors hover:border-[#444] hover:text-white">
+          <button className="ml-auto flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-border-default bg-surface-base px-3 text-text-base text-white/70 transition-colors hover:border-border-default hover:text-white">
             <Download className="h-3.5 w-3.5" /> Export
           </button>
         </div>
@@ -554,7 +554,7 @@ function StudentsTab({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-left">
             <thead>
-              <tr className="bg-white/[0.04] text-[11px] font-semibold uppercase tracking-[0.5px] text-[#808080]">
+              <tr className="bg-white/[0.04] text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
                 <th className="px-5 py-3">Name</th>
                 <th className="px-5 py-3">Email ID</th>
                 <th className="w-[100px] px-5 py-3">Solved</th>
@@ -565,21 +565,21 @@ function StudentsTab({
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-[13px] text-white/35">
+                  <td colSpan={5} className="px-5 py-10 text-center text-text-base text-white/35">
                     {search ? "No students match your search." : "No students in this classroom yet."}
                   </td>
                 </tr>
               ) : (
                 filtered.map((s, i) => (
-                  <tr key={s.id} className={i % 2 === 1 ? "bg-white/[0.03]" : ""}>
-                    <td className="px-5 py-3.5 text-[14px] font-semibold text-white">{s.name}</td>
-                    <td className="px-5 py-3.5 text-[13px] text-[#999]">{s.email}</td>
-                    <td className="px-5 py-3.5 text-[14px] text-[#b3b3b3]">{s.solved}</td>
-                    <td className="px-5 py-3.5 text-[14px] font-semibold text-white">{s.score}</td>
+                  <tr key={s.id} className={i % 2 === 1 ? "bg-white/3" : ""}>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.name}</td>
+                    <td className="px-5 py-3.5 text-text-base text-text-muted">{s.email}</td>
+                    <td className="px-5 py-3.5 text-text-md text-text-secondary">{s.solved}</td>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.score}</td>
                     <td className="px-5 py-3.5">
                       <button
                         onClick={() => setPending(s)}
-                        className="text-[12px] text-[#ff9b9b]/70 transition-colors hover:text-[#ff9b9b]"
+                        className="text-text-sm text-status-danger/70 transition-colors hover:text-status-danger"
                       >
                         Remove
                       </button>
@@ -591,7 +591,7 @@ function StudentsTab({
           </table>
         </div>
 
-        <div className="border-t border-[#262626] px-5 py-3 text-[12px] text-white/35">
+        <div className="border-t border-border-default px-5 py-3 text-text-sm text-white/35">
           {filtered.length} of {students.length} student{students.length !== 1 ? "s" : ""}
         </div>
       </div>
@@ -650,18 +650,18 @@ function AssessmentsTab({ classroomId }: { classroomId: string }) {
 
   if (rows.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center rounded-xl border border-[#262626] bg-[#141414] text-[13px] text-white/35">
+      <div className="flex h-40 items-center justify-center rounded-xl border border-border-default bg-surface-base text-text-base text-white/35">
         No assessments assigned to this classroom yet.
       </div>
     )
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-[#262626] bg-[#141414]">
+    <div className="overflow-hidden rounded-xl border border-border-default bg-surface-base">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[520px] border-collapse text-left">
           <thead>
-            <tr className="bg-white/[0.04] text-[11px] font-semibold uppercase tracking-[0.5px] text-[#808080]">
+            <tr className="bg-white/[0.04] text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
               <th className="px-5 py-3">Assessment</th>
               <th className="px-5 py-3">Status</th>
               <th className="px-5 py-3">Date</th>
@@ -670,25 +670,25 @@ function AssessmentsTab({ classroomId }: { classroomId: string }) {
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={row.id} className={i % 2 === 1 ? "bg-white/[0.03]" : ""}>
-                <td className="px-5 py-3.5 text-[13.5px] font-semibold text-white">{row.name}</td>
+              <tr key={row.id} className={i % 2 === 1 ? "bg-white/3" : ""}>
+                <td className="px-5 py-3.5 text-text-base font-semibold text-white">{row.name}</td>
                 <td className="px-5 py-3.5">
-                  <span className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${
+                  <span className={`rounded-full border px-2.5 py-0.5 text-text-xs font-medium ${
                     row.status === "upcoming"
-                      ? "border-[#5b4aef]/40 bg-[#5b4aef]/10 text-[#a49aff]"
-                      : "border-[#1cbaba]/30 bg-[#1cbaba]/10 text-[#1cbaba]"
+                      ? "border-accent-base/40 bg-accent-base/10 text-accent-text-muted"
+                      : "border-status-success/30 bg-status-success/10 text-status-success"
                   }`}>
                     {row.status === "upcoming" ? "Upcoming" : "Completed"}
                   </span>
                 </td>
-                <td className="px-5 py-3.5 text-[13px] text-[#999]">
+                <td className="px-5 py-3.5 text-text-base text-text-muted">
                   {row.date || "—"}
                   {row.time && ` · ${row.time}`}
                   {row.duration && (
                     <span className="ml-1 text-white/35">({formatDuration(row.duration)})</span>
                   )}
                 </td>
-                <td className="px-5 py-3.5 text-[13px] text-[#b3b3b3]">
+                <td className="px-5 py-3.5 text-text-base text-text-secondary">
                   {row.score ?? "—"}{row.participation ? ` · ${row.participation}` : ""}
                 </td>
               </tr>
@@ -750,7 +750,7 @@ function ClassroomWorkspace({
         <div>
           <button
             onClick={onBack}
-            className="mb-4 flex items-center gap-1.5 text-[12px] text-white/40 transition-colors hover:text-white/70"
+            className="mb-4 flex items-center gap-1.5 text-text-sm text-white/40 transition-colors hover:text-white/70"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> All Classrooms
           </button>
@@ -769,9 +769,9 @@ function ClassroomWorkspace({
                 {classroom.name.slice(0, 2)}
               </div>
               <div className="flex items-center gap-2">
-                <h1 className="text-[20px] font-bold leading-tight text-white">{classroom.name}</h1>
+                <h1 className="text-text-xl font-bold leading-tight text-white">{classroom.name}</h1>
                 {classroom.status === "archived" && (
-                  <span className="rounded-full border border-[#f5a524]/40 bg-[#f5a524]/10 px-1.5 py-0.5 text-[10.5px] text-[#f5a524]">
+                  <span className="rounded-full border border-status-warning/40 bg-status-warning/10 px-1.5 py-0.5 text-text-xs text-status-warning">
                     Archived
                   </span>
                 )}
@@ -781,7 +781,7 @@ function ClassroomWorkspace({
             <div className="flex shrink-0 gap-2">
               <button
                 onClick={() => setShowAddStudents(true)}
-                className="flex h-9 items-center gap-1.5 rounded-lg bg-[#5b4aef] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+                className="flex h-9 items-center gap-1.5 rounded-lg bg-accent-base px-4 text-text-base font-semibold text-white transition-colors hover:bg-accent-hover"
               >
                 <Plus className="h-3.5 w-3.5" /> Add Students
               </button>
@@ -791,19 +791,19 @@ function ClassroomWorkspace({
         </div>
 
         {/* Tabs */}
-        <div className="flex w-fit gap-1 rounded-lg border border-[#262626] bg-white/[0.03] p-1">
+        <div className="flex w-fit gap-1 rounded-lg border border-border-default bg-white/3 p-1">
           {(["students", "assessments"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setActiveTab(t)}
-              className={`relative flex items-center gap-1.5 rounded-md px-4 py-2 text-[13px] font-medium transition-colors ${
-                activeTab === t ? "bg-white/[0.06] text-white" : "text-white/55 hover:text-white/85"
+              className={`relative flex items-center gap-1.5 rounded-md px-4 py-2 text-text-base font-medium transition-colors ${
+                activeTab === t ? "bg-white/6 text-white" : "text-white/55 hover:text-white/85"
               }`}
             >
               {t === "students" && <Users className="h-3.5 w-3.5" />}
               {t.charAt(0).toUpperCase() + t.slice(1)}
               {activeTab === t && (
-                <span className="absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-[#5b4aef]" aria-hidden="true" />
+                <span className="absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-accent-base" aria-hidden="true" />
               )}
             </button>
           ))}
@@ -838,8 +838,8 @@ function ClassroomCard({
       onClick={onClick}
       className={`group relative h-[88px] w-[230px] max-w-full overflow-hidden rounded-xl border text-left transition-all ${
         isActive
-          ? "border-[#5b4aef]/60 ring-1 ring-[#5b4aef]/30"
-          : "border-[#262626] hover:border-[#333]"
+          ? "border-accent-base/60 ring-1 ring-accent-base/30"
+          : "border-border-default hover:border-border-default"
       } ${room.status === "archived" ? "opacity-60" : ""}`}
       style={{
         background: isActive
@@ -879,14 +879,14 @@ function ClassroomCard({
       {/* Content */}
       <div className="relative flex h-full flex-col justify-between p-4">
         <p
-          className="text-[18px] font-bold leading-none text-white"
+          className="text-text-xl font-bold leading-none text-white"
           style={{ textShadow: `0 0 20px ${room.color}44` }}
         >
           {room.name}
         </p>
-        <p className="text-[13px] font-semibold" style={{ color: room.color }}>
+        <p className="text-text-base font-semibold" style={{ color: room.color }}>
           {room.students}
-          <span className="ml-1 text-[11px] font-normal text-white/40">students</span>
+          <span className="ml-1 text-text-xs font-normal text-white/40">students</span>
         </p>
       </div>
     </button>
@@ -982,23 +982,23 @@ function ClassroomDashboard({
         </div>
         <button
           onClick={onCreateClassroom}
-          className="flex h-10 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg bg-[#5b4aef] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+          className="flex h-10 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg bg-accent-base px-5 text-text-md font-semibold text-white transition-colors hover:bg-accent-hover"
         >
           <Plus className="h-4 w-4" /> Create Classroom
         </button>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-[#262626] bg-[#141414]">
+      <div className="overflow-hidden rounded-xl border border-border-default bg-surface-base">
         <div className="flex flex-wrap items-center gap-3 px-5 py-4">
-          <p className="text-[13px] font-semibold text-white/70">All Students</p>
+          <p className="text-text-base font-semibold text-white/70">All Students</p>
           <div className="relative ml-2 w-full max-w-[275px]">
-            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#a8a8a8]" />
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search name, email…"
-              className="h-8 w-full rounded border border-white/10 bg-white/[0.07] pl-8 pr-3 text-[13px] text-white placeholder:text-[#b8b8b8] focus:border-white/20 focus:outline-none"
+              className="h-8 w-full rounded border border-white/10 bg-white/[0.07] pl-8 pr-3 text-text-base text-white placeholder:text-text-secondary focus:border-white/20 focus:outline-none"
             />
           </div>
 
@@ -1007,12 +1007,12 @@ function ClassroomDashboard({
             trigger={
               <div className={`relative grid h-8 w-8 cursor-pointer place-items-center rounded-full transition-colors ${
                 hasFilters
-                  ? "bg-[#5b4aef]/20 text-[#a49aff]"
-                  : "bg-white/[0.08] text-[#a8a8a8] hover:text-white"
+                  ? "bg-accent-base/20 text-accent-text-muted"
+                  : "bg-white/[0.08] text-text-secondary hover:text-white"
               }`}>
                 <Filter className="h-3.5 w-3.5" />
                 {hasFilters && (
-                  <span className="absolute -right-0.5 -top-0.5 h-[7px] w-[7px] rounded-full bg-[#5b4aef] ring-2 ring-[#141414]" />
+                  <span className="absolute -right-0.5 -top-0.5 h-[7px] w-[7px] rounded-full bg-accent-base ring-2 ring-[#141414]" />
                 )}
               </div>
             }
@@ -1021,7 +1021,7 @@ function ClassroomDashboard({
             onApply={(filters) => setActiveFilters(filters)}
           />
 
-          <button className="ml-auto flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-[#333] bg-[#141414] px-3 text-[13px] text-white/70 transition-colors hover:border-[#444] hover:text-white">
+          <button className="ml-auto flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border-default bg-surface-base px-3 text-text-base text-white/70 transition-colors hover:border-border-default hover:text-white">
             <Download className="h-3.5 w-3.5" /> Export
           </button>
         </div>
@@ -1030,7 +1030,7 @@ function ClassroomDashboard({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[680px] border-collapse text-left">
             <thead>
-              <tr className="bg-white/[0.04] text-[11px] font-semibold uppercase tracking-[0.5px] text-[#808080]">
+              <tr className="bg-white/[0.04] text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
                 <th className="px-5 py-3">Name</th>
                 <th className="px-5 py-3">Email ID</th>
                 <th className="w-[120px] px-5 py-3">Solved</th>
@@ -1041,21 +1041,21 @@ function ClassroomDashboard({
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-[13px] text-white/35">
+                  <td colSpan={5} className="px-5 py-10 text-center text-text-base text-white/35">
                     No students match your filters.
                   </td>
                 </tr>
               ) : (
                 filtered.map((s, i) => (
-                  <tr key={s.id} className={i % 2 === 1 ? "bg-white/[0.03]" : ""}>
-                    <td className="px-5 py-3.5 text-[14px] font-semibold text-white">{s.name}</td>
-                    <td className="px-5 py-3.5 text-[13px] text-[#999]">{s.email}</td>
-                    <td className="px-5 py-3.5 text-[14px] text-[#b3b3b3]">{s.solved}</td>
-                    <td className="px-5 py-3.5 text-[14px] font-semibold text-white">{s.score}</td>
+                  <tr key={s.id} className={i % 2 === 1 ? "bg-white/3" : ""}>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.name}</td>
+                    <td className="px-5 py-3.5 text-text-base text-text-muted">{s.email}</td>
+                    <td className="px-5 py-3.5 text-text-md text-text-secondary">{s.solved}</td>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.score}</td>
                     <td className="px-5 py-3.5">
                       <button
                         onClick={() => onSelectClass(s.classroomId)}
-                        className="cursor-pointer text-[12px] text-[#a49aff] transition-colors hover:text-[#7c6cf5]"
+                        className="cursor-pointer text-text-sm text-accent-text-muted transition-colors hover:text-accent-text"
                       >
                         {classMap[s.classroomId]?.name ?? s.classroomId}
                       </button>

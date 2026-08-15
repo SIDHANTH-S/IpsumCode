@@ -9,46 +9,47 @@ export function UpcomingAssessmentsPage() {
 
   return (
     <div className="flex h-full flex-col w-full max-w-[1200px] mx-auto pb-12">
-      <div className="mb-6 flex flex-wrap items-center gap-4 border-b border-neutral-800 pb-4 min-h-[32px]">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-        >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
-        </button>
-        <div className="h-4 w-px bg-neutral-800" aria-hidden="true" />
-        <h2 className="text-lg font-bold text-white">Upcoming Assessments</h2>
+      <div className="mb-6 flex flex-wrap items-center gap-4 border-b border-border-default pb-4 min-h-[32px]">
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1.5 rounded-md text-sm font-medium text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-none cursor-pointer"
+          >
+            ← Back
+          </button>
+        )}
+        <div className="h-4 w-px bg-border-default" aria-hidden="true" />
+        <h2 className="text-lg font-bold text-text-primary">Upcoming Assessments</h2>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-neutral-800 bg-white/[0.04] flex-1">
+      <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-base flex-1">
         <table className="w-full min-w-[700px] border-collapse text-sm">
           <thead>
-            <tr className="text-left text-[11px] font-medium uppercase tracking-wide text-neutral-500">
-              <th className="border-b border-white/[0.06] px-5 py-4">Contest name</th>
-              <th className="border-b border-white/[0.06] px-5 py-4">Class</th>
-              <th className="border-b border-white/[0.06] px-5 py-4">Date & time</th>
-              <th className="border-b border-white/[0.06] px-5 py-4">Duration</th>
-              <th className="border-b border-white/[0.06] px-5 py-4">Questions</th>
-              <th className="border-b border-white/[0.06] px-5 py-4" />
+            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-text-muted">
+              <th className="px-5 py-3 font-semibold">Assessment</th>
+              <th className="px-5 py-3 font-semibold">Classrooms</th>
+              <th className="px-5 py-3 font-semibold">Scheduled</th>
+              <th className="px-5 py-3 font-semibold">Duration</th>
+              <th className="px-5 py-3 font-semibold">Questions</th>
             </tr>
           </thead>
           <tbody>
             {upcoming.map((item) => (
               <tr
                 key={item.id}
-                className="border-b border-white/[0.06] last:border-b-0 hover:bg-white/[0.02] transition-colors"
+                className="border-b border-border-default last:border-b-0 hover:bg-surface-hover transition-colors"
               >
-                <td className="px-5 py-4 font-semibold text-white text-[13px]">{item.name}</td>
-                <td className="px-5 py-4 text-[13px] text-neutral-400">{item.classrooms.join(", ")}</td>
-                <td className="px-5 py-4 text-[13px] text-neutral-400">
+                <td className="px-5 py-4 font-semibold text-text-primary text-text-base">{item.name}</td>
+                <td className="px-5 py-4 text-text-base text-text-secondary">{item.classrooms.join(", ")}</td>
+                <td className="px-5 py-4 text-text-base text-text-secondary">
                   {item.scheduledDate}, {item.scheduledTime}
                 </td>
-                <td className="px-5 py-4 text-[13px] text-neutral-400">{item.duration / 60} min</td>
-                <td className="px-5 py-4 text-[13px] text-neutral-400">{item.questionsPerStudent}</td>
+                <td className="px-5 py-4 text-text-base text-text-secondary">{item.duration / 60} min</td>
+                <td className="px-5 py-4 text-text-base text-text-secondary">{item.questionsPerStudent}</td>
                 <td className="px-5 py-4 text-right">
                   <button
                     onClick={() => onViewAssessment(item.id)}
-                    className="rounded-md text-[12px] font-medium text-indigo-400 hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                    className="rounded-md text-text-sm font-medium text-indigo-400 hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     View
                   </button>
