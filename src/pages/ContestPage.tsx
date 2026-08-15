@@ -41,11 +41,11 @@ function ContestCards({ onView }: { onView: (id: string) => void }) {
         <div
           key={i}
           onClick={() => onView(`live-${i}`)}
-          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-radius-xl px-[17px] pt-4 pb-3 text-white shadow-shadow-elevated"
+          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-[10.74px] px-[17px] pt-4 pb-3 text-white shadow-shadow-elevated"
           style={{ background: CARD_GRADIENTS[card.tone] }}
         >
           <div className="flex-1">
-            <p className="text-text-md font-bold leading-none">{card.title}</p>
+            <p className="text-text-md font-bold leading-none text-white">{card.title}</p>
             <div className="mt-2 space-y-[3px] text-text-xs leading-[15px] text-white/80">
               {card.lines.map((line) => (
                 <p key={line} className="whitespace-pre">
@@ -54,12 +54,14 @@ function ContestCards({ onView }: { onView: (id: string) => void }) {
               ))}
             </div>
           </div>
-          <div className="mt-auto border-t border-white/25 pt-2.5">
+          <div className="mt-auto border-t border-white/24 pt-2.5">
             <div className="flex items-center justify-between">
               <span className="text-text-xs leading-none text-white/80">
                 {card.time}
               </span>
-              <button className="grid h-[26px] w-[26px] place-items-center rounded-full bg-white shadow-sm transition-transform hover:scale-105">
+              <button 
+                className="grid h-[26px] w-[26px] place-items-center rounded-full bg-white shadow-sm transition-transform hover:scale-105"
+              >
                 <ArrowRight
                   className="h-3.5 w-3.5"
                   style={{ color: ARROW_COLORS[card.tone] }}
@@ -236,14 +238,6 @@ function CompletedTable({
           </button>
         ))}
         <div className="ml-auto flex items-center gap-3">
-          {activeFilters.map((f) => (
-            <span
-              key={f.id}
-              className="flex items-center gap-1.5 rounded-full border border-border-default bg-surface-hover px-3 py-1 text-text-xs font-medium text-text-secondary"
-            >
-              {getFilterSummary(f)}
-            </span>
-          ))}
           <FilterMenu
             availableFilters={contestFilters}
             initialFilters={activeFilters}
@@ -264,7 +258,7 @@ function CompletedTable({
       <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-base">
         <table className="w-full min-w-[560px] border-collapse text-sm">
           <thead>
-            <tr className="bg-white/[0.04] text-left text-text-xs font-medium uppercase tracking-wide text-text-muted">
+            <tr className="bg-surface-raised text-left text-text-xs font-medium uppercase tracking-wide text-text-muted">
               <th className="px-5 py-3 font-semibold">Assessment</th>
               <th className="px-5 py-3 font-semibold">Participation</th>
               <th className="px-5 py-3 font-semibold">Avg. Score</th>
@@ -286,7 +280,7 @@ function CompletedTable({
               >
                 <td className="px-5 py-3.5">
                   <p className="font-semibold text-text-primary">{row.title}</p>
-                  <p className="mt-0.5 text-text-xs text-neutral-500">
+                  <p className="mt-0.5 text-text-xs text-text-muted">
                     {row.cls}
                   </p>
                 </td>
@@ -360,10 +354,10 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
             <button
               key={i}
               onClick={() => onDateClick?.(day)}
-              className="relative flex h-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-white/[0.04]"
+              className="relative flex h-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-surface-raised"
             >
               {isToday ? (
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500 text-text-sm font-normal text-white">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500 text-text-sm font-normal text-text-primary">
                   {day}
                 </span>
               ) : (

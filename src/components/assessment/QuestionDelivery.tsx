@@ -39,7 +39,7 @@ export function QuestionDelivery({
         <p className="mt-1 text-text-sm text-text-muted">
           Choose how questions are distributed to students
         </p>
-        <div className="mt-3 inline-flex gap-1 rounded-lg border border-white/8 bg-white/[0.04] p-1">
+        <div className="mt-3 inline-flex gap-1 rounded-lg border-[0.5px] border-border-default/30 bg-surface-raised p-1">
           {deliveryModes.map(({ mode }) => (
             <button
               key={mode}
@@ -47,8 +47,8 @@ export function QuestionDelivery({
               disabled={readonly}
               className={`cursor-pointer rounded-md px-4 py-2 text-text-base font-medium transition-colors ${
                 deliveryMode === mode
-                  ? "bg-accent-base text-text-primary"
-                  : "text-white/60 hover:text-white/90"
+                  ? "bg-accent-base text-white"
+                  : "text-text-secondary hover:text-text-primary"
               } ${readonly ? "opacity-70" : ""}`}
             >
               {mode}
@@ -69,7 +69,7 @@ export function QuestionDelivery({
           className="lg:ml-auto"
           disabled={readonly}
         />
-        <p className="mt-2 text-text-xs text-white/30">
+        <p className="mt-2 text-text-xs text-text-muted">
           Max available: {maxQuestions}
         </p>
       </div>

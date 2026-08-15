@@ -172,19 +172,19 @@ export function ListNavigationExample() {
           <div className="flex gap-2">
             <button 
               onClick={() => toViewAssessment(assessment.id)}
-              className="px-3 py-1 bg-blue-500 text-white rounded"
+              className="px-3 py-1 bg-blue-500 text-text-primary rounded"
             >
               View
             </button>
             <button 
               onClick={() => toEditAssessment(assessment.id)}
-              className="px-3 py-1 bg-gray-500 text-white rounded"
+              className="px-3 py-1 bg-gray-500 text-text-primary rounded"
             >
               Edit
             </button>
             <button 
               onClick={() => toContestResults(assessment.id)}
-              className="px-3 py-1 bg-green-500 text-white rounded"
+              className="px-3 py-1 bg-green-500 text-text-primary rounded"
             >
               Results
             </button>
@@ -269,7 +269,7 @@ export function SidebarNavigationExample() {
       <div
         onClick={navigation.toDashboard}
         className={`p-3 cursor-pointer rounded ${
-          isActive("/dashboard") ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+          isActive("/dashboard") ? "bg-blue-500 text-text-primary" : "hover:bg-gray-100"
         }`}
       >
         Dashboard
@@ -278,7 +278,7 @@ export function SidebarNavigationExample() {
       <div
         onClick={navigation.toClassroom}
         className={`p-3 cursor-pointer rounded ${
-          isActive("/classroom") ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+          isActive("/classroom") ? "bg-blue-500 text-text-primary" : "hover:bg-gray-100"
         }`}
       >
         Classroom
@@ -287,7 +287,7 @@ export function SidebarNavigationExample() {
       <div
         onClick={navigation.toQuestionBank}
         className={`p-3 cursor-pointer rounded ${
-          isActive("/question-bank") ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+          isActive("/question-bank") ? "bg-blue-500 text-text-primary" : "hover:bg-gray-100"
         }`}
       >
         Question Bank
@@ -296,7 +296,7 @@ export function SidebarNavigationExample() {
       <div
         onClick={navigation.toUpcomingAssessments}
         className={`p-3 cursor-pointer rounded ${
-          isActive("/assessments/upcoming") ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+          isActive("/assessments/upcoming") ? "bg-blue-500 text-text-primary" : "hover:bg-gray-100"
         }`}
       >
         Upcoming Assessments

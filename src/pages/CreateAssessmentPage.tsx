@@ -16,7 +16,7 @@ import { useNavigation } from "../hooks/useNavigation"
 
 const PANEL = "rounded-xl border border-border-default bg-surface-base"
 const FIELD =
-  "w-full rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-primary placeholder:text-text-muted focus:border-white/25 focus:outline-none"
+  "w-full rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none"
 
 // Extract unique classroom names for the mock
 const uniqueClassrooms = Array.from(new Set(classrooms.map((c) => c.name)))
@@ -189,7 +189,7 @@ export function CreateAssessmentPage() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={onExit}
-                  className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.1]"
+                  className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]"
                 >
                   Close
                 </button>
@@ -201,13 +201,13 @@ export function CreateAssessmentPage() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={onExit}
-                  className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.1]"
+                  className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]"
                 >
                   Close
                 </button>
                 <button
                   onClick={() => onModeChange?.("edit")}
-                  className="shrink-0 cursor-pointer rounded-md bg-accent-base px-4 py-spacing-btn-y text-text-base font-semibold text-text-primary transition-colors hover:bg-accent-hover"
+                  className="shrink-0 cursor-pointer rounded-md bg-accent-base px-4 py-spacing-btn-y text-text-base font-semibold text-white transition-colors hover:bg-accent-hover"
                 >
                   Edit Assessment
                 </button>
@@ -217,13 +217,13 @@ export function CreateAssessmentPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => onModeChange?.("view")}
-                className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.1]"
+                className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]"
               >
                 Discard Changes
               </button>
               <button
                 onClick={onExit}
-                className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.1]"
+                className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]"
               >
                 Cancel
               </button>
@@ -231,7 +231,7 @@ export function CreateAssessmentPage() {
           ) : (
             <button
               onClick={onExit}
-              className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.1]"
+              className="shrink-0 cursor-pointer rounded-md border border-border-default bg-surface-base px-4 py-spacing-btn-y text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]"
             >
               Cancel
             </button>
@@ -278,7 +278,7 @@ export function CreateAssessmentPage() {
             </div>
           </div>
 
-          <div className="hidden bg-white/[0.08] lg:block" />
+          <div className="hidden bg-border-default lg:block" />
 
           <div className="space-y-4">
             <div className="flex gap-4">

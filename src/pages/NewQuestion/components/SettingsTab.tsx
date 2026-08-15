@@ -35,38 +35,38 @@ export function SettingsTab({
   return (
     <div className="space-y-5">
       <div className={`${PANEL_BASE} p-5`}>
-        <h3 className="text-text-lg font-semibold text-white">Execution</h3>
-        <p className="mt-1 text-text-sm text-white/45">
+        <h3 className="text-text-lg font-semibold text-text-primary">Execution</h3>
+        <p className="mt-1 text-text-sm text-text-muted">
           Controls how the judge compiles and runs submissions.
         </p>
 
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[520px] border-collapse text-left">
             <thead>
-              <tr className="text-text-sm text-white/45">
-                <th className="border-b border-white/8 pb-2.5 pr-4 font-normal">Language</th>
-                <th className="border-b border-white/8 pb-2.5 pr-4 font-normal">
+              <tr className="text-text-sm text-text-muted">
+                <th className="border-b border-border-subtle pb-2.5 pr-4 font-normal">Language</th>
+                <th className="border-b border-border-subtle pb-2.5 pr-4 font-normal">
                   Reference Solution
                 </th>
-                <th className="border-b border-white/8 pb-2.5 font-normal">Action</th>
+                <th className="border-b border-border-subtle pb-2.5 font-normal">Action</th>
               </tr>
             </thead>
             <tbody>
               {draft.languages.length === 0 && (
                 <tr>
-                  <td colSpan={3} className="py-4 text-text-base text-white/40">
+                  <td colSpan={3} className="py-4 text-text-base text-text-muted">
                     No languages enabled yet. Add at least one so students can submit.
                   </td>
                 </tr>
               )}
               {draft.languages.map((lang) => (
                 <Fragment key={lang.id}>
-                  <tr className="border-b border-white/6">
-                    <td className="py-2.5 pr-4 text-text-base text-white/85">{lang.name}</td>
+                  <tr className="border-b border-border-default">
+                    <td className="py-2.5 pr-4 text-text-base text-text-secondary">{lang.name}</td>
                     <td className="py-2.5 pr-4 text-text-base">
                       <span
                         className={
-                          lang.hasReferenceSolution ? "text-status-success" : "text-white/35"
+                          lang.hasReferenceSolution ? "text-status-success" : "text-text-muted"
                         }
                       >
                         {lang.hasReferenceSolution ? "Added" : "Not added"}
@@ -87,11 +87,11 @@ export function SettingsTab({
                               ? "Edit"
                               : "Add reference solution"}
                         </button>
-                        <span className="text-white/25">·</span>
+                        <span className="text-text-muted">·</span>
                         <button
                           type="button"
                           onClick={() => actions.removeLanguage(lang.id)}
-                          className="text-white/50 transition-colors hover:text-status-danger"
+                          className="text-text-muted transition-colors hover:text-status-danger"
                         >
                           Remove
                         </button>
@@ -99,7 +99,7 @@ export function SettingsTab({
                     </td>
                   </tr>
                   {openReferenceId === lang.id && (
-                    <tr className="border-b border-white/6">
+                    <tr className="border-b border-border-default">
                       <td colSpan={3} className="py-3">
                         <FieldLabel htmlFor={`${lang.id}-reference`}>
                           {lang.name} reference solution
@@ -112,7 +112,7 @@ export function SettingsTab({
                           }
                           rows={8}
                           placeholder={`A correct ${lang.name} solution, used to validate test cases.`}
-                          className="w-full resize-y rounded-md border border-white/10 bg-white/[0.04] px-3 py-2.5 font-mono text-text-sm leading-relaxed text-white/85 placeholder:text-text-muted focus:border-white/25 focus:outline-none"
+                          className="w-full resize-y rounded-md border border-border-default bg-surface-raised px-3 py-2.5 font-mono text-text-sm leading-relaxed text-text-secondary placeholder:text-text-muted focus:border-border-strong focus:outline-none"
                         />
                       </td>
                     </tr>
@@ -149,7 +149,7 @@ export function SettingsTab({
             <FieldLabel htmlFor="time-limit">Time Limit</FieldLabel>
             <Select
               id="time-limit"
-              className="text-white/85"
+              className="text-text-secondary"
               value={String(draft.timeLimitSeconds)}
               onChange={(value) => actions.setTimeLimit(Number(value))}
               options={TIME_LIMIT_OPTIONS.map((seconds) => ({
@@ -162,7 +162,7 @@ export function SettingsTab({
             <FieldLabel htmlFor="memory-limit">Memory Limit</FieldLabel>
             <Select
               id="memory-limit"
-              className="text-white/85"
+              className="text-text-secondary"
               value={String(draft.memoryLimitMB)}
               onChange={(value) => actions.setMemoryLimit(Number(value))}
               options={MEMORY_LIMIT_OPTIONS.map((mb) => ({
@@ -175,8 +175,8 @@ export function SettingsTab({
       </div>
 
       <div className={`${PANEL_BASE} p-5`}>
-        <h3 className="text-text-lg font-semibold text-white">Status &amp; Metadata</h3>
-        <p className="mt-1 text-text-sm text-white/45">
+        <h3 className="text-text-lg font-semibold text-text-primary">Status &amp; Metadata</h3>
+        <p className="mt-1 text-text-sm text-text-muted">
           Publishing status is editable here; the rest is administrative
           information about this question.
         </p>
@@ -196,7 +196,7 @@ export function SettingsTab({
                   className={`flex h-8 items-center rounded-full border px-4 text-text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/60 ${
                     isSelected
                       ? "border-accent-base/50 bg-accent-base/15 text-accent-text-muted"
-                      : "border-white/10 bg-white/6 text-white/65 hover:text-white/90"
+                      : "border-border-default bg-surface-elevated text-text-secondary hover:text-text-primary"
                   }`}
                 >
                   {option.label}
@@ -218,8 +218,8 @@ export function SettingsTab({
                 index < all.length - 1 ? "border-b border-white/6" : ""
               }`}
             >
-              <dt className="w-40 shrink-0 text-white/45">{item.label}</dt>
-              <dd className="font-medium text-white/85">{item.value}</dd>
+              <dt className="w-40 shrink-0 text-text-muted">{item.label}</dt>
+              <dd className="font-medium text-text-secondary">{item.value}</dd>
             </div>
           ))}
         </dl>

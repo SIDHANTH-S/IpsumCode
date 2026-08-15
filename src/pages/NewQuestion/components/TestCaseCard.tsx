@@ -45,8 +45,8 @@ export function TestCaseCard({
 
   return (
     <div
-      className={`rounded-lg border bg-white/[0.02] ${
-        hasError ? "border-status-danger/40" : "border-white/10"
+      className={`rounded-lg border bg-surface-base ${
+        hasError ? "border-status-danger/40" : "border-border-default"
       }`}
     >
       <CaseHeader
@@ -58,13 +58,13 @@ export function TestCaseCard({
         headerId={headerId}
         right={
           <div className="flex items-center gap-1.5">
-            <div className="flex items-center overflow-hidden rounded-md border border-white/10">
+            <div className="flex items-center overflow-hidden rounded-md border border-border-default">
               <button
                 type="button"
                 aria-label={`Move ${title} up`}
                 disabled={!canMoveUp}
                 onClick={onMoveUp}
-                className="grid h-7 w-7 place-items-center text-white/45 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-25 disabled:hover:bg-transparent"
+                className="grid h-7 w-7 place-items-center text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary disabled:opacity-25 disabled:hover:bg-transparent"
               >
                 <ChevronUp className="h-3.5 w-3.5" />
               </button>
@@ -73,7 +73,7 @@ export function TestCaseCard({
                 aria-label={`Move ${title} down`}
                 disabled={!canMoveDown}
                 onClick={onMoveDown}
-                className="grid h-7 w-7 place-items-center text-white/45 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-25 disabled:hover:bg-transparent"
+                className="grid h-7 w-7 place-items-center text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary disabled:opacity-25 disabled:hover:bg-transparent"
               >
                 <ChevronDown className="h-3.5 w-3.5" />
               </button>
@@ -82,7 +82,7 @@ export function TestCaseCard({
               type="button"
               aria-label={`Delete ${title}`}
               onClick={onRemove}
-              className="grid h-7 w-7 place-items-center rounded-md text-white/45 transition-colors hover:bg-status-danger/10 hover:text-status-danger"
+              className="grid h-7 w-7 place-items-center rounded-md text-text-muted transition-colors hover:bg-status-danger/10 hover:text-status-danger"
             >
               <Trash2 className="h-3.5 w-3.5" />
             </button>
@@ -95,7 +95,7 @@ export function TestCaseCard({
           id={bodyId}
           role="region"
           aria-labelledby={headerId}
-          className="space-y-4 border-t border-white/6 px-4 py-4"
+          className="space-y-4 border-t border-border-default px-4 py-4"
         >
           <div>
             <FieldLabel htmlFor={`${testCase.id}-label`}>Label (optional)</FieldLabel>
@@ -104,7 +104,7 @@ export function TestCaseCard({
               value={testCase.label}
               onChange={(event) => onUpdate({ label: event.target.value })}
               placeholder="e.g. Basic case"
-              className="w-full rounded-md border border-white/10 bg-white/6 px-3 h-9 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
+              className="w-full rounded-md border border-border-default bg-surface-elevated px-3 h-9 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
             />
           </div>
 
@@ -137,7 +137,7 @@ export function TestCaseCard({
                 value={testCase.explanation}
                 onChange={(event) => onUpdate({ explanation: event.target.value })}
                 placeholder="Why this input produces this output"
-                className="w-full rounded-md border border-white/10 bg-white/6 px-3 h-9 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
+                className="w-full rounded-md border border-border-default bg-surface-elevated px-3 h-9 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
               />
             </div>
           )}

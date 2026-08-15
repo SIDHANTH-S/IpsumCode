@@ -92,7 +92,7 @@ function parseEmails(raw: string, enrolledEmails: string[]): ParsedEmail[] {
 
 const STATUS_STYLE: Record<EmailStatus, string> = {
   valid: "border-status-success/40 bg-status-success/10 text-status-success",
-  duplicate: "border-white/15 bg-white/6 text-white/50",
+  duplicate: "border-white/15 bg-surface-base text-text-muted",
   enrolled: "border-status-warning/40 bg-status-warning/10 text-status-warning",
   invalid: "border-status-danger/40 bg-status-danger/10 text-status-danger",
 }
@@ -150,10 +150,10 @@ function AddStudentsModal({
       <div className="w-full max-w-lg rounded-xl border border-border-default bg-surface-base shadow-2xl">
         <div className="flex items-center justify-between border-b border-border-default px-6 py-4">
           <div>
-            <h2 className="text-text-lg font-semibold text-white">Add Students</h2>
-            <p className="mt-0.5 text-text-sm text-white/40">to {classroom.name} · {classroom.year}</p>
+            <h2 className="text-text-lg font-semibold text-text-primary">Add Students</h2>
+            <p className="mt-0.5 text-text-sm text-text-muted">to {classroom.name} · {classroom.year}</p>
           </div>
-          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white">
+          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -164,7 +164,7 @@ function AddStudentsModal({
               key={m}
               onClick={() => setMode(m)}
               className={`border-b-2 px-1 pb-2.5 text-text-base font-medium transition-colors ${
-                mode === m ? "border-accent-base text-white" : "border-transparent text-white/40 hover:text-white/70"
+                mode === m ? "border-accent-base text-text-primary" : "border-transparent text-text-muted hover:text-text-secondary"
               }`}
             >
               {m === "paste" ? "Paste Emails" : "Import CSV"}
@@ -181,16 +181,16 @@ function AddStudentsModal({
                 onChange={(e) => setRaw(e.target.value)}
                 placeholder={"aarav@college.edu\nananya@college.edu, arjun@college.edu\ndiya@college.edu"}
                 rows={6}
-                className="w-full resize-none rounded-md border border-white/10 bg-white/[0.04] px-3 py-2.5 font-mono text-text-base leading-relaxed text-white placeholder:text-text-muted focus:border-white/20 focus:outline-none"
+                className="w-full resize-none rounded-md border border-border-default bg-surface-raised px-3 py-2.5 font-mono text-text-base leading-relaxed text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none"
               />
-              <p className="text-text-xs text-white/35">
+              <p className="text-text-xs text-text-muted">
                 Paste one email per line, or comma / space separated. We'll validate each one.
               </p>
             </>
           ) : (
             <div
               onClick={() => fileRef.current?.click()}
-              className="flex h-36 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-white/15 text-white/40 transition-colors hover:border-white/30 hover:text-white/60"
+              className="flex h-36 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-white/15 text-text-muted transition-colors hover:border-white/30 hover:text-text-secondary"
             >
               <Upload className="h-7 w-7" />
               <p className="text-text-base">Click to upload a CSV file</p>
@@ -214,7 +214,7 @@ function AddStudentsModal({
                   </span>
                 )}
                 {counts.duplicate > 0 && (
-                  <span className="flex items-center gap-1 rounded-full border border-white/15 bg-white/6 px-2.5 py-0.5 text-white/50">
+                  <span className="flex items-center gap-1 rounded-full border border-white/15 bg-surface-base px-2.5 py-0.5 text-text-muted">
                     {counts.duplicate} duplicate
                   </span>
                 )}
@@ -224,10 +224,10 @@ function AddStudentsModal({
                   </span>
                 )}
               </div>
-              <div className="max-h-40 divide-y divide-white/[0.04] overflow-y-auto rounded-md border border-white/10">
+              <div className="max-h-40 divide-y divide-white/[0.04] overflow-y-auto rounded-md border border-border-default">
                 {parsed.map((p, i) => (
                   <div key={i} className="flex items-center justify-between px-3 py-2">
-                    <span className={`font-mono text-text-base ${p.status === "valid" ? "text-white" : "text-white/50"}`}>
+                    <span className={`font-mono text-text-base ${p.status === "valid" ? "text-text-primary" : "text-text-muted"}`}>
                       {p.email}
                     </span>
                     <span className={`rounded-full border px-2 py-0.5 text-text-xs ${STATUS_STYLE[p.status]}`}>
@@ -241,7 +241,7 @@ function AddStudentsModal({
         </div>
 
         <div className="flex items-center justify-end gap-3 border-t border-border-default px-6 py-4">
-          <button onClick={onClose} className="rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+          <button onClick={onClose} className="rounded-lg border border-border-default bg-surface-base px-4 py-2 text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]">
             Cancel
           </button>
           <button
@@ -280,18 +280,18 @@ function RemoveConfirmModal({
             <Trash2 className="h-[18px] w-[18px] text-status-danger" />
           </div>
           <div>
-            <h2 className="text-text-lg font-semibold text-white">Remove Student</h2>
-            <p className="mt-1.5 text-text-base text-white/50">
-              Remove <span className="font-medium text-white">{student.name}</span> from{" "}
-              <span className="font-medium text-white">{classroom.name}</span>? This action cannot be undone.
+            <h2 className="text-text-lg font-semibold text-text-primary">Remove Student</h2>
+            <p className="mt-1.5 text-text-base text-text-muted">
+              Remove <span className="font-medium text-text-primary">{student.name}</span> from{" "}
+              <span className="font-medium text-text-primary">{classroom.name}</span>? This action cannot be undone.
             </p>
           </div>
         </div>
         <div className="flex gap-3 border-t border-border-default px-6 py-4">
-          <button onClick={onCancel} className="flex-1 rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+          <button onClick={onCancel} className="flex-1 rounded-lg border border-border-default bg-surface-base px-4 py-2 text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]">
             Cancel
           </button>
-          <button onClick={onConfirm} className="flex-1 rounded-lg bg-status-danger-dark px-4 py-2 text-text-base font-semibold text-white transition-colors hover:bg-status-danger-dark">
+          <button onClick={onConfirm} className="flex-1 rounded-lg bg-status-danger-dark px-4 py-2 text-text-base font-semibold text-text-primary transition-colors hover:bg-status-danger-dark">
             Remove
           </button>
         </div>
@@ -334,15 +334,15 @@ function CreateClassroomModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
       <div className="w-full max-w-sm rounded-xl border border-border-default bg-surface-base shadow-2xl">
         <div className="flex items-center justify-between border-b border-border-default px-6 py-4">
-          <h2 className="text-text-lg font-semibold text-white">Create Classroom</h2>
-          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white">
+          <h2 className="text-text-lg font-semibold text-text-primary">Create Classroom</h2>
+          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary">
             <X className="h-4 w-4" />
           </button>
         </div>
 
         <div className="space-y-5 p-6">
           <div>
-            <label className="mb-1.5 block text-text-sm font-medium text-white/70">
+            <label className="mb-1.5 block text-text-sm font-medium text-text-secondary">
               Class name <span className="text-accent-text-muted">*</span>
             </label>
             <input
@@ -351,13 +351,13 @@ function CreateClassroomModal({
               onKeyDown={(e) => { if (e.key === "Enter" && name.trim()) handleCreate() }}
               placeholder="e.g. CSE-A IV Year"
               autoFocus
-              className="h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none"
+              className="h-10 w-full rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none"
             />
-            <p className="mt-1.5 text-text-xs text-white/35">Include year and section in the name, e.g. "CSE-A IV Year"</p>
+            <p className="mt-1.5 text-text-xs text-text-muted">Include year and section in the name, e.g. "CSE-A IV Year"</p>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-text-sm font-medium text-white/70">Accent color</label>
+            <label className="mb-1.5 block text-text-sm font-medium text-text-secondary">Accent color</label>
             <div className="flex gap-2.5">
               {ACCENT_COLORS.map((c) => (
                 <button
@@ -365,7 +365,7 @@ function CreateClassroomModal({
                   type="button"
                   onClick={() => setColor(c)}
                   style={{ backgroundColor: c }}
-                  className={`h-7 w-7 rounded-full transition-transform hover:scale-110 ${color === c ? "ring-2 ring-white/60 ring-offset-2 ring-offset-[#141414]" : ""}`}
+                  className={`h-7 w-7 rounded-full transition-transform hover:scale-110 ${color === c ? "ring-2 ring-white/60 ring-offset-2 ring-offset-surface-base" : ""}`}
                 />
               ))}
             </div>
@@ -373,7 +373,7 @@ function CreateClassroomModal({
         </div>
 
         <div className="flex gap-3 border-t border-border-default px-6 py-4">
-          <button onClick={onClose} className="flex-1 rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+          <button onClick={onClose} className="flex-1 rounded-lg border border-border-default bg-surface-base px-4 py-2 text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]">
             Cancel
           </button>
           <button
@@ -408,8 +408,8 @@ function RenameModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
       <div className="w-full max-w-sm rounded-xl border border-border-default bg-surface-base shadow-2xl">
         <div className="flex items-center justify-between border-b border-border-default px-6 py-4">
-          <h2 className="text-text-lg font-semibold text-white">Rename Classroom</h2>
-          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white">
+          <h2 className="text-text-lg font-semibold text-text-primary">Rename Classroom</h2>
+          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -421,11 +421,11 @@ function RenameModal({
               if (e.key === "Enter" && name.trim()) { onRename(name.trim()); onClose() }
             }}
             autoFocus
-            className="h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white focus:border-white/25 focus:outline-none"
+            className="h-10 w-full rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-primary focus:border-border-default focus:outline-none"
           />
         </div>
         <div className="flex gap-3 border-t border-border-default px-6 py-4">
-          <button onClick={onClose} className="flex-1 rounded-lg border border-white/10 bg-white/6 px-4 py-2 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+          <button onClick={onClose} className="flex-1 rounded-lg border border-border-default bg-surface-base px-4 py-2 text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]">
             Cancel
           </button>
           <button
@@ -462,32 +462,32 @@ function ManageMenu({ onRename, onArchive }: { onRename: () => void; onArchive: 
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex h-9 items-center gap-1.5 rounded-lg border border-white/10 bg-white/6 px-4 text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+        className="flex h-9 items-center gap-1.5 rounded-lg border border-border-default bg-surface-base px-4 text-text-base font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]"
       >
-        Manage Classroom <ChevronDown className="h-3.5 w-3.5 text-white/40" />
+        Manage Classroom <ChevronDown className="h-3.5 w-3.5 text-text-muted" />
       </button>
       {open && (
         <ul className="absolute right-0 z-20 mt-1.5 w-48 overflow-hidden rounded-md border border-border-default bg-surface-base py-1 shadow-xl">
           <li>
             <button
               onClick={() => { setOpen(false); onRename() }}
-              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-text-base text-white/85 hover:bg-white/10"
+              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-text-base text-text-secondary hover:bg-surface-hover"
             >
-              <Pencil className="h-3.5 w-3.5 text-white/40" /> Rename
+              <Pencil className="h-3.5 w-3.5 text-text-muted" /> Rename
             </button>
           </li>
           <li>
             <button
               onClick={() => { setOpen(false); onArchive() }}
-              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-text-base text-white/85 hover:bg-white/10"
+              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-text-base text-text-secondary hover:bg-surface-hover"
             >
-              <Archive className="h-3.5 w-3.5 text-white/40" /> Archive
+              <Archive className="h-3.5 w-3.5 text-text-muted" /> Archive
             </button>
           </li>
           <li>
             <button
               disabled
-              className="flex w-full cursor-not-allowed items-center gap-2.5 px-3 py-2 text-left text-text-base text-white/30"
+              className="flex w-full cursor-not-allowed items-center gap-2.5 px-3 py-2 text-left text-text-base text-text-muted"
               title="Backend support needed"
             >
               <Trash2 className="h-3.5 w-3.5" /> Delete
@@ -540,13 +540,13 @@ function StudentsTab({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search name, email…"
-              className="h-8 w-full rounded border border-white/10 bg-white/[0.07] pl-8 pr-3 text-text-base text-white placeholder:text-text-secondary focus:border-white/20 focus:outline-none"
+              className="h-8 w-full rounded border border-border-default bg-bg-base/[0.07] pl-8 pr-3 text-text-base text-text-primary placeholder:text-text-secondary focus:border-border-default focus:outline-none"
             />
           </div>
-          <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/[0.08] text-text-secondary transition-colors hover:text-white">
+          <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-border-default text-text-secondary transition-colors hover:text-text-primary">
             <Filter className="h-3.5 w-3.5" />
           </button>
-          <button className="ml-auto flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-border-default bg-surface-base px-3 text-text-base text-white/70 transition-colors hover:border-border-default hover:text-white">
+          <button className="ml-auto flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-secondary transition-colors hover:border-border-default hover:text-text-primary">
             <Download className="h-3.5 w-3.5" /> Export
           </button>
         </div>
@@ -554,7 +554,7 @@ function StudentsTab({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-left">
             <thead>
-              <tr className="bg-white/[0.04] text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
+              <tr className="bg-surface-raised text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
                 <th className="px-5 py-3">Name</th>
                 <th className="px-5 py-3">Email ID</th>
                 <th className="w-[100px] px-5 py-3">Solved</th>
@@ -565,17 +565,17 @@ function StudentsTab({
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-text-base text-white/35">
+                  <td colSpan={5} className="px-5 py-10 text-center text-text-base text-text-muted">
                     {search ? "No students match your search." : "No students in this classroom yet."}
                   </td>
                 </tr>
               ) : (
                 filtered.map((s, i) => (
                   <tr key={s.id} className={i % 2 === 1 ? "bg-white/3" : ""}>
-                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.name}</td>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-text-primary">{s.name}</td>
                     <td className="px-5 py-3.5 text-text-base text-text-muted">{s.email}</td>
                     <td className="px-5 py-3.5 text-text-md text-text-secondary">{s.solved}</td>
-                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.score}</td>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-text-primary">{s.score}</td>
                     <td className="px-5 py-3.5">
                       <button
                         onClick={() => setPending(s)}
@@ -591,7 +591,7 @@ function StudentsTab({
           </table>
         </div>
 
-        <div className="border-t border-border-default px-5 py-3 text-text-sm text-white/35">
+        <div className="border-t border-border-default px-5 py-3 text-text-sm text-text-muted">
           {filtered.length} of {students.length} student{students.length !== 1 ? "s" : ""}
         </div>
       </div>
@@ -650,7 +650,7 @@ function AssessmentsTab({ classroomId }: { classroomId: string }) {
 
   if (rows.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center rounded-xl border border-border-default bg-surface-base text-text-base text-white/35">
+      <div className="flex h-40 items-center justify-center rounded-xl border border-border-default bg-surface-base text-text-base text-text-muted">
         No assessments assigned to this classroom yet.
       </div>
     )
@@ -661,7 +661,7 @@ function AssessmentsTab({ classroomId }: { classroomId: string }) {
       <div className="overflow-x-auto">
         <table className="w-full min-w-[520px] border-collapse text-left">
           <thead>
-            <tr className="bg-white/[0.04] text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
+            <tr className="bg-surface-raised text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
               <th className="px-5 py-3">Assessment</th>
               <th className="px-5 py-3">Status</th>
               <th className="px-5 py-3">Date</th>
@@ -671,7 +671,7 @@ function AssessmentsTab({ classroomId }: { classroomId: string }) {
           <tbody>
             {rows.map((row, i) => (
               <tr key={row.id} className={i % 2 === 1 ? "bg-white/3" : ""}>
-                <td className="px-5 py-3.5 text-text-base font-semibold text-white">{row.name}</td>
+                <td className="px-5 py-3.5 text-text-base font-semibold text-text-primary">{row.name}</td>
                 <td className="px-5 py-3.5">
                   <span className={`rounded-full border px-2.5 py-0.5 text-text-xs font-medium ${
                     row.status === "upcoming"
@@ -685,7 +685,7 @@ function AssessmentsTab({ classroomId }: { classroomId: string }) {
                   {row.date || "—"}
                   {row.time && ` · ${row.time}`}
                   {row.duration && (
-                    <span className="ml-1 text-white/35">({formatDuration(row.duration)})</span>
+                    <span className="ml-1 text-text-muted">({formatDuration(row.duration)})</span>
                   )}
                 </td>
                 <td className="px-5 py-3.5 text-text-base text-text-secondary">
@@ -750,7 +750,7 @@ function ClassroomWorkspace({
         <div>
           <button
             onClick={onBack}
-            className="mb-4 flex items-center gap-1.5 text-text-sm text-white/40 transition-colors hover:text-white/70"
+            className="mb-4 flex items-center gap-1.5 text-text-sm text-text-muted transition-colors hover:text-text-secondary"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> All Classrooms
           </button>
@@ -769,7 +769,7 @@ function ClassroomWorkspace({
                 {classroom.name.slice(0, 2)}
               </div>
               <div className="flex items-center gap-2">
-                <h1 className="text-text-xl font-bold leading-tight text-white">{classroom.name}</h1>
+                <h1 className="text-text-xl font-bold leading-tight text-text-primary">{classroom.name}</h1>
                 {classroom.status === "archived" && (
                   <span className="rounded-full border border-status-warning/40 bg-status-warning/10 px-1.5 py-0.5 text-text-xs text-status-warning">
                     Archived
@@ -797,7 +797,7 @@ function ClassroomWorkspace({
               key={t}
               onClick={() => setActiveTab(t)}
               className={`relative flex items-center gap-1.5 rounded-md px-4 py-2 text-text-base font-medium transition-colors ${
-                activeTab === t ? "bg-white/6 text-white" : "text-white/55 hover:text-white/85"
+                activeTab === t ? "bg-surface-base text-text-primary" : "text-text-muted hover:text-text-secondary"
               }`}
             >
               {t === "students" && <Users className="h-3.5 w-3.5" />}
@@ -843,8 +843,8 @@ function ClassroomCard({
       } ${room.status === "archived" ? "opacity-60" : ""}`}
       style={{
         background: isActive
-          ? `linear-gradient(135deg, ${room.color}18 0%, #141414 60%)`
-          : `linear-gradient(135deg, ${room.color}10 0%, #141414 60%)`,
+          ? `linear-gradient(135deg, ${room.color}18 0%, var(--surface-base) 60%)`
+          : `linear-gradient(135deg, ${room.color}10 0%, var(--surface-base) 60%)`,
       }}
     >
       {/* Decorative classroom icon — fills right side as background art */}
@@ -864,13 +864,13 @@ function ClassroomCard({
         />
         <path
           d="M9 21V12h6v9"
-          stroke="#141414"
+          stroke="var(--surface-base)"
           strokeWidth="1.5"
           strokeLinejoin="round"
         />
         <path
           d="M12 4v1M8 8h2M14 8h2M8 12h2M14 12h2"
-          stroke="#141414"
+          stroke="var(--surface-base)"
           strokeWidth="1.2"
           strokeLinecap="round"
         />
@@ -879,14 +879,14 @@ function ClassroomCard({
       {/* Content */}
       <div className="relative flex h-full flex-col justify-between p-4">
         <p
-          className="text-text-xl font-bold leading-none text-white"
+          className="text-text-xl font-bold leading-none text-text-primary"
           style={{ textShadow: `0 0 20px ${room.color}44` }}
         >
           {room.name}
         </p>
         <p className="text-text-base font-semibold" style={{ color: room.color }}>
           {room.students}
-          <span className="ml-1 text-text-xs font-normal text-white/40">students</span>
+          <span className="ml-1 text-text-xs font-normal text-text-muted">students</span>
         </p>
       </div>
     </button>
@@ -990,7 +990,7 @@ function ClassroomDashboard({
 
       <div className="overflow-hidden rounded-xl border border-border-default bg-surface-base">
         <div className="flex flex-wrap items-center gap-3 px-5 py-4">
-          <p className="text-text-base font-semibold text-white/70">All Students</p>
+          <p className="text-text-base font-semibold text-text-secondary">All Students</p>
           <div className="relative ml-2 w-full max-w-[275px]">
             <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary" />
             <input
@@ -998,7 +998,7 @@ function ClassroomDashboard({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search name, email…"
-              className="h-8 w-full rounded border border-white/10 bg-white/[0.07] pl-8 pr-3 text-text-base text-white placeholder:text-text-secondary focus:border-white/20 focus:outline-none"
+              className="h-8 w-full rounded border border-border-default bg-bg-base/[0.07] pl-8 pr-3 text-text-base text-text-primary placeholder:text-text-secondary focus:border-border-default focus:outline-none"
             />
           </div>
 
@@ -1008,7 +1008,7 @@ function ClassroomDashboard({
               <div className={`relative grid h-8 w-8 cursor-pointer place-items-center rounded-full transition-colors ${
                 hasFilters
                   ? "bg-accent-base/20 text-accent-text-muted"
-                  : "bg-white/[0.08] text-text-secondary hover:text-white"
+                  : "bg-border-default text-text-secondary hover:text-text-primary"
               }`}>
                 <Filter className="h-3.5 w-3.5" />
                 {hasFilters && (
@@ -1021,7 +1021,7 @@ function ClassroomDashboard({
             onApply={(filters) => setActiveFilters(filters)}
           />
 
-          <button className="ml-auto flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border-default bg-surface-base px-3 text-text-base text-white/70 transition-colors hover:border-border-default hover:text-white">
+          <button className="ml-auto flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-secondary transition-colors hover:border-border-default hover:text-text-primary">
             <Download className="h-3.5 w-3.5" /> Export
           </button>
         </div>
@@ -1030,7 +1030,7 @@ function ClassroomDashboard({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[680px] border-collapse text-left">
             <thead>
-              <tr className="bg-white/[0.04] text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
+              <tr className="bg-surface-raised text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
                 <th className="px-5 py-3">Name</th>
                 <th className="px-5 py-3">Email ID</th>
                 <th className="w-[120px] px-5 py-3">Solved</th>
@@ -1041,17 +1041,17 @@ function ClassroomDashboard({
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-text-base text-white/35">
+                  <td colSpan={5} className="px-5 py-10 text-center text-text-base text-text-muted">
                     No students match your filters.
                   </td>
                 </tr>
               ) : (
                 filtered.map((s, i) => (
                   <tr key={s.id} className={i % 2 === 1 ? "bg-white/3" : ""}>
-                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.name}</td>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-text-primary">{s.name}</td>
                     <td className="px-5 py-3.5 text-text-base text-text-muted">{s.email}</td>
                     <td className="px-5 py-3.5 text-text-md text-text-secondary">{s.solved}</td>
-                    <td className="px-5 py-3.5 text-text-md font-semibold text-white">{s.score}</td>
+                    <td className="px-5 py-3.5 text-text-md font-semibold text-text-primary">{s.score}</td>
                     <td className="px-5 py-3.5">
                       <button
                         onClick={() => onSelectClass(s.classroomId)}

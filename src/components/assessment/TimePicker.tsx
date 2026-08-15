@@ -44,9 +44,9 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
         readOnly
         value={value || ""}
         placeholder="Select time"
-        className={`h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 pr-9 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
+        className={`h-10 w-full rounded-md border border-border-default bg-surface-base px-3 pr-9 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
       />
-      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/35">
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
         <Clock className="h-4 w-4" />
       </span>
     </div>
@@ -56,7 +56,7 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
     <div className="p-3">
       <div className="flex h-[180px] gap-2">
         {/* Hours */}
-        <div className="flex-1 overflow-y-auto rounded-md border border-white/5 bg-white/[0.02] p-1 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto rounded-md border border-border-subtle bg-surface-base p-1 custom-scrollbar">
           {HOURS.map((h) => (
             <button
               key={h}
@@ -64,7 +64,7 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
               className={`flex h-8 w-full items-center justify-center rounded text-text-base transition-colors ${
                 hour === h
                   ? "bg-accent-base font-medium text-white shadow-sm"
-                  : "text-white/60 hover:bg-white/10 hover:text-white"
+                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {h}
@@ -72,10 +72,10 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
           ))}
         </div>
 
-        <div className="flex items-center text-white/30">:</div>
+        <div className="flex items-center text-text-muted">:</div>
 
         {/* Minutes */}
-        <div className="flex-1 overflow-y-auto rounded-md border border-white/5 bg-white/[0.02] p-1 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto rounded-md border border-border-subtle bg-surface-base p-1 custom-scrollbar">
           {MINUTES.map((m) => (
             <button
               key={m}
@@ -83,7 +83,7 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
               className={`flex h-8 w-full items-center justify-center rounded text-text-base transition-colors ${
                 minute === m
                   ? "bg-accent-base font-medium text-white shadow-sm"
-                  : "text-white/60 hover:bg-white/10 hover:text-white"
+                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {m}
@@ -92,7 +92,7 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
         </div>
 
         {/* Period */}
-        <div className="flex-1 flex flex-col gap-1 rounded-md border border-white/5 bg-white/[0.02] p-1">
+        <div className="flex-1 flex flex-col gap-1 rounded-md border border-border-subtle bg-surface-base p-1">
           {PERIODS.map((p) => (
             <button
               key={p}
@@ -100,7 +100,7 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
               className={`flex h-full w-full items-center justify-center rounded text-text-sm font-medium transition-colors ${
                 period === p
                   ? "bg-accent-base text-white shadow-sm"
-                  : "text-white/60 hover:bg-white/10 hover:text-white"
+                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {p}
@@ -112,7 +112,7 @@ export function TimePicker({ value, onChange, readonly }: TimePickerProps) {
       <div className="mt-3 flex justify-end">
         <button
           onClick={handleApply}
-          className="rounded-md bg-white/10 px-4 py-1.5 text-text-sm font-medium text-white transition-colors hover:bg-white/20"
+          className="rounded-md bg-surface-hover px-4 py-1.5 text-text-sm font-medium text-text-primary transition-colors hover:bg-surface-raised"
         >
           Apply
         </button>

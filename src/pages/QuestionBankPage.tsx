@@ -51,25 +51,25 @@ export function QuestionBankPage({
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-text-xs font-medium uppercase tracking-[0.5px] text-white/50">
+          <p className="text-text-xs font-medium uppercase tracking-[0.5px] text-text-muted">
             Manage
           </p>
-          <h1 className="mt-1 text-text-2xl font-semibold leading-tight text-white">
+          <h1 className="mt-1 text-text-2xl font-semibold leading-tight text-text-primary">
             Question Bank
           </h1>
-          <p className="mt-1 text-text-sm text-white/50">
+          <p className="mt-1 text-text-sm text-text-muted">
             1,248 questions <span className="mx-0.5">·</span> 1,190 active{" "}
             <span className="mx-0.5">·</span> 58 archived
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2.5">
-          <button className="flex cursor-pointer items-center gap-2 rounded-md border border-white/10 bg-white/6 px-4 py-spacing-btn-y text-text-base font-medium text-white/85 transition-colors hover:bg-white/[0.1]">
+          <button className="flex h-10 cursor-pointer items-center gap-2 rounded-lg border border-border-default bg-surface-base px-5 text-text-md font-medium text-text-secondary transition-colors hover:bg-bg-base/[0.1]">
             <Upload className="h-3.5 w-3.5" />
             Import Questions
           </button>
           <button
             onClick={onNewQuestion}
-            className="flex cursor-pointer items-center gap-1.5 rounded-md bg-accent-base px-4 py-spacing-btn-y text-text-base font-semibold text-white transition-colors hover:bg-accent-hover"
+            className="flex h-10 cursor-pointer items-center gap-1.5 rounded-lg bg-accent-base px-5 text-text-md font-semibold text-white transition-colors hover:bg-accent-hover"
           >
             <Plus className="h-4 w-4" strokeWidth={2.5} />
             New Question
@@ -83,16 +83,16 @@ export function QuestionBankPage({
           <input
             type="text"
             placeholder="Search questions"
-            className="h-8 w-full rounded-full bg-white/[0.08] pl-9 pr-4 text-text-md text-white placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-white/20"
+            className="h-8 w-full rounded-full bg-border-default pl-9 pr-4 text-text-md text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-border-default"
           />
         </div>
-        <button className="flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 text-text-base text-white/85 transition-colors hover:bg-white/[0.12]">
+        <button className="flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-border-default px-3.5 text-text-base text-text-secondary transition-colors hover:bg-bg-base/[0.12]">
           <ArrowUpDown className="h-3.5 w-3.5" />
           Sort
         </button>
         <FilterMenu
           trigger={
-            <button className="relative flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 text-text-base text-white/85 transition-colors hover:bg-white/[0.12]">
+            <button className="relative flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-border-default px-3.5 text-text-base text-text-secondary transition-colors hover:bg-bg-base/[0.12]">
               <Filter className="h-3.5 w-3.5" />
               Filter
               <span className="absolute -right-1 -top-[3px] h-[5px] w-[5px] rounded-full bg-status-danger-dark" />
@@ -116,8 +116,8 @@ export function QuestionBankPage({
           <button
             key={`${q.num}-${i}`}
             className={`group flex h-11 cursor-pointer items-center gap-3 rounded border border-border-default px-4 text-left transition-colors ${
-              i % 2 === 0 ? "bg-white/6" : "bg-transparent"
-            } hover:bg-white/[0.09]`}
+              i % 2 === 0 ? "bg-surface-base" : "bg-transparent"
+            } hover:bg-bg-base/[0.09]`}
           >
             <span className="min-w-0 flex-1 truncate text-text-md font-semibold leading-5 text-text-primary">
               {q.num}. {q.title}

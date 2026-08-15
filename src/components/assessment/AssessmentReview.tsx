@@ -59,16 +59,16 @@ export function AssessmentReview({
     <>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-text-base font-medium text-white/55">
+          <h3 className="text-text-base font-medium text-text-muted">
             Review before submitting
           </h3>
-          <p className="mt-1 text-text-xl font-semibold text-white">
+          <p className="mt-1 text-text-xl font-semibold text-text-primary">
             {draft.name || "Untitled Assessment"}
           </p>
         </div>
         {!isDraft && draft.scheduledDate && draft.scheduledTime && (
           <div className="flex shrink-0 flex-col items-end gap-1.5">
-            <span className="text-text-xs font-medium uppercase tracking-[0.5px] text-white/40">
+            <span className="text-text-xs font-medium uppercase tracking-[0.5px] text-text-muted">
               Schedule
             </span>
             <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export function AssessmentReview({
         )}
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 border-t border-white/6 pt-5 sm:grid-cols-2">
+      <div className="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 border-t border-border-default pt-5 sm:grid-cols-2">
         {[
           { label: "Assessment", value: draft.name || "—" },
           {
@@ -96,17 +96,17 @@ export function AssessmentReview({
           { label: "Question delivery", value: draft.deliveryMode },
         ].map((row) => (
           <div key={row.label} className="flex gap-6 text-text-base">
-            <span className="w-32 shrink-0 text-white/45">{row.label}</span>
-            <span className="font-medium text-white/85">{row.value}</span>
+            <span className="w-32 shrink-0 text-text-muted">{row.label}</span>
+            <span className="font-medium text-text-secondary">{row.value}</span>
           </div>
         ))}
       </div>
 
-      <div className="mt-5 flex flex-col gap-3 border-t border-white/6 pt-4 sm:flex-row sm:items-center sm:justify-between">
-        <span className="flex items-center gap-2 text-text-sm text-white/60">
+      <div className="mt-5 flex flex-col gap-3 border-t border-border-default pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <span className="flex items-center gap-2 text-text-sm text-text-secondary">
           <span
             className={`h-2 w-2 rounded-full ${
-              allRequiredFilled ? "bg-emerald-500" : "bg-white/20"
+              allRequiredFilled ? "bg-emerald-500" : "bg-surface-raised"
             }`}
           />
           {allRequiredFilled

@@ -96,9 +96,9 @@ export function QuestionBankSelector({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
-        <h3 className="text-text-md font-semibold text-white">Question Bank</h3>
-        <span className="text-text-xs text-white/45">
+      <div className="flex items-center justify-between border-b border-border-default px-4 py-3">
+        <h3 className="text-text-md font-semibold text-text-primary">Question Bank</h3>
+        <span className="text-text-xs text-text-muted">
           {questions.length} questions
         </span>
       </div>
@@ -110,7 +110,7 @@ export function QuestionBankSelector({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search questions..."
-            className="h-8 w-full rounded-full bg-white/[0.08] pl-9 pr-4 text-text-base text-white placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-white/20"
+            className="h-8 w-full rounded-full bg-border-default pl-9 pr-4 text-text-base text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-border-default"
           />
         </div>
         <FilterMenu
@@ -118,14 +118,14 @@ export function QuestionBankSelector({
           initialFilters={activeFilters}
           onApply={(filters) => setActiveFilters(filters)}
           trigger={
-            <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white cursor-pointer">
+            <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border-default text-text-muted transition-colors hover:text-text-primary cursor-pointer">
               <Filter className="h-3.5 w-3.5" />
             </button>
           }
         />
       </div>
 
-      <div className="flex items-center justify-between border-y border-white/6 px-4 py-2 text-text-xs font-medium uppercase tracking-[0.5px] text-white/40">
+      <div className="flex items-center justify-between border-y border-border-default px-4 py-2 text-text-xs font-medium uppercase tracking-[0.5px] text-text-muted">
         <span>Question Title</span>
         <span>Difficulty</span>
       </div>
@@ -156,8 +156,8 @@ export function QuestionBankSelector({
                         ...provided.draggableProps.style,
                         opacity: snapshot.isDragging ? 0.8 : 1,
                       }}
-                      className={`flex h-10 w-full items-center justify-between px-4 text-left transition-colors ${readonly ? '' : 'cursor-pointer hover:bg-white/[0.05]'} ${
-                        i % 2 === 0 ? "bg-white/[0.02]" : ""
+                      className={`flex h-10 w-full items-center justify-between px-4 text-left transition-colors ${readonly ? '' : 'cursor-pointer hover:bg-bg-base/[0.05]'} ${
+                        i % 2 === 0 ? "bg-surface-base" : ""
                       }`}
                     >
                       <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -165,19 +165,19 @@ export function QuestionBankSelector({
                           className={`grid h-4 w-4 shrink-0 place-items-center rounded-radius-md border ${
                             isSel
                               ? "border-accent-base bg-accent-base"
-                              : "border-white/20 bg-transparent"
+                              : "border-border-default bg-transparent"
                           }`}
                         >
                           {isSel && (
                             <Check
-                              className="h-3 w-3 text-white"
+                              className="h-3 w-3 text-text-primary"
                               strokeWidth={3}
                             />
                           )}
                         </div>
                         <span
                           className={`truncate text-text-base ${
-                            isSel ? "text-white" : "text-white/85"
+                            isSel ? "text-text-primary" : "text-text-secondary"
                           }`}
                         >
                           {q.title}
@@ -194,7 +194,7 @@ export function QuestionBankSelector({
         )}
       </Droppable>
 
-      <div className="border-t border-white/6 px-4 py-2.5 text-text-xs text-white/40">
+      <div className="border-t border-border-default px-4 py-2.5 text-text-xs text-text-muted">
         Showing {filtered.length} of {questions.length}
       </div>
     </div>

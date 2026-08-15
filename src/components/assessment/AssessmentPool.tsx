@@ -19,8 +19,8 @@ export function AssessmentPool({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between border-b border-white/6 px-4 py-3">
-        <h3 className="text-text-md font-semibold text-white">
+      <div className="flex items-center justify-between border-b border-border-default px-4 py-3">
+        <h3 className="text-text-md font-semibold text-text-primary">
           Assessment Pool
         </h3>
         <span className="flex h-5 items-center rounded-full bg-accent-base/25 px-2 text-text-xs font-medium text-accent-text-muted">
@@ -28,7 +28,7 @@ export function AssessmentPool({
         </span>
       </div>
       {!readonly && (
-        <p className="border-b border-white/6 px-4 py-2 text-text-xs text-white/40">
+        <p className="border-b border-border-default px-4 py-2 text-text-xs text-text-muted">
           Drag questions from the left to add them here
         </p>
       )}
@@ -41,7 +41,7 @@ export function AssessmentPool({
             {...provided.droppableProps}
           >
             {selectedQuestions.length === 0 ? (
-              <div className="flex h-full min-h-[200px] items-center justify-center text-text-sm text-white/30">
+              <div className="flex h-full min-h-[200px] items-center justify-center text-text-sm text-text-muted">
                 {readonly ? "No questions selected." : "Drag new questions here."}
               </div>
             ) : (
@@ -61,7 +61,7 @@ export function AssessmentPool({
                           ...provided.draggableProps.style,
                           opacity: snapshot.isDragging ? 0.8 : 1,
                         }}
-                        className={`flex items-center gap-3 rounded-md border border-white/8 bg-white/[0.04] px-3 py-2 ${
+                        className={`flex items-center gap-3 rounded-md border-[0.5px] border-border-default/30 bg-surface-raised px-3 py-2 ${
                           snapshot.isDragging ? "shadow-xl shadow-black/50" : ""
                         }`}
                       >
@@ -70,20 +70,20 @@ export function AssessmentPool({
                             {...provided.dragHandleProps}
                             className="shrink-0 flex items-center justify-center"
                           >
-                            <GripVertical className="h-4 w-4 cursor-grab text-white/25" />
+                            <GripVertical className="h-4 w-4 cursor-grab text-text-muted" />
                           </div>
                         )}
-                        <span className="w-4 shrink-0 text-text-xs text-white/35 tabular-nums">
+                        <span className="w-4 shrink-0 text-text-xs text-text-muted tabular-nums">
                           {i + 1}
                         </span>
-                        <span className="min-w-0 flex-1 truncate text-text-base text-white/85">
+                        <span className="min-w-0 flex-1 truncate text-text-base text-text-secondary">
                           {q.title}
                         </span>
                         <DiffPill difficulty={q.difficulty} />
                         {!readonly && (
                           <button
                             onClick={() => onToggle(q.num)}
-                            className="grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+                            className="grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary"
                           >
                             <X className="h-3.5 w-3.5" />
                           </button>
@@ -99,8 +99,8 @@ export function AssessmentPool({
         )}
       </Droppable>
 
-      <div className="flex items-center justify-between border-t border-white/6 px-4 py-2.5">
-        <span className="text-text-xs text-white/45">
+      <div className="flex items-center justify-between border-t border-border-default px-4 py-2.5">
+        <span className="text-text-xs text-text-muted">
           {selectedQuestions.length} questions selected
         </span>
         {!readonly && (

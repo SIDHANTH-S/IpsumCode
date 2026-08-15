@@ -106,7 +106,8 @@ export function Popover({
           <div
             ref={popupRef}
             style={style}
-            className={`z-[100] rounded-xl border border-white/10 bg-surface-base shadow-xl ${className}`}
+            data-popover-content
+            className={`z-[10000] rounded-xl border border-border-default bg-surface-base shadow-xl ${className}`}
           >
             {content}
           </div>,

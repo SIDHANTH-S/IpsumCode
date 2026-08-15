@@ -93,14 +93,14 @@ export function NewQuestionPage() {
               onChange={(event) => actions.setTitle(event.target.value.slice(0, 150))}
               onBlur={() => markTouched("title")}
               placeholder="Enter your title"
-              className="block w-full outline-none placeholder:text-white/30 border-none text-white bg-transparent text-text-2xl font-semibold"
+              className="block w-full outline-none placeholder:text-text-muted border-none text-text-primary bg-transparent text-text-2xl font-semibold"
               autoComplete="off"
             />
           </div>
           <div className="flex gap-2 items-center shrink-0">
             <button
               onClick={onExit}
-              className="py-1.5 focus:outline-none inline-flex bg-white/6 hover:bg-white/[0.1] text-white/85 h-8 items-center rounded-lg px-4 text-text-base font-medium transition-colors"
+              className="py-1.5 focus:outline-none inline-flex bg-surface-elevated hover:bg-surface-hover text-text-secondary h-8 items-center rounded-lg px-4 text-text-base font-medium transition-colors"
             >
               Cancel
             </button>
@@ -137,7 +137,7 @@ export function NewQuestionPage() {
                   className={`flex h-7 items-center rounded-full border px-3 text-text-xs font-medium transition-colors focus-visible:outline-none ${
                     isSelected
                       ? "border-status-success/50 bg-status-success/10 text-status-success"
-                      : "border-white/10 bg-white/6 text-white/65 hover:text-white/90"
+                      : "border-border-default bg-surface-elevated text-text-secondary hover:text-text-primary"
                   }`}
                 >
                   {diff}

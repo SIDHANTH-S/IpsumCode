@@ -31,22 +31,22 @@ export function Stepper({
 
   return (
     <div
-      className={`flex items-center rounded-md border border-white/10 bg-white/6 ${className}`}
+      className={`flex items-center rounded-md border border-border-default bg-surface-elevated ${className}`}
     >
       <button
         onClick={handleDecrement}
         disabled={disabled || value <= min}
-        className="grid h-9 w-9 place-items-center text-white/60 transition-colors hover:text-white disabled:opacity-30 disabled:hover:text-white/60"
+        className="grid h-9 w-9 place-items-center text-white/60 transition-colors hover:text-text-primary disabled:opacity-30 disabled:hover:text-text-primary/60"
       >
         −
       </button>
-      <span className="min-w-[52px] text-center text-text-md font-semibold text-white tabular-nums">
+      <span className="min-w-[52px] text-center text-text-md font-semibold text-text-primary tabular-nums">
         {format ? format(value) : value}
       </span>
       <button
         onClick={handleIncrement}
         disabled={disabled || value >= max}
-        className="grid h-9 w-9 place-items-center text-white/60 transition-colors hover:text-white disabled:opacity-30 disabled:hover:text-white/60"
+        className="grid h-9 w-9 place-items-center text-white/60 transition-colors hover:text-text-primary disabled:opacity-30 disabled:hover:text-text-primary/60"
       >
         +
       </button>

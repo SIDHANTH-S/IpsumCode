@@ -25,7 +25,7 @@ export function TopBar() {
             className="grid h-8 w-8 place-items-center rounded-lg"
             style={{ background: GRADIENTS.purple }}
           >
-            <Sparkles className="h-4 w-4 text-white" fill="white" />
+            <Sparkles className="h-4 w-4 text-text-primary" fill="white" />
           </span>
           <span className="font-display text-lg tracking-wide text-text-primary">
             IPSUM&lt;CODE&gt;
@@ -43,7 +43,7 @@ export function TopBar() {
           <Bell className="h-5 w-5" />
           <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-[#0a0a0a]" />
         </button>
-        <span className="h-8 w-8 rounded-full bg-gradient-to-br from-neutral-500 to-neutral-700 ring-1 ring-neutral-700" />
+        <span className="h-8 w-8 rounded-full bg-gradient-to-br from-neutral-500 to-border-default ring-1 ring-border-default" />
       </div>
     </header>
   )

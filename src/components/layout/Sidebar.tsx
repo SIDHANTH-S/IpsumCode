@@ -69,17 +69,9 @@ export function Sidebar({
 
     setIsXl(mql.matches)
 
-    // Fallback for Safari which might need addListener
+    mql.addEventListener("change", onChange)
 
-    if (mql.addEventListener) {
-      mql.addEventListener("change", onChange)
-
-      return () => mql.removeEventListener("change", onChange)
-    } else {
-      mql.addListener(onChange)
-
-      return () => mql.removeListener(onChange)
-    }
+    return () => mql.removeEventListener("change", onChange)
   }, [])
 
   // Drag handle logic
@@ -144,8 +136,8 @@ export function Sidebar({
                 isIconOnly ? "justify-center px-0" : "gap-3 px-3"
               } ${
                 active === label
-                  ? "bg-accent-base/10 text-text-primary"
-                  : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                  ? "bg-sidebar-nav-active text-sidebar-nav-active-text"
+                  : "text-sidebar-nav-text hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />

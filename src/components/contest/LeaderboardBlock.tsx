@@ -13,18 +13,7 @@ import {
 function Container3() {
   return (
     <div className="absolute h-0 left-0 right-0 top-0" data-name="Container">
-      <div
-        className="absolute bg-gradient-to-r from-[#18181b] h-[163.125px] left-0 to-[#18181b] top-[80.75px] via-1/2 via-[#27272a] w-[65.25px]"
-        data-name="Gradient"
-      />
-      <div
-        className="absolute h-[16.313px] left-0 rounded-[8155.435px] top-[73.41px] w-[65.25px]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 65.25 16.313' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(3.2625 0 0 0.81563 32.625 8.1563)'><stop stop-color='rgba(49,49,49,1)' offset='0.16'/><stop stop-color='rgba(74,74,74,1)' offset='0.55'/><stop stop-color='rgba(66,66,69,1)' offset='0.72'/><stop stop-color='rgba(39,40,42,1)' offset='1'/></radialGradient></defs></svg>\")",
-        }}
-        data-name="Gradient"
-      />
+      {/* Gradients removed to prevent UI breaking */}
     </div>
   )
 }
@@ -2780,18 +2769,7 @@ function Link() {
 function Container10() {
   return (
     <div className="absolute h-0 left-0 right-0 top-0" data-name="Container">
-      <div
-        className="absolute bg-gradient-to-r from-[#18181b] h-[163.125px] left-0 to-[#18181b] top-[80.75px] via-1/2 via-[#27272a] w-[65.25px]"
-        data-name="Gradient"
-      />
-      <div
-        className="absolute h-[16.313px] left-0 rounded-[8155.435px] top-[73.41px] w-[65.25px]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 65.25 16.313' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(3.2625 0 0 0.81563 32.625 8.1563)'><stop stop-color='rgba(49,49,49,1)' offset='0.16'/><stop stop-color='rgba(74,74,74,1)' offset='0.55'/><stop stop-color='rgba(66,66,69,1)' offset='0.72'/><stop stop-color='rgba(39,40,42,1)' offset='1'/></radialGradient></defs></svg>\")",
-        }}
-        data-name="Gradient"
-      />
+      {/* Gradients removed to prevent UI breaking */}
     </div>
   )
 }
@@ -9532,18 +9510,7 @@ function Link1() {
 function Container17() {
   return (
     <div className="absolute h-0 left-0 right-0 top-0" data-name="Container">
-      <div
-        className="absolute bg-gradient-to-r from-[#18181b] h-[163.125px] left-0 to-[#18181b] top-[80.75px] via-1/2 via-[#27272a] w-[65.25px]"
-        data-name="Gradient"
-      />
-      <div
-        className="absolute h-[16.313px] left-0 rounded-[8155.435px] top-[73.41px] w-[65.25px]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 65.25 16.313' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(3.2625 0 0 0.81563 32.625 8.1563)'><stop stop-color='rgba(49,49,49,1)' offset='0.16'/><stop stop-color='rgba(74,74,74,1)' offset='0.55'/><stop stop-color='rgba(66,66,69,1)' offset='0.72'/><stop stop-color='rgba(39,40,42,1)' offset='1'/></radialGradient></defs></svg>\")",
-        }}
-        data-name="Gradient"
-      />
+      {/* Gradients removed to prevent UI breaking */}
     </div>
   )
 }
@@ -10749,7 +10716,7 @@ function Container27() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">4</p>
       </div>
     </div>
@@ -10784,7 +10751,7 @@ function Container31() {
       className="content-stretch flex flex-[1_0_0] flex-col items-start min-w-px overflow-clip relative"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white w-full">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary w-full">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -10821,7 +10788,7 @@ function Container36() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3611</p>
       </div>
     </div>
@@ -10859,7 +10826,7 @@ function Container39() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">107</p>
       </div>
     </div>
@@ -10949,12 +10916,12 @@ function Container25() {
 function Link3() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">
@@ -10971,7 +10938,7 @@ function Container42() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">5</p>
       </div>
     </div>
@@ -11006,7 +10973,7 @@ function Container46() {
       className="content-stretch flex flex-[1_0_0] flex-col items-start min-w-px overflow-clip relative"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white w-full">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary w-full">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -11043,7 +11010,7 @@ function Container51() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3599</p>
       </div>
     </div>
@@ -11081,7 +11048,7 @@ function Container54() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">146</p>
       </div>
     </div>
@@ -11171,12 +11138,12 @@ function Container40() {
 function Link4() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">
@@ -11193,7 +11160,7 @@ function Container57() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">6</p>
       </div>
     </div>
@@ -11228,7 +11195,7 @@ function Container61() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -11265,7 +11232,7 @@ function Container66() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3589</p>
       </div>
     </div>
@@ -11303,7 +11270,7 @@ function Container69() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">100</p>
       </div>
     </div>
@@ -11393,12 +11360,12 @@ function Container55() {
 function Link5() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">
@@ -11415,7 +11382,7 @@ function Container72() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">7</p>
       </div>
     </div>
@@ -11450,7 +11417,7 @@ function Container76() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -11487,7 +11454,7 @@ function Container81() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3506</p>
       </div>
     </div>
@@ -11525,7 +11492,7 @@ function Container84() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">88</p>
       </div>
     </div>
@@ -11615,12 +11582,12 @@ function Container70() {
 function Link6() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">
@@ -11637,7 +11604,7 @@ function Container87() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">8</p>
       </div>
     </div>
@@ -11703,7 +11670,7 @@ function Container92() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -11740,7 +11707,7 @@ function Container97() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3506</p>
       </div>
     </div>
@@ -11778,7 +11745,7 @@ function Container100() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">88</p>
       </div>
     </div>
@@ -11859,12 +11826,12 @@ function Container89() {
 function Link7() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">
@@ -11881,7 +11848,7 @@ function Container103() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">9</p>
       </div>
     </div>
@@ -11916,7 +11883,7 @@ function Container107() {
       className="content-stretch flex flex-[1_0_0] flex-col items-start min-w-px overflow-clip relative"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white w-full">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary w-full">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -11953,7 +11920,7 @@ function Container112() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3490</p>
       </div>
     </div>
@@ -11991,7 +11958,7 @@ function Container115() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">50</p>
       </div>
     </div>
@@ -12081,12 +12048,12 @@ function Container101() {
 function Link8() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">
@@ -12103,7 +12070,7 @@ function Container118() {
       className="content-stretch flex flex-col items-center relative shrink-0 w-full"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-center text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">10</p>
       </div>
     </div>
@@ -12138,7 +12105,7 @@ function Container122() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[11.419px] text-text-primary whitespace-nowrap">
         <p className="leading-[16.313px]">Lorem</p>
       </div>
     </div>
@@ -12175,7 +12142,7 @@ function Container127() {
       className="content-stretch flex flex-col items-end overflow-clip relative shrink-0 w-[26.108px]"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-white whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-right text-text-primary whitespace-nowrap">
         <p className="leading-[13.05px]">3453</p>
       </div>
     </div>
@@ -12213,7 +12180,7 @@ function Container130() {
       className="content-stretch flex flex-col items-start overflow-clip relative shrink-0"
       data-name="Container"
     >
-      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-[rgba(255,255,255,0.8)] whitespace-nowrap">
+      <div className="[word-break:break-word] flex flex-col font-['Segoe_UI:Regular',sans-serif] justify-center leading-[0] not-italic relative shrink-0 text-[9.788px] text-text-secondary whitespace-nowrap">
         <p className="leading-[13.05px]">65</p>
       </div>
     </div>
@@ -12303,12 +12270,12 @@ function Container116() {
 function Link9() {
   return (
     <div
-      className="bg-surface-base blur-[0px] drop-shadow-[0px_22.837px_22.43px_rgba(0,0,0,0.4)] relative rounded-[13.05px] shrink-0 w-full"
+      className="bg-surface-base relative rounded-[13.05px] shrink-0 w-full shadow-elevated"
       data-name="Link"
     >
       <div
         aria-hidden
-        className="absolute border-[0.816px] border-[rgba(255,255,255,0.1)] border-solid inset-0 pointer-events-none rounded-[13.05px]"
+        className="absolute border-[0.816px] border-border-default border-solid inset-0 pointer-events-none rounded-[13.05px]"
       />
       <div className="flex flex-row items-center justify-center size-full">
         <div className="content-stretch flex items-center justify-center px-[13.703px] py-[9.788px] relative size-full">

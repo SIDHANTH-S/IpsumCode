@@ -10,7 +10,7 @@ export function RenderMarkdown({ source }: { source: string }) {
   }
 
   return (
-    <div className="prose prose-invert max-w-none prose-sm prose-pre:bg-white/10 prose-pre:text-white/90 prose-a:text-accent-text hover:prose-a:text-accent-text-muted">
+    <div className="prose max-w-none prose-sm prose-headings:text-text-primary prose-p:text-text-primary prose-li:text-text-primary prose-strong:text-text-primary prose-code:text-text-primary prose-pre:bg-surface-hover prose-pre:text-text-secondary prose-a:text-accent-text hover:prose-a:text-accent-text-muted prose-blockquote:text-text-secondary">
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>{source}</ReactMarkdown>
     </div>
   )

@@ -17,7 +17,7 @@ import { AlertCircle, ChevronDown, ChevronRight, X, ArrowRight } from "lucide-re
 
 export const PANEL_BASE = "rounded-xl border border-border-default bg-surface-base"
 export const FIELD_BASE =
-  "w-full rounded-md border border-white/10 bg-white/6 px-3 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
+  "w-full rounded-md border border-border-default bg-surface-elevated px-3 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
 
 const ERROR_TEXT = "text-status-danger"
 const ERROR_BORDER = "border-status-danger/50"
@@ -39,7 +39,7 @@ export function FieldLabel({
 }) {
   return (
     <div className="mb-1.5 flex items-baseline justify-between gap-2">
-      <label htmlFor={htmlFor} className="text-text-sm font-medium text-white/70">
+      <label htmlFor={htmlFor} className="text-text-sm font-medium text-text-secondary">
         {children}
         {required && (
           <span className="ml-1 text-accent-text-muted" aria-hidden="true">
@@ -105,7 +105,7 @@ export function Select({
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value)}
         className={`${FIELD_BASE} h-10 w-full appearance-none pr-9 ${
-          value ? "text-white" : "text-text-muted"
+          value ? "text-text-primary" : "text-text-muted"
         } ${error ? ERROR_BORDER : ""}`}
       >
         {placeholder && (
@@ -114,13 +114,13 @@ export function Select({
           </option>
         )}
         {options.map((option) => (
-          <option key={option.value} value={option.value} className="bg-surface-base text-white">
+          <option key={option.value} value={option.value} className="bg-surface-base text-text-primary">
             {option.label}
           </option>
         ))}
       </select>
       <ChevronDown
-        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40"
+        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
         aria-hidden="true"
       />
     </div>
@@ -210,10 +210,10 @@ export function CaseHeader({
         className="flex min-w-0 flex-1 items-center gap-2 rounded text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/60"
       >
         <ChevronRight
-          className={`h-4 w-4 shrink-0 text-white/40 transition-transform ${expanded ? "rotate-90" : ""}`}
+          className={`h-4 w-4 shrink-0 text-text-muted transition-transform ${expanded ? "rotate-90" : ""}`}
           aria-hidden="true"
         />
-        <span className="truncate text-text-base font-medium text-white/90">{title}</span>
+        <span className="truncate text-text-base font-medium text-text-primary">{title}</span>
         {badge}
       </button>
       {right && (
@@ -239,7 +239,7 @@ export function SampleBadge() {
 
 export function HiddenBadge() {
   return (
-    <span className="flex h-5 shrink-0 items-center rounded-full border border-white/15 bg-white/6 px-2 text-text-xs font-medium text-white/55">
+    <span className="flex h-5 shrink-0 items-center rounded-full border border-white/15 bg-surface-elevated px-2 text-text-xs font-medium text-text-muted">
       Hidden
     </span>
   )
@@ -265,19 +265,19 @@ export function WeightToggle({
   return (
     <div className="flex shrink-0 items-center gap-3">
       <div className="flex items-center gap-1.5">
-        <span className="text-text-xs text-white/40">Weight</span>
-        <div className="flex items-center overflow-hidden rounded-md border border-white/10">
+        <span className="text-text-xs text-text-muted">Weight</span>
+        <div className="flex items-center overflow-hidden rounded-md border border-border-default">
           <button
             type="button"
             aria-label={`Decrease weight for ${label}`}
             onClick={() => onWeightChange(Math.max(1, weight - 1))}
             disabled={weight <= 1}
-            className="grid h-6 w-6 place-items-center text-white/50 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30"
+            className="grid h-6 w-6 place-items-center text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary disabled:opacity-30"
           >
             −
           </button>
           <span
-            className="grid h-6 w-7 place-items-center text-text-sm font-medium text-white/80"
+            className="grid h-6 w-7 place-items-center text-text-sm font-medium text-text-secondary"
             aria-hidden="true"
           >
             ×{weight}
@@ -286,7 +286,7 @@ export function WeightToggle({
             type="button"
             aria-label={`Increase weight for ${label}`}
             onClick={() => onWeightChange(weight + 1)}
-            className="grid h-6 w-6 place-items-center text-white/50 transition-colors hover:bg-white/10 hover:text-white"
+            className="grid h-6 w-6 place-items-center text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary"
           >
             +
           </button>
@@ -362,7 +362,7 @@ export function TabBar<T extends string>({
             onClick={() => onChange(tab)}
             onKeyDown={handleKeyDown}
             className={`relative flex flex-1 items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/60 sm:flex-none ${
-              isActive ? "bg-white/6 text-white" : "text-white/55 hover:text-white/85"
+              isActive ? "bg-surface-elevated text-text-primary" : "text-text-muted hover:text-text-secondary"
             }`}
           >
             {tab}
@@ -467,14 +467,14 @@ export function TopicPicker({
         {tags.map((tag) => (
           <span
             key={tag}
-            className="group flex h-7 items-center gap-1 rounded-full bg-white/6 pl-3 pr-2 text-text-base font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
+            className="group flex h-7 items-center gap-1 rounded-full bg-surface-elevated pl-3 pr-2 text-text-base font-medium text-text-secondary transition-colors hover:bg-surface-hover"
           >
             {tag}
             <button
               type="button"
               aria-label={`Remove ${tag}`}
               onClick={() => onRemove(tag)}
-              className="text-white/40 transition-colors hover:text-white"
+              className="text-text-muted transition-colors hover:text-text-primary"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -518,7 +518,7 @@ export function TopicPicker({
               }
             }}
             placeholder="Type tag..."
-            className={`h-7 w-[120px] rounded-full bg-white/6 px-3 text-text-base text-white focus:outline-none focus:ring-1 ${
+            className={`h-7 w-[120px] rounded-full bg-surface-elevated px-3 text-text-base text-text-primary focus:outline-none focus:ring-1 ${
               error ? "focus:ring-[#ff9b9b]" : "focus:ring-white/30"
             }`}
           />
@@ -526,7 +526,7 @@ export function TopicPicker({
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="flex h-7 items-center gap-1 rounded-full bg-white/6 px-3 text-text-base font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
+            className="flex h-7 items-center gap-1 rounded-full bg-surface-elevated px-3 text-text-base font-medium text-text-secondary transition-colors hover:bg-surface-hover"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="h-3.5 w-3.5">
               <path fillRule="evenodd" d="M13 11h7a1 1 0 110 2h-7v7a1 1 0 11-2 0v-7H4a1 1 0 110-2h7V4a1 1 0 112 0v7z" clipRule="evenodd"></path>
@@ -577,7 +577,7 @@ export function Menu({
           }`}
         >
           {options.length === 0 && emptyLabel && (
-            <li className="px-3 py-1.5 text-text-sm text-white/40">{emptyLabel}</li>
+            <li className="px-3 py-1.5 text-text-sm text-text-muted">{emptyLabel}</li>
           )}
           {options.map((option) => (
             <li key={option.id}>
@@ -589,7 +589,7 @@ export function Menu({
                   option.onSelect()
                   close()
                 }}
-                className="block w-full px-3 py-1.5 text-left text-text-base text-white/85 transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:text-white/30 disabled:hover:bg-transparent"
+                className="block w-full px-3 py-1.5 text-left text-text-base text-text-secondary transition-colors hover:bg-surface-hover disabled:cursor-not-allowed disabled:text-text-muted disabled:hover:bg-transparent"
               >
                 {option.label}
               </button>

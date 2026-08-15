@@ -25,7 +25,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom"
 
 const FOCUS_RING =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base"
 
 const PAGE_SIZE = 10
 
@@ -107,19 +107,19 @@ function ContestRankingReport({
   return (
     <div className="space-y-6">
       {/* Header Context */}
-      <div className="flex flex-wrap items-center gap-4 border-b border-neutral-800 pb-4 min-h-[32px]">
+      <div className="flex flex-wrap items-center gap-4 border-b border-border-default pb-4 min-h-[32px]">
         <button
           onClick={onBack}
-          className={`flex cursor-pointer items-center gap-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white transition-colors ${FOCUS_RING}`}
+          className={`flex cursor-pointer items-center gap-1.5 rounded-md text-sm font-medium text-text-muted hover:text-text-primary transition-colors ${FOCUS_RING}`}
         >
           <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
-        <div className="h-4 w-px bg-neutral-800" aria-hidden="true" />
-        <h1 className="text-lg font-bold text-white">{contestId}</h1>
+        <div className="h-4 w-px bg-surface-hover" aria-hidden="true" />
+        <h1 className="text-lg font-bold text-text-primary">{contestId}</h1>
         <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-text-xs font-semibold tracking-wide text-emerald-400 uppercase">
           Completed
         </span>
-        <div className="ml-auto flex items-center gap-4 text-xs font-medium text-neutral-400">
+        <div className="ml-auto flex items-center gap-4 text-xs font-medium text-text-muted">
           <span className="flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5" aria-hidden="true" /> Aug 12, 2026
           </span>
@@ -131,29 +131,29 @@ function ContestRankingReport({
       </div>
 
       {/* Summary Strip */}
-      <dl className="grid grid-cols-2 gap-4 rounded-xl border border-white/6 bg-white/[0.02] p-4 sm:grid-cols-4">
+      <dl className="grid grid-cols-2 gap-4 rounded-xl border border-border-default bg-surface-base p-4 sm:grid-cols-4">
         <div className="space-y-1.5">
-          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-text-muted">
             <Users className="h-3.5 w-3.5" aria-hidden="true" /> Joined
           </dt>
-          <dd className="text-xl font-semibold text-white">
+          <dd className="text-xl font-semibold text-text-primary">
             {mockContestRanking.length}
           </dd>
         </div>
-        <div className="space-y-1.5 border-white/6 sm:border-l sm:pl-4">
-          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+        <div className="space-y-1.5 border-border-default sm:border-l sm:pl-4">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-text-muted">
             <FileCode className="h-3.5 w-3.5" aria-hidden="true" /> Submitted
           </dt>
-          <dd className="text-xl font-semibold text-white">32</dd>
+          <dd className="text-xl font-semibold text-text-primary">32</dd>
         </div>
-        <div className="space-y-1.5 border-white/6 sm:border-l sm:pl-4">
-          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+        <div className="space-y-1.5 border-border-default sm:border-l sm:pl-4">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-text-muted">
             <Target className="h-3.5 w-3.5" aria-hidden="true" /> Average Score
           </dt>
-          <dd className="text-xl font-semibold text-white">78.5</dd>
+          <dd className="text-xl font-semibold text-text-primary">78.5</dd>
         </div>
-        <div className="space-y-1.5 border-white/6 sm:border-l sm:pl-4">
-          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+        <div className="space-y-1.5 border-border-default sm:border-l sm:pl-4">
+          <dt className="flex items-center gap-1.5 text-text-xs font-medium uppercase tracking-wide text-text-muted">
             <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" /> Incomplete
           </dt>
           <dd className="text-xl font-semibold text-amber-400">3</dd>
@@ -167,7 +167,7 @@ function ContestRankingReport({
             Search students by name or class
           </label>
           <Search
-            className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-neutral-500"
+            className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-muted"
             aria-hidden="true"
           />
           <input
@@ -179,40 +179,40 @@ function ContestRankingReport({
               setCurrentPage(1)
             }}
             placeholder="Search students..."
-            className={`h-9 w-full rounded-md border border-neutral-800 bg-neutral-900/50 pl-9 pr-4 text-text-base text-white placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none ${FOCUS_RING}`}
+            className={`h-9 w-full rounded-md border border-border-default bg-surface-base/50 pl-9 pr-4 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none ${FOCUS_RING}`}
           />
         </div>
         <button
-          className={`flex h-9 items-center gap-2 rounded-md border border-neutral-800 bg-neutral-900/50 px-3 text-text-sm font-medium text-neutral-300 hover:text-white transition-colors ${FOCUS_RING}`}
+          className={`flex h-9 items-center gap-2 rounded-md border border-border-default bg-surface-base/50 px-3 text-text-sm font-medium text-text-secondary hover:text-text-primary transition-colors ${FOCUS_RING}`}
         >
           <Filter className="h-3.5 w-3.5" aria-hidden="true" /> Filters
         </button>
       </div>
 
       {/* Ranking Table */}
-      <div className="overflow-x-auto rounded-xl border border-neutral-800 bg-white/[0.04]">
+      <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-raised">
         <table className="w-full min-w-[700px] border-collapse text-sm">
           <caption className="sr-only">
             Contest ranking for {contestId}, {filteredRows.length} students
           </caption>
           <thead>
-            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-neutral-500">
-              <th scope="col" className="border-b border-white/6 px-5 py-3 w-16">
+            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-text-muted">
+              <th scope="col" className="border-b border-border-default px-5 py-3 w-16">
                 Rank
               </th>
-              <th scope="col" className="border-b border-white/6 px-5 py-3">
+              <th scope="col" className="border-b border-border-default px-5 py-3">
                 Student
               </th>
-              <th scope="col" className="border-b border-white/6 px-5 py-3">
+              <th scope="col" className="border-b border-border-default px-5 py-3">
                 Score
               </th>
-              <th scope="col" className="border-b border-white/6 px-5 py-3">
+              <th scope="col" className="border-b border-border-default px-5 py-3">
                 Solved
               </th>
-              <th scope="col" className="border-b border-white/6 px-5 py-3">
+              <th scope="col" className="border-b border-border-default px-5 py-3">
                 Time
               </th>
-              <th scope="col" className="border-b border-white/6 px-5 py-3">
+              <th scope="col" className="border-b border-border-default px-5 py-3">
                 <span className="sr-only">Actions</span>
               </th>
             </tr>
@@ -220,7 +220,7 @@ function ContestRankingReport({
           <tbody>
             {pageRows.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-10 text-center text-text-base text-neutral-500">
+                <td colSpan={6} className="px-5 py-10 text-center text-text-base text-text-muted">
                   No students match "{searchQuery}".
                 </td>
               </tr>
@@ -228,9 +228,9 @@ function ContestRankingReport({
             {pageRows.map((row, i) => (
               <tr
                 key={row.id}
-                className={`border-b border-white/6 last:border-b-0 ${
-                  i % 2 === 0 ? "bg-white/3" : "bg-transparent"
-                } hover:bg-white/[0.05] transition-colors`}
+                className={`border-b border-border-default last:border-b-0 ${
+                  i % 2 === 0 ? "bg-surface-hover/30" : "bg-transparent"
+                } hover:bg-bg-base/[0.05] transition-colors`}
               >
                 <td className="px-5 py-3">
                   <span
@@ -241,25 +241,25 @@ function ContestRankingReport({
                           ? "bg-slate-300/20 text-slate-300"
                           : row.rank === 3
                             ? "bg-orange-700/20 text-orange-400"
-                            : "text-neutral-400"
+                            : "text-text-muted"
                     }`}
                   >
                     #{row.rank}
                   </span>
                 </td>
                 <td className="px-5 py-3">
-                  <p className="font-semibold text-white text-text-base">{row.name}</p>
-                  <p className="text-text-xs text-neutral-500 mt-0.5">{row.cls}</p>
+                  <p className="font-semibold text-text-primary text-text-base">{row.name}</p>
+                  <p className="text-text-xs text-text-muted mt-0.5">{row.cls}</p>
                 </td>
                 <td className="px-5 py-3">
-                  <span className="font-semibold text-white text-text-base">
+                  <span className="font-semibold text-text-primary text-text-base">
                     {row.score}
                   </span>
                 </td>
-                <td className="px-5 py-3 text-text-base text-neutral-400">
+                <td className="px-5 py-3 text-text-base text-text-muted">
                   {row.solved} / 4
                 </td>
-                <td className="px-5 py-3 text-text-base text-neutral-400">{row.time}</td>
+                <td className="px-5 py-3 text-text-base text-text-muted">{row.time}</td>
                 <td className="px-5 py-3 text-right">
                   <button
                     onClick={() => onViewStudent(row.id)}
@@ -275,7 +275,7 @@ function ContestRankingReport({
         </table>
 
         {/* Pagination */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-800 px-5 py-3 text-xs text-neutral-400">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-default px-5 py-3 text-xs text-text-muted">
           <div>
             Showing {filteredRows.length === 0 ? 0 : startIdx + 1} to{" "}
             {Math.min(startIdx + PAGE_SIZE, filteredRows.length)} of{" "}
@@ -285,13 +285,13 @@ function ContestRankingReport({
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={safePage === 1}
-              className={`flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 hover:bg-neutral-800 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
+              className={`flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 hover:bg-surface-hover hover:text-text-primary transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
             >
               <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" /> Previous
             </button>
             {pageNumbers.map((p, idx) =>
               p === "ellipsis" ? (
-                <span key={`ellipsis-${idx}`} className="px-1.5 text-neutral-600">
+                <span key={`ellipsis-${idx}`} className="px-1.5 text-text-muted">
                   …
                 </span>
               ) : (
@@ -302,7 +302,7 @@ function ContestRankingReport({
                   className={`h-7 w-7 cursor-pointer rounded-md font-medium transition-colors ${FOCUS_RING} ${
                     p === safePage
                       ? "bg-indigo-500/20 text-indigo-400"
-                      : "hover:bg-neutral-800"
+                      : "hover:bg-surface-hover"
                   }`}
                 >
                   {p}
@@ -312,7 +312,7 @@ function ContestRankingReport({
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={safePage === totalPages}
-              className={`flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 hover:bg-neutral-800 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
+              className={`flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 hover:bg-surface-hover hover:text-text-primary transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
             >
               Next <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
@@ -340,13 +340,13 @@ function StudentDetailReport({
       <div className="flex items-center gap-4 border-b border-neutral-800 pb-4 min-h-[32px]">
         <button
           onClick={onBack}
-          className={`flex items-center gap-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white transition-colors ${FOCUS_RING}`}
+          className={`flex items-center gap-1.5 rounded-md text-sm font-medium text-text-muted hover:text-text-primary transition-colors ${FOCUS_RING}`}
         >
           <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
-        <div className="h-4 w-px bg-neutral-800" aria-hidden="true" />
-        <h1 className="text-lg font-bold text-white">{student.name}</h1>
-        <span className="rounded-full border border-neutral-700 bg-neutral-800/50 px-2.5 py-0.5 text-text-xs font-medium text-neutral-300">
+        <div className="h-4 w-px bg-surface-hover" aria-hidden="true" />
+        <h1 className="text-lg font-bold text-text-primary">{student.name}</h1>
+        <span className="rounded-full border border-border-default bg-surface-hover/50 px-2.5 py-0.5 text-text-xs font-medium text-text-secondary">
           {student.cls}
         </span>
       </div>
@@ -356,36 +356,36 @@ function StudentDetailReport({
       <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-[300px_minmax(0,1fr)]">
         {/* Left Column: Summary & Timeline */}
         <div className="space-y-6">
-          <div className="rounded-xl border border-white/6 bg-white/[0.02] p-5">
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          <div className="rounded-xl border border-border-default bg-surface-base p-5">
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-text-muted">
               Contest Summary
             </h2>
             <dl className="space-y-4">
               <div>
-                <dt className="text-text-xs text-neutral-500 mb-0.5">Global Rank</dt>
-                <dd className="text-lg font-semibold text-white">#{student.rank}</dd>
+                <dt className="text-text-xs text-text-muted mb-0.5">Global Rank</dt>
+                <dd className="text-lg font-semibold text-text-primary">#{student.rank}</dd>
               </div>
               <div>
-                <dt className="text-text-xs text-neutral-500 mb-0.5">Final Score</dt>
-                <dd className="text-lg font-semibold text-white">{student.score}</dd>
+                <dt className="text-text-xs text-text-muted mb-0.5">Final Score</dt>
+                <dd className="text-lg font-semibold text-text-primary">{student.score}</dd>
               </div>
               <div>
-                <dt className="text-text-xs text-neutral-500 mb-0.5">
+                <dt className="text-text-xs text-text-muted mb-0.5">
                   Questions Solved
                 </dt>
-                <dd className="text-lg font-semibold text-white">
+                <dd className="text-lg font-semibold text-text-primary">
                   {student.solved} / 4
                 </dd>
               </div>
               <div>
-                <dt className="text-text-xs text-neutral-500 mb-0.5">Total Time</dt>
-                <dd className="text-lg font-semibold text-white">{student.time}</dd>
+                <dt className="text-text-xs text-text-muted mb-0.5">Total Time</dt>
+                <dd className="text-lg font-semibold text-text-primary">{student.time}</dd>
               </div>
-              <div className="pt-4 border-t border-white/6">
-                <dt className="text-text-xs text-neutral-500 mb-1">
+              <div className="pt-4 border-t border-border-default">
+                <dt className="text-text-xs text-text-muted mb-1">
                   Total Submissions
                 </dt>
-                <dd className="text-sm font-medium text-white">
+                <dd className="text-sm font-medium text-text-primary">
                   6 submits, 16 compiles
                 </dd>
               </div>
@@ -401,8 +401,8 @@ function StudentDetailReport({
             bottom), the icon shape (not just its color) carries the status, and the
             timestamp sits directly above the event instead of in 10px corner text.
           */}
-          <div className="rounded-xl border border-white/6 bg-white/[0.02] p-5">
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+          <div className="rounded-xl border border-border-default bg-surface-base p-5">
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-text-muted">
               Activity Timeline
             </h2>
             <ol className="space-y-0">
@@ -417,25 +417,25 @@ function StudentDetailReport({
                       <span
                         className={`grid h-6 w-6 shrink-0 place-items-center rounded-full ring-4 ring-offset-0 ${meta.dot} ${meta.ring}`}
                       >
-                        <Icon className="h-3.5 w-3.5 text-neutral-950" aria-hidden="true" />
+                        <Icon className="h-3.5 w-3.5 text-bg-base" aria-hidden="true" />
                       </span>
                       {!isLast && (
                         <span
-                          className="w-px flex-1 bg-neutral-800"
+                          className="w-px flex-1 bg-surface-hover"
                           aria-hidden="true"
                         />
                       )}
                     </div>
                     <div className={`flex-1 ${isLast ? "pb-0" : "pb-5"}`}>
-                      <time className="block text-text-xs font-medium text-neutral-400">
+                      <time className="block text-text-xs font-medium text-text-muted">
                         {item.time}
                       </time>
-                      <p className="text-text-base font-medium text-neutral-200 mt-0.5">
+                      <p className="text-text-base font-medium text-text-primary mt-0.5">
                         <span className="sr-only">{meta.label}: </span>
                         {item.event}
                       </p>
                       {item.meta && (
-                        <p className="text-text-xs text-neutral-500 mt-0.5 font-mono">
+                        <p className="text-text-xs text-text-muted mt-0.5 font-mono">
                           {item.meta}
                         </p>
                       )}
@@ -449,7 +449,7 @@ function StudentDetailReport({
 
         {/* Right Column: Question Submissions */}
         <div className="space-y-4">
-          <h2 className="text-sm font-semibold text-white">Question Performance</h2>
+          <h2 className="text-sm font-semibold text-text-primary">Question Performance</h2>
 
           <div className="space-y-3">
             {mockStudentQuestions.map((q) => {
@@ -458,7 +458,7 @@ function StudentDetailReport({
               return (
                 <div
                   key={q.id}
-                  className="rounded-xl border border-white/6 bg-white/[0.02] overflow-hidden transition-colors hover:border-white/[0.12]"
+                  className="rounded-xl border border-border-default bg-surface-base overflow-hidden transition-colors hover:border-border-default"
                 >
                   <button
                     type="button"
@@ -468,7 +468,7 @@ function StudentDetailReport({
                     className={`flex w-full items-center justify-between gap-4 p-4 text-left ${FOCUS_RING}`}
                   >
                     <div className="flex items-center gap-4 min-w-0">
-                      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/[0.04]">
+                      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-surface-raised">
                         {q.result === "Accepted" ? (
                           <CheckCircle2
                             className="h-4 w-4 text-emerald-400"
@@ -477,27 +477,27 @@ function StudentDetailReport({
                         ) : q.result === "Attempted" ? (
                           <XCircle className="h-4 w-4 text-amber-400" aria-hidden="true" />
                         ) : (
-                          <div className="h-1.5 w-1.5 rounded-full bg-neutral-600" />
+                          <div className="h-1.5 w-1.5 rounded-full bg-surface-hover" />
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-text-base font-semibold text-white truncate">
+                        <p className="text-text-base font-semibold text-text-primary truncate">
                           {q.title}
                         </p>
-                        <p className="text-text-xs text-neutral-500 mt-0.5">
+                        <p className="text-text-xs text-text-muted mt-0.5">
                           {q.result} · {q.submissions} submits · {q.compilations}{" "}
                           compiles
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-6 text-text-xs text-neutral-400 shrink-0">
+                    <div className="flex items-center gap-6 text-text-xs text-text-muted shrink-0">
                       <div className="text-right hidden sm:block">
-                        <p className="text-neutral-500 mb-0.5">Opened</p>
-                        <p className="font-mono text-neutral-300">{q.opened}</p>
+                        <p className="text-text-muted mb-0.5">Opened</p>
+                        <p className="font-mono text-text-secondary">{q.opened}</p>
                       </div>
                       <div className="text-right hidden sm:block">
-                        <p className="text-neutral-500 mb-0.5">Accepted</p>
-                        <p className="font-mono text-neutral-300">{q.accepted}</p>
+                        <p className="text-text-muted mb-0.5">Accepted</p>
+                        <p className="font-mono text-text-secondary">{q.accepted}</p>
                       </div>
                       <ChevronDown
                         aria-hidden="true"
@@ -514,7 +514,7 @@ function StudentDetailReport({
                       id={panelId}
                       role="region"
                       aria-label={`Submission history for ${q.title}`}
-                      className="border-t border-white/6 bg-black/20 p-4"
+                      className="border-t border-border-default bg-surface-hover/50 p-4"
                     >
                       <div className="overflow-x-auto">
                         <table className="w-full min-w-[520px] text-sm">
@@ -522,7 +522,7 @@ function StudentDetailReport({
                             Submission history for {q.title}
                           </caption>
                           <thead>
-                            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-neutral-500">
+                            <tr className="text-left text-text-xs font-medium uppercase tracking-wide text-text-muted">
                               <th scope="col" className="pb-2 font-medium">
                                 Time
                               </th>
@@ -548,24 +548,24 @@ function StudentDetailReport({
                               const rm = resultMeta(h.result)
                               const ResultIcon = rm.icon
                               return (
-                                <tr key={h.id} className="border-t border-white/[0.04]">
-                                  <td className="py-2.5 font-mono text-neutral-400">
+                                <tr key={h.id} className="border-t border-border-default">
+                                  <td className="py-2.5 font-mono text-text-muted">
                                     {h.time}
                                   </td>
-                                  <td className="py-2.5 text-neutral-300">{h.type}</td>
+                                  <td className="py-2.5 text-text-secondary">{h.type}</td>
                                   <td className={`py-2.5 font-medium ${rm.className}`}>
                                     <span className="inline-flex items-center gap-1.5">
                                       <ResultIcon className="h-3.5 w-3.5" aria-hidden="true" />
                                       {h.result}
                                     </span>
                                   </td>
-                                  <td className="py-2.5 text-right font-mono text-neutral-400">
+                                  <td className="py-2.5 text-right font-mono text-text-muted">
                                     {h.runtime}
                                   </td>
-                                  <td className="py-2.5 text-right font-mono text-neutral-400">
+                                  <td className="py-2.5 text-right font-mono text-text-muted">
                                     {h.memory}
                                   </td>
-                                  <td className="py-2.5 text-right text-neutral-400">
+                                  <td className="py-2.5 text-right text-text-muted">
                                     {h.lang}
                                   </td>
                                 </tr>

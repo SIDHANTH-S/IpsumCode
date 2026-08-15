@@ -37,7 +37,7 @@ export function DurationInput({ valueSeconds, onChange, readonly }: DurationInpu
   }
 
   return (
-    <div className="flex h-10 w-[90px] items-center justify-center rounded-md border border-border-default bg-surface-base px-2 focus-within:border-white/25">
+    <div className="flex h-10 w-[90px] items-center justify-center rounded-md border border-border-default bg-surface-base px-2 focus-within:border-border-default">
       <input
         type="text"
         value={mins}

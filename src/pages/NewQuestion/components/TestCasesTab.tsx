@@ -22,14 +22,14 @@ export function TestCasesTab({
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-text-lg font-semibold text-white">
+              <h3 className="text-text-lg font-semibold text-text-primary">
                 General / Sample Test Cases
               </h3>
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1.5 text-text-xs font-medium text-white/70">
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-surface-hover px-1.5 text-text-xs font-medium text-text-secondary">
                 {draft.sampleTestCases.length}
               </span>
             </div>
-            <p className="mt-1 text-text-sm text-white/45">
+            <p className="mt-1 text-text-sm text-text-muted">
               Visible to students while solving — at least one is required to
               save this question.
             </p>
@@ -67,7 +67,7 @@ export function TestCasesTab({
           <button
             type="button"
             onClick={() => actions.addCase("sample")}
-            className="w-full rounded-lg border border-dashed border-white/15 py-3 text-text-sm font-medium text-white/60 transition-colors hover:border-white/30 hover:text-white"
+            className="w-full rounded-lg border border-dashed border-border-default py-3 text-text-sm font-medium text-text-muted transition-colors hover:border-accent-base/30 hover:text-text-primary"
           >
             + Add Another General Test Case
           </button>
@@ -78,15 +78,15 @@ export function TestCasesTab({
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-text-lg font-semibold text-white">Hidden Test Cases</h3>
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white/10 px-1.5 text-text-xs font-medium text-white/70">
+              <h3 className="text-text-lg font-semibold text-text-primary">Hidden Test Cases</h3>
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-surface-hover px-1.5 text-text-xs font-medium text-text-secondary">
                 {draft.hiddenTestCases.length}
               </span>
-              <span className="flex h-[18px] items-center rounded bg-white/10 px-1.5 text-text-xs font-semibold uppercase tracking-[0.5px] text-white/55">
+              <span className="flex h-[18px] items-center rounded bg-surface-hover px-1.5 text-text-xs font-semibold uppercase tracking-[0.5px] text-text-muted">
                 Optional
               </span>
             </div>
-            <p className="mt-1 text-text-sm text-white/45">
+            <p className="mt-1 text-text-sm text-text-muted">
               Used privately by the judge to evaluate submissions — never shown
               to students.
             </p>
@@ -94,7 +94,7 @@ export function TestCasesTab({
           <button
             type="button"
             onClick={() => actions.addCase("hidden")}
-            className="flex shrink-0 items-center gap-1.5 rounded-md border border-white/10 bg-white/6 px-3.5 py-2 text-text-sm font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="flex shrink-0 items-center gap-1.5 rounded-md border border-border-default bg-surface-elevated px-3.5 py-2 text-text-sm font-medium text-text-secondary transition-colors hover:bg-surface-hover"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
             Add Hidden Test Case
@@ -102,7 +102,7 @@ export function TestCasesTab({
         </div>
 
         {draft.hiddenTestCases.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-white/10 py-6 text-center text-text-sm text-white/35">
+          <p className="rounded-lg border border-dashed border-border-default py-6 text-center text-text-sm text-text-muted">
             No hidden test cases yet. They're optional, but stronger judges usually
             add a few edge cases students never see.
           </p>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react"
 
 import { createPortal } from "react-dom"
 
-import { ChevronDown, Plus, Minus, Check } from "lucide-react"
+import { ChevronDown, Minus, Check } from "lucide-react"
 import { DatePicker } from "../assessment/DatePicker"
 
 function useSmartSticky(
@@ -212,14 +212,14 @@ function CustomSelect({
     <div className={`relative ${className}`} ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-8 w-full items-center justify-between rounded-md border border-neutral-700 bg-neutral-900/50 px-2.5 text-xs text-neutral-200 hover:border-neutral-500 focus:outline-none"
+        className="flex h-8 w-full items-center justify-between rounded-md border border-border-default bg-surface-base/50 px-2.5 text-xs text-text-primary hover:border-border-default focus:outline-none"
       >
         <span className="truncate">{getDisplayValue()}</span>
-        <ChevronDown className="ml-1 h-3.5 w-3.5 shrink-0 text-neutral-500" />
+        <ChevronDown className="ml-1 h-3.5 w-3.5 shrink-0 text-text-muted" />
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 z-50 mt-1 max-h-48 w-max min-w-full overflow-y-auto rounded-md border border-neutral-700 bg-neutral-800 py-1 shadow-lg">
+        <div className="absolute top-full left-0 z-50 mt-1 max-h-48 w-max min-w-full overflow-y-auto rounded-md border border-border-default bg-surface-hover py-1 shadow-lg">
           {options.map((opt) => {
             const isSelected = multiple
               ? (Array.isArray(value) ? value : []).includes(opt.value)
@@ -229,7 +229,7 @@ function CustomSelect({
               <button
                 key={opt.value}
                 onClick={() => handleSelect(opt.value)}
-                className="flex w-full items-center px-3 py-1.5 text-left text-xs text-neutral-300 hover:bg-neutral-700"
+                className="flex w-full items-center px-3 py-1.5 text-left text-xs text-text-secondary hover:bg-border-default"
               >
                 <div className="mr-2 flex h-3 w-3 items-center justify-center">
                   {isSelected && <Check className="h-3 w-3 text-emerald-400" />}
@@ -267,13 +267,22 @@ export function FilterMenu({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node
+
+      // Check if click is inside menu or trigger
       if (
         menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
+        !menuRef.current.contains(target) &&
         triggerRef.current &&
-        !triggerRef.current.contains(event.target as Node)
+        !triggerRef.current.contains(target)
       ) {
-        setIsOpen(false)
+        // Check if click is inside any popover (DatePicker calendars)
+        const clickedElement = event.target as HTMLElement
+        const isInsidePopover = clickedElement.closest('[data-popover-content]')
+
+        if (!isInsidePopover) {
+          setIsOpen(false)
+        }
       }
     }
 
@@ -341,13 +350,13 @@ export function FilterMenu({
           <div
             ref={menuRef}
             style={stickyStyle}
-            className="z-[9999] flex h-[464px] w-[355px] flex-col rounded-lg border border-neutral-700 bg-surface-hover shadow-xl lc-md:w-[478px] animate-in fade-in-0 zoom-in-95 data-[side=right]:slide-in-from-left-2"
+            className="z-[9999] flex h-[464px] w-[355px] flex-col rounded-lg border border-border-default bg-surface-hover shadow-xl lc-md:w-[478px] animate-in fade-in-0 zoom-in-95 data-[side=right]:slide-in-from-left-2"
             data-state="open"
             data-side="right"
           >
             {/* Header */}
-            <div className="flex shrink-0 items-center gap-2 border-b border-neutral-700/50 p-4 pb-3">
-              <span className="text-sm font-medium text-neutral-200">
+            <div className="flex shrink-0 items-center gap-2 border-b border-border-default/50 p-4 pb-3">
+              <span className="text-sm font-medium text-text-primary">
                 Match
               </span>
               <CustomSelect
@@ -360,13 +369,13 @@ export function FilterMenu({
                   { value: "Any", label: "Any" },
                 ]}
               />
-              <span className="text-sm font-medium text-neutral-200">
+              <span className="text-sm font-medium text-text-primary">
                 of the following filters:
               </span>
             </div>
 
             {/* Filter Rows */}
-            <div className="flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden">
+            <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden">
               <div className="space-y-3">
                 {filters.map((f) => {
                   const def = availableFilters.find(
@@ -377,96 +386,102 @@ export function FilterMenu({
 
                   const Icon = def.icon
 
-                  return (
-                    <div key={f.id} className="flex items-center gap-2 pl-1">
-                      <Icon className="h-[18px] w-[18px] shrink-0 text-neutral-500 opacity-70" />
-                      <div className="w-[86px] shrink-0 text-xs text-neutral-300">
-                        {def.label}
-                      </div>
-                      {(() => {
-                        const operatorOptions =
-                          def.type === "number"
-                            ? [
-                                {
-                                  value: "Greater than",
-                                  label: "Greater than",
-                                },
-                                { value: "Less than", label: "Less than" },
-                              ]
-                            : def.type === "date-range"
-                              ? [{ value: "is between", label: "is between" }]
-                              : [
-                                  { value: "is", label: "is" },
-                                  { value: "is not", label: "is not" },
-                                ]
+                  const operatorOptions =
+                    def.type === "number"
+                      ? [
+                          { value: "Greater than", label: "Greater than" },
+                          { value: "Less than", label: "Less than" },
+                        ]
+                      : def.type === "date-range"
+                        ? [{ value: "is between", label: "is between" }]
+                        : [
+                            { value: "is", label: "is" },
+                            { value: "is not", label: "is not" },
+                          ]
 
-                        return (
-                          <>
-                            <CustomSelect
-                              className="w-[110px] shrink-0"
-                              value={f.operator}
-                              onChange={(v) =>
-                                handleUpdateFilter(f.id, { operator: v })
-                              }
-                              options={operatorOptions}
-                            />
-                            {def.type === "select" ||
-                            def.type === "multi-select" ? (
-                              <CustomSelect
-                                className="flex-1"
-                                placeholder="Select..."
-                                multiple={def.type === "multi-select"}
-                                value={f.value}
-                                onChange={(v) =>
-                                  handleUpdateFilter(f.id, { value: v })
-                                }
-                                options={def.options || []}
-                              />
-                            ) : def.type === "number" ? (
-                              <input
-                                type="number"
-                                value={f.value || ""}
-                                onChange={(e) =>
+                  return (
+                    // Row is now two stacked lines instead of one long flex row.
+                    // This is the fix for both reported bugs: the header line
+                    // (icon/label/operator/remove) has a small, predictable
+                    // width, so it never overflows the popup. The value line
+                    // below it always gets the FULL popup width, so the
+                    // date-range pickers finally have room to show the
+                    // selected dates instead of being squeezed to ~0px.
+                    <div key={f.id} className="flex flex-col gap-1.5">
+                      <div className="flex items-center gap-2">
+                        <Icon className="h-[18px] w-[18px] shrink-0 text-text-muted opacity-70" />
+                        <div
+                          className="w-[80px] shrink-0 truncate text-xs text-text-secondary"
+                          title={def.label}
+                        >
+                          {def.label}
+                        </div>
+                        <CustomSelect
+                          className="w-[104px] shrink-0"
+                          value={f.operator}
+                          onChange={(v) =>
+                            handleUpdateFilter(f.id, { operator: v })
+                          }
+                          options={operatorOptions}
+                        />
+                        <button
+                          onClick={() => handleRemoveFilter(f.id)}
+                          className="ml-auto grid h-6 w-6 shrink-0 place-items-center rounded-md text-text-muted hover:bg-surface-hover hover:text-red-400"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <div className="w-full pl-[26px]">
+                        {def.type === "select" ||
+                        def.type === "multi-select" ? (
+                          <CustomSelect
+                            className="w-full"
+                            placeholder="Select..."
+                            multiple={def.type === "multi-select"}
+                            value={f.value}
+                            onChange={(v) =>
+                              handleUpdateFilter(f.id, { value: v })
+                            }
+                            options={def.options || []}
+                          />
+                        ) : def.type === "number" ? (
+                          <input
+                            type="number"
+                            value={f.value || ""}
+                            onChange={(e) =>
+                              handleUpdateFilter(f.id, {
+                                value: e.target.value,
+                              })
+                            }
+                            className="h-8 w-full rounded-md border border-border-default bg-surface-base/50 px-2.5 text-xs text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none"
+                            placeholder="Value"
+                          />
+                        ) : def.type === "date-range" ? (
+                          <div className="flex w-full gap-2">
+                            <div className="min-w-[130px] flex-1">
+                              <DatePicker
+                                value={f.value?.start || null}
+                                onChange={(d) =>
                                   handleUpdateFilter(f.id, {
-                                    value: e.target.value,
+                                    value: { ...f.value, start: d },
                                   })
                                 }
-                                className="flex-1 h-8 min-w-[80px] rounded-md border border-neutral-700 bg-neutral-900/50 px-2.5 text-xs text-neutral-200 placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none"
-                                placeholder="Value"
                               />
-                            ) : def.type === "date-range" ? (
-                              <div className="flex-1 flex gap-2">
-                                <div className="flex-1">
-                                  <DatePicker
-                                    value={f.value?.start || null}
-                                    onChange={(d) =>
-                                      handleUpdateFilter(f.id, {
-                                        value: { ...f.value, start: d },
-                                      })
-                                    }
-                                  />
-                                </div>
-                                <div className="flex-1">
-                                  <DatePicker
-                                    value={f.value?.end || null}
-                                    onChange={(d) =>
-                                      handleUpdateFilter(f.id, {
-                                        value: { ...f.value, end: d },
-                                      })
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            ) : null}
-                          </>
-                        )
-                      })()}
-                      <button
-                        onClick={() => handleRemoveFilter(f.id)}
-                        className="grid h-6 w-6 shrink-0 place-items-center rounded-md text-neutral-500 hover:bg-neutral-800 hover:text-red-400"
-                      >
-                        <Minus className="h-4 w-4" />
-                      </button>
+                            </div>
+                            <div className="min-w-[130px] flex-1">
+                              <DatePicker
+                                value={f.value?.end || null}
+                                onChange={(d) =>
+                                  handleUpdateFilter(f.id, {
+                                    value: { ...f.value, end: d },
+                                  })
+                                }
+                              />
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
                   )
                 })}
@@ -485,17 +500,17 @@ export function FilterMenu({
                         label: def.label,
                       }))}
                     />
-                    <div className="pointer-events-none absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-[#262626]" />
+                    <div className="pointer-events-none absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-surface-hover" />
                   </div>
                 )}
               </div>
             </div>
 
             {/* Footer */}
-            <div className="flex shrink-0 items-center gap-4 border-t border-neutral-700/50 p-4">
+            <div className="flex shrink-0 items-center gap-4 border-t border-border-default/50 p-4">
               <button
                 onClick={handleReset}
-                className="flex-1 rounded-lg border border-neutral-700 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-neutral-700 hover:text-white"
+                className="flex-1 rounded-lg border border-border-default py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-border-default hover:text-text-primary"
               >
                 Reset
               </button>

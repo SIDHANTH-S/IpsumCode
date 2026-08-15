@@ -41,12 +41,12 @@ export function StatementEditor({
   }
 
   return (
-    <div className="flex min-h-[600px] flex-col overflow-hidden rounded-md border border-white/10 bg-surface-base">
+    <div className="flex min-h-[600px] flex-col overflow-hidden rounded-md border border-border-default bg-surface-base">
       <div
         role="toolbar"
         aria-label="Formatting"
         aria-controls={fieldId}
-        className="flex flex-wrap items-center gap-0.5 border-b border-white/10 px-2 py-1.5 bg-surface-base"
+        className="flex flex-wrap items-center gap-0.5 border-b border-border-default px-2 py-1.5 bg-surface-base"
       >
         {STATEMENT_TOOLBAR.map((tool) => (
           <button
@@ -57,7 +57,7 @@ export function StatementEditor({
               event.preventDefault()
               handleTool(tool)
             }}
-            className="grid h-7 w-7 cursor-pointer place-items-center rounded text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+            className="grid h-7 w-7 cursor-pointer place-items-center rounded text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary disabled:opacity-30 disabled:hover:bg-transparent"
           >
             <tool.icon className="h-[15px] w-[15px]" aria-hidden="true" />
           </button>
@@ -65,14 +65,14 @@ export function StatementEditor({
       </div>
 
       <div className="flex flex-1 flex-col xl:flex-row">
-        <div className="relative flex w-full flex-col border-b border-white/10 text-text-base leading-relaxed xl:w-[575px] xl:shrink-0 xl:border-b-0 xl:border-r">
+        <div className="relative flex w-full flex-col border-b border-border-default text-text-base leading-relaxed xl:w-[575px] xl:shrink-0 xl:border-b-0 xl:border-r">
           <textarea
             id={fieldId}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             placeholder="Describe the problem. Select text and use the toolbar to format it."
-            className="flex-1 resize-none bg-transparent p-4 font-sans text-white/85 focus:outline-none placeholder:text-text-muted"
+            className="flex-1 resize-none bg-transparent p-4 font-sans text-text-secondary focus:outline-none placeholder:text-text-muted"
             spellCheck={false}
           />
           {error && (

@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom"
+import { createBrowserRouter, Navigate, useNavigate } from "react-router-dom"
 import { AppLayout } from "../components/layout/AppLayout"
 import { ContestPage } from "../pages/ContestPage"
 import { ClassroomPage } from "../pages/ClassroomPage"
@@ -8,6 +8,11 @@ import { CreateAssessmentPage } from "../pages/CreateAssessmentPage"
 import { ContestResultsPage } from "../pages/ContestResultsPage"
 import { UpcomingAssessmentsPage } from "../pages/UpcomingAssessmentsPage"
 import { CompletedAssessmentsPage } from "../pages/CompletedAssessmentsPage"
+
+function QuestionBankPageWrapper() {
+  const navigate = useNavigate()
+  return <QuestionBankPage onNewQuestion={() => navigate("/question-bank/new")} />
+}
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +35,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "question-bank",
-        element: <QuestionBankPage />,
+        element: <QuestionBankPageWrapper />,
         handle: { title: "Question Bank" }
       },
       {

@@ -9,7 +9,7 @@ function OverlineContainer({
 }) {
   return (
     <div
-      className="[word-break:break-word] content-stretch flex font-['SF_Pro:Semibold',sans-serif] font-[590] gap-[2.582px] items-center justify-center leading-[6.886px] relative shrink-0 text-[11.62px] text-white tracking-[0.1291px] w-full whitespace-nowrap"
+      className="[word-break:break-word] content-stretch flex font-['SF_Pro:Semibold',sans-serif] font-[590] gap-[2.582px] items-center justify-center leading-[6.886px] relative shrink-0 text-[11.62px] text-text-primary tracking-[0.1291px] w-full whitespace-nowrap"
       data-name="Overline Container"
     >
       <p
@@ -55,7 +55,7 @@ function WidgetContainer({
         data-name="Glass Background"
       />
       <OverlineContainer dayName={dayName} month={month} />
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] font-['SF_Pro_Display:Medium',sans-serif] leading-[6.886px] min-w-full mix-blend-screen not-italic relative shrink-0 text-[35.29px] text-center text-white tracking-[-2.1519px] w-[min-content]">
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] font-['SF_Pro_Display:Medium',sans-serif] leading-[6.886px] min-w-full mix-blend-screen not-italic relative shrink-0 text-[35.29px] text-center text-text-primary tracking-[-2.1519px] w-[min-content]">
         {date}
       </p>
     </div>

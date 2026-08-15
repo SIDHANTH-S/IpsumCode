@@ -62,9 +62,9 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
         readOnly
         value={value || ""}
         placeholder="Select date"
-        className={`h-10 w-full rounded-md border border-white/10 bg-white/6 px-3 pr-9 text-text-base text-white placeholder:text-text-muted focus:border-white/25 focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
+        className={`h-10 w-full rounded-md border border-border-default bg-surface-base px-3 pr-9 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none ${readonly ? '' : 'cursor-pointer'}`}
       />
-      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/35">
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
         <Calendar className="h-4 w-4" />
       </span>
     </div>
@@ -79,16 +79,16 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
       <div className="mb-4 flex items-center justify-between">
         <button
           onClick={handlePrevMonth}
-          className="grid h-7 w-7 place-items-center rounded-md hover:bg-white/10 text-white/70 hover:text-white"
+          className="grid h-7 w-7 place-items-center rounded-md hover:bg-surface-hover text-text-secondary hover:text-text-primary"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <span className="text-text-base font-medium text-white">
+        <span className="text-text-base font-medium text-text-primary">
           {MONTHS[currentMonth]} {currentYear}
         </span>
         <button
           onClick={handleNextMonth}
-          className="grid h-7 w-7 place-items-center rounded-md hover:bg-white/10 text-white/70 hover:text-white"
+          className="grid h-7 w-7 place-items-center rounded-md hover:bg-surface-hover text-text-secondary hover:text-text-primary"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -98,7 +98,7 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <div
             key={d}
-            className="text-center text-text-xs font-medium text-white/40"
+            className="text-center text-text-xs font-medium text-text-muted"
           >
             {d}
           </div>
@@ -125,8 +125,8 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
                 isSelected
                   ? "bg-accent-base text-white font-medium shadow-md shadow-accent-base/30"
                   : isToday
-                    ? "bg-white/10 text-white font-medium"
-                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                    ? "bg-surface-hover text-text-primary font-medium"
+                    : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {day}
