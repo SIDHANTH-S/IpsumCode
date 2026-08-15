@@ -41,39 +41,25 @@ export default function App() {
     setTab(next)
   }
 
-  if (creatingQuestion) {
-    return (
-      <div className="h-screen w-full overflow-y-auto bg-[#0a0a0a] px-8 py-8 lg:px-12 lg:py-10">
-        <div className="mx-auto max-w-[1440px]">
-          <NewQuestionPage onExit={() => setCreatingQuestion(false)} />
-        </div>
-      </div>
-    )
-  }
-
-  if (activeAssessment) {
-    return (
-      <div className="h-screen w-full overflow-y-auto bg-[#0a0a0a] px-8 py-8 lg:px-12 lg:py-10">
-        <div className="mx-auto max-w-[1440px]">
-          <CreateAssessmentPage
-            mode={activeAssessment.mode}
-            assessmentId={activeAssessment.id}
-            initialDate={activeAssessment.initialDate}
-            readonly={activeAssessment.readonly}
-            onModeChange={(mode) => setActiveAssessment(prev => prev ? { ...prev, mode } : null)}
-            onExit={() => setActiveAssessment(null)}
-          />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <AppLayout activeTab={tab} onSelectTab={selectTab}>
       {tab === "Classroom" ? (
         <ClassroomPage />
       ) : tab === "Ques Bank" ? (
-        <QuestionBankPage onNewQuestion={() => setCreatingQuestion(true)} />
+        creatingQuestion ? (
+          <NewQuestionPage onExit={() => setCreatingQuestion(false)} />
+        ) : (
+          <QuestionBankPage onNewQuestion={() => setCreatingQuestion(true)} />
+        )
+      ) : activeAssessment ? (
+        <CreateAssessmentPage 
+          mode={activeAssessment.mode}
+          assessmentId={activeAssessment.id}
+          initialDate={activeAssessment.initialDate}
+          readonly={activeAssessment.readonly}
+          onModeChange={(mode) => setActiveAssessment(prev => prev ? { ...prev, mode } : null)}
+          onExit={() => setActiveAssessment(null)} 
+        />
       ) : viewingContestResults ? (
         <ContestResultsPage
           contestId={viewingContestResults}

@@ -442,10 +442,18 @@ export function TopicPicker({
 }) {
   const autoId = useId()
   const inputId = id ?? autoId
-  const listboxId = `${inputId}-listbox`
   const errorId = `${inputId}-error`
 
   const [query, setQuery] = useState("")
+  const [isEditing, setIsEditing] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus()
+    }
+  }, [isEditing])
+
   const commitQuery = (textToCommit = query) => {
     const newTag = textToCommit.trim()
     if (newTag && !tags.includes(newTag)) {
@@ -455,15 +463,11 @@ export function TopicPicker({
 
   return (
     <div className="relative">
-      <div
-        className={`flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] px-2 py-1.5 focus-within:border-white/25 ${
-          error ? ERROR_BORDER : ""
-        }`}
-      >
+      <div className="flex flex-wrap items-center gap-2">
         {tags.map((tag) => (
           <span
             key={tag}
-            className="flex h-7 items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] pl-2.5 pr-1.5 text-[12.5px] font-medium text-white/80"
+            className="group flex h-7 items-center gap-1 rounded-full bg-white/[0.06] pl-3 pr-2 text-[13px] font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
           >
             {tag}
             <button
@@ -476,34 +480,60 @@ export function TopicPicker({
             </button>
           </span>
         ))}
-        <input
-          id={inputId}
-          aria-describedby={error ? errorId : undefined}
-          autoComplete="off"
-          value={query}
-          onChange={(event) => {
-            const val = event.target.value
-            if (val.includes(",")) {
-              const parts = val.split(",")
-              const last = parts.pop() || ""
-              parts.forEach(commitQuery)
-              setQuery(last.trimStart())
-            } else {
-              setQuery(val)
-            }
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.preventDefault()
+
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            id={inputId}
+            aria-describedby={error ? errorId : undefined}
+            autoComplete="off"
+            value={query}
+            onBlur={() => {
               commitQuery()
               setQuery("")
-            } else if (event.key === "Backspace" && query === "" && tags.length > 0) {
-              onRemove(tags[tags.length - 1] as string)
-            }
-          }}
-          placeholder={tags.length === 0 ? "e.g. Arrays, Sorting" : ""}
-          className="min-w-[120px] flex-1 bg-transparent text-[13px] text-white placeholder:text-[#8a8a8a] focus:outline-none"
-        />
+              setIsEditing(false)
+            }}
+            onChange={(event) => {
+              const val = event.target.value
+              if (val.includes(",")) {
+                const parts = val.split(",")
+                const last = parts.pop() || ""
+                parts.forEach(commitQuery)
+                setQuery(last.trimStart())
+              } else {
+                setQuery(val)
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault()
+                commitQuery()
+                setQuery("")
+                setIsEditing(false)
+              } else if (event.key === "Escape") {
+                setQuery("")
+                setIsEditing(false)
+              } else if (event.key === "Backspace" && query === "" && tags.length > 0) {
+                onRemove(tags[tags.length - 1] as string)
+              }
+            }}
+            placeholder="Type tag..."
+            className={`h-7 w-[120px] rounded-full bg-white/[0.06] px-3 text-[13px] text-white focus:outline-none focus:ring-1 ${
+              error ? "focus:ring-[#ff9b9b]" : "focus:ring-white/30"
+            }`}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsEditing(true)}
+            className="flex h-7 items-center gap-1 rounded-full bg-white/[0.06] px-3 text-[13px] font-medium text-white/80 transition-colors hover:bg-white/[0.1]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="h-3.5 w-3.5">
+              <path fillRule="evenodd" d="M13 11h7a1 1 0 110 2h-7v7a1 1 0 11-2 0v-7H4a1 1 0 110-2h7V4a1 1 0 112 0v7z" clipRule="evenodd"></path>
+            </svg>
+            Tag
+          </button>
+        )}
       </div>
       <InlineError id={errorId} message={error} />
     </div>
@@ -582,7 +612,7 @@ export function SectionLink({
   return (
     <button 
       onClick={onClick}
-      className="flex items-center gap-1 text-[13px] font-medium text-indigo-400 transition-colors hover:text-indigo-300"
+      className="flex items-center gap-1 cursor-pointer text-[13px] font-medium text-indigo-400 transition-colors hover:text-indigo-300"
     >
       {children} <ArrowRight className="h-3.5 w-3.5" />
     </button>

@@ -168,7 +168,7 @@ export function CreateAssessmentPage({
   const isView = mode === "view"
 
   return (
-    <div className="space-y-5">
+    <div className="mx-auto w-full max-w-[888px] space-y-5 xl:max-w-screen-xl">
       {/* header */}
       <div className="flex items-start justify-between gap-4">
         <div>

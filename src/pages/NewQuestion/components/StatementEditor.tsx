@@ -39,11 +39,13 @@ export function StatementEditor({
   onChange,
   onBlur,
   error,
+  children,
 }: {
   value: string
   onChange: (value: string) => void
   onBlur?: () => void
   error?: string
+  children?: React.ReactNode
 }) {
   const fieldId = useId()
   const errorId = `${fieldId}-error`
@@ -70,38 +72,31 @@ export function StatementEditor({
   }
 
   return (
-    <div>
-      <FieldLabel htmlFor={fieldId} required>
-        Problem Statement
-      </FieldLabel>
+    <div className="flex min-h-[600px] flex-col overflow-hidden rounded-md border border-white/10 bg-[#1a1a1a]">
       <div
-        className={`overflow-hidden rounded-md border bg-white/[0.04] ${
-          error ? "border-[#ff9b9b]/50" : "border-white/10"
-        }`}
+        role="toolbar"
+        aria-label="Formatting"
+        aria-controls={fieldId}
+        className="flex flex-wrap items-center gap-0.5 border-b border-white/10 px-2 py-1.5 bg-[#1a1a1a]"
       >
-        <div
-          role="toolbar"
-          aria-label="Formatting"
-          aria-controls={fieldId}
-          className="flex flex-wrap items-center gap-0.5 border-b border-white/10 px-2 py-1.5"
-        >
-          {STATEMENT_TOOLBAR.map((tool) => (
-            <button
-              key={tool.id}
-              type="button"
-              aria-label={tool.label}
-              onMouseDown={(event) => {
-                event.preventDefault()
-                handleTool(tool)
-              }}
-              className="grid h-7 w-7 place-items-center rounded text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
-            >
-              <tool.icon className="h-[15px] w-[15px]" aria-hidden="true" />
-            </button>
-          ))}
-        </div>
+        {STATEMENT_TOOLBAR.map((tool) => (
+          <button
+            key={tool.id}
+            type="button"
+            aria-label={tool.label}
+            onMouseDown={(event) => {
+              event.preventDefault()
+              handleTool(tool)
+            }}
+            className="grid h-7 w-7 place-items-center rounded text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+          >
+            <tool.icon className="h-[15px] w-[15px]" aria-hidden="true" />
+          </button>
+        ))}
+      </div>
 
-        <div className="relative min-h-[400px] w-full text-[13px] leading-relaxed">
+      <div className="flex flex-1 flex-col xl:flex-row">
+        <div className="relative flex w-full flex-col border-b border-white/10 text-[13px] leading-relaxed xl:w-[575px] xl:shrink-0 xl:border-b-0 xl:border-r">
           <Editor
             textareaId={fieldId}
             value={value}
@@ -110,7 +105,7 @@ export function StatementEditor({
             padding={16}
             onBlur={onBlur}
             textareaClassName="focus:outline-none placeholder:text-[#8a8a8a]"
-            className="min-h-[400px] font-sans text-white/85"
+            className="flex-1 font-sans text-white/85"
             style={{
               fontFamily: "var(--font-sans)",
             }}
@@ -120,9 +115,19 @@ export function StatementEditor({
               Describe the problem. Select text and use the toolbar to format it.
             </div>
           )}
+          {error && (
+            <div className="px-4 pb-3">
+              <InlineError id={errorId} message={error} />
+            </div>
+          )}
         </div>
+
+        {children && (
+          <div className="flex-1 overflow-y-auto">
+            {children}
+          </div>
+        )}
       </div>
-      <InlineError id={errorId} message={error} />
     </div>
   )
 }

@@ -132,51 +132,52 @@ export const upcoming = [
     day: 25,
     name: "Top Interview 150",
     classrooms: ["CSE - D"],
+    classroomIds: ["cls-d"],
     scheduledDate: "25 MAY 2026",
     scheduledTime: "07:00 PM",
-    duration: 5400, // 90 min
+    duration: 5400,
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
     deliveryMode: "Random" as const,
     questionsPerStudent: 25,
   },
-
   {
     id: "up-2",
     tone: "blue" as Tone,
     day: 26,
     name: "LeetCode 75",
     classrooms: ["CSE - D"],
+    classroomIds: ["cls-d"],
     scheduledDate: "26 MAY 2026",
     scheduledTime: "11:00 AM",
-    duration: 2700, // 45 min
+    duration: 2700,
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
     deliveryMode: "Smart Shuffle" as const,
     questionsPerStudent: 15,
   },
-
   {
     id: "up-3",
     tone: "orange" as Tone,
     day: 27,
     name: "SQL 50",
     classrooms: ["CSE - B"],
+    classroomIds: ["cls-b"],
     scheduledDate: "27 MAY 2026",
     scheduledTime: "10:00 AM",
-    duration: 3600, // 60 min
+    duration: 3600,
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     deliveryMode: "Same Order" as const,
     questionsPerStudent: 20,
   },
-
   {
     id: "up-4",
     tone: "pink" as Tone,
     day: 28,
     name: "30 Days of JavaScript",
     classrooms: ["CSE - A"],
+    classroomIds: ["cls-a"],
     scheduledDate: "28 MAY 2026",
     scheduledTime: "06:00 PM",
-    duration: 3600, // 60 min
+    duration: 3600,
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
     deliveryMode: "Random" as const,
     questionsPerStudent: 30,
@@ -187,9 +188,10 @@ export const upcoming = [
     day: 29,
     name: "Amazon Spring High",
     classrooms: ["Public"],
+    classroomIds: [] as string[],
     scheduledDate: "29 MAY 2026",
     scheduledTime: "05:00 PM",
-    duration: 4500, // 75 min
+    duration: 4500,
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
     deliveryMode: "Same Order" as const,
     questionsPerStudent: 25,
@@ -200,9 +202,10 @@ export const upcoming = [
     day: 30,
     name: "Algorithms & Complexity",
     classrooms: ["CSE - B"],
+    classroomIds: ["cls-b"],
     scheduledDate: "30 MAY 2026",
     scheduledTime: "09:00 AM",
-    duration: 4500, // 75 min
+    duration: 4500,
     selectedQuestionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     deliveryMode: "Random" as const,
     questionsPerStudent: 20,
@@ -355,122 +358,42 @@ export const TODAY = 13
 
 export const LEADING_BLANKS = 6
 
-export const classrooms = [
-  { name: "CSE-A", year: "IV Year", students: 120 },
-
-  { name: "CSE-A", year: "IV Year", students: 120 },
-
-  { name: "CSE-A", year: "IV Year", students: 120 },
-
-  { name: "CSE-A", year: "IV Year", students: 120 },
+export const classrooms: {
+  id: string
+  name: string
+  year: string
+  students: number
+  section: string
+  academicYear: string
+  color: string
+  status: "active" | "archived"
+}[] = [
+  { id: "cls-a", name: "CSE-A", year: "IV Year", students: 120, section: "A", academicYear: "2025-26", color: "#7c6cf5", status: "active" },
+  { id: "cls-b", name: "CSE-B", year: "III Year", students: 115, section: "B", academicYear: "2025-26", color: "#4680b6", status: "active" },
+  { id: "cls-c", name: "CSE-C", year: "II Year", students: 98, section: "C", academicYear: "2025-26", color: "#f5a524", status: "active" },
+  { id: "cls-d", name: "CSE-D", year: "I Year", students: 130, section: "D", academicYear: "2025-26", color: "#f5567a", status: "active" },
 ]
 
 export const students: {
+  id: string
   name: string
-
   email: string
-
   solved: number
-
   score: string
-
-  cls: string
+  classroomId: string
 }[] = [
-  {
-    name: "Aarav Sharma",
-
-    email: "aarav.s@college.edu",
-
-    solved: 21,
-
-    score: "78.2%",
-
-    cls: "CSE-A",
-  },
-
-  {
-    name: "Ananya Gupta",
-
-    email: "ananya.g@college.edu",
-
-    solved: 28,
-
-    score: "84.5%",
-
-    cls: "CSE-B",
-  },
-
-  {
-    name: "Arjun Patel",
-
-    email: "arjun.p@college.edu",
-
-    solved: 19,
-
-    score: "76.8%",
-
-    cls: "CSE-A",
-  },
-
-  {
-    name: "Diya Reddy",
-
-    email: "diya.r@college.edu",
-
-    solved: 25,
-
-    score: "82.1%",
-
-    cls: "CSE-C",
-  },
-
-  {
-    name: "Ishaan Kumar",
-
-    email: "ishaan.k@college.edu",
-
-    solved: 18,
-
-    score: "74.3%",
-
-    cls: "CSE-A",
-  },
-
-  {
-    name: "Kavya Singh",
-
-    email: "kavya.s@college.edu",
-
-    solved: 32,
-
-    score: "86.7%",
-
-    cls: "CSE-B",
-  },
-
-  {
-    name: "Rohan Mehta",
-
-    email: "rohan.m@college.edu",
-
-    solved: 23,
-
-    score: "79.4%",
-
-    cls: "CSE-A",
-  },
-
-  {
-    name: "Saanvi Joshi",
-
-    email: "saanvi.j@college.edu",
-
-    solved: 35,
-
-    score: "89.2%",
-
-    cls: "CSE-C",
-  },
+  { id: "s1", name: "Aarav Sharma",    email: "aarav.s@college.edu",    solved: 21, score: "78.2%", classroomId: "cls-a" },
+  { id: "s2", name: "Ananya Gupta",    email: "ananya.g@college.edu",   solved: 28, score: "84.5%", classroomId: "cls-b" },
+  { id: "s3", name: "Arjun Patel",     email: "arjun.p@college.edu",    solved: 19, score: "76.8%", classroomId: "cls-a" },
+  { id: "s4", name: "Diya Reddy",      email: "diya.r@college.edu",     solved: 25, score: "82.1%", classroomId: "cls-c" },
+  { id: "s5", name: "Ishaan Kumar",    email: "ishaan.k@college.edu",   solved: 18, score: "74.3%", classroomId: "cls-a" },
+  { id: "s6", name: "Kavya Singh",     email: "kavya.s@college.edu",    solved: 32, score: "86.7%", classroomId: "cls-b" },
+  { id: "s7", name: "Rohan Mehta",     email: "rohan.m@college.edu",    solved: 23, score: "79.4%", classroomId: "cls-a" },
+  { id: "s8", name: "Saanvi Joshi",    email: "saanvi.j@college.edu",   solved: 35, score: "89.2%", classroomId: "cls-c" },
+  { id: "s9", name: "Priya Nair",      email: "priya.n@college.edu",    solved: 16, score: "71.0%", classroomId: "cls-d" },
+  { id: "s10", name: "Vikram Rao",     email: "vikram.r@college.edu",   solved: 29, score: "85.3%", classroomId: "cls-b" },
+  { id: "s11", name: "Meera Iyer",     email: "meera.i@college.edu",    solved: 22, score: "77.6%", classroomId: "cls-c" },
+  { id: "s12", name: "Karthik Pillai", email: "karthik.p@college.edu",  solved: 31, score: "88.0%", classroomId: "cls-d" },
 ]
 
 export const DIFFICULTY_COLORS: Record<Difficulty, string> = {
@@ -731,7 +654,7 @@ export const executionLanguages: {
   { name: "JavaScript", actions: ["Add solution"] },
 ]
 
-export const metadata: { label: string value: string }[] = [
+export const metadata: { label: string; value: string }[] = [
   { label: "Created by", value: "admin@ipsumcode.com" },
 
   { label: "Last updated", value: "Aug 12, 2026 · 3:42 PM" },

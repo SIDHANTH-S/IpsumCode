@@ -170,10 +170,14 @@ function CompletedTable({
   onCreateContest,
   onViewResults,
   onViewAllCompleted,
+  selectedAssessmentId,
+  onSelectAssessment,
 }: {
   onCreateContest?: () => void
   onViewResults?: (id: string) => void
   onViewAllCompleted?: () => void
+  selectedAssessmentId?: string | null
+  onSelectAssessment?: (id: string) => void
 }) {
   const [activeFilters, setActiveFilters] = useState<any[]>([])
 
@@ -225,7 +229,7 @@ function CompletedTable({
           <button
             key={label}
             onClick={() => label === "Create test" && onCreateContest?.()}
-            className="flex items-center gap-1.5 rounded-full border border-neutral-700 px-3.5 py-1.5 text-xs font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+            className="flex cursor-pointer items-center gap-1.5 rounded-full border border-neutral-700 px-3.5 py-1.5 text-xs font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
           >
             {Icon && <Icon className="h-3.5 w-3.5 text-indigo-400" />}
             {label}
@@ -245,43 +249,39 @@ function CompletedTable({
             initialFilters={activeFilters}
             onApply={(filters) => setActiveFilters(filters)}
             trigger={
-              <button className="grid h-8 w-8 place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white cursor-pointer">
+              <button className="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white">
                 <Filter className="h-3.5 w-3.5" />
               </button>
             }
           />
-          <button className="grid h-8 w-8 place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white">
+          <button className="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-neutral-700 text-neutral-400 transition-colors hover:text-white">
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
           <SectionLink onClick={() => onViewAllCompleted?.()} />
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-neutral-800 bg-white/[0.04]">
+      <div className="overflow-x-auto rounded-xl border border-[#262626] bg-[#141414]">
         <table className="w-full min-w-[560px] border-collapse text-sm">
           <thead>
-            <tr className="text-left text-[11px] font-medium uppercase tracking-wide text-neutral-500">
-              <th className="border-b border-white/[0.06] px-5 py-3 font-medium">
-                Assessment
-              </th>
-              <th className="border-b border-white/[0.06] px-5 py-3 font-medium">
-                Participation
-              </th>
-              <th className="border-b border-white/[0.06] px-5 py-3 font-medium">
-                Avg. Score
-              </th>
-              <th className="border-b border-white/[0.06] px-5 py-3 font-medium">
-                Completion
-              </th>
-              <th className="border-b border-white/[0.06] px-5 py-3 font-medium" />
+            <tr className="bg-white/[0.04] text-left text-[11px] font-medium uppercase tracking-wide text-[#808080]">
+              <th className="px-5 py-3 font-semibold">Assessment</th>
+              <th className="px-5 py-3 font-semibold">Participation</th>
+              <th className="px-5 py-3 font-semibold">Avg. Score</th>
+              <th className="px-5 py-3 font-semibold">Completion</th>
+              <th className="px-5 py-3 font-semibold" />
             </tr>
           </thead>
           <tbody>
-            {completed.slice(0, 5).map((row, i) => (
+            {completed.slice(0, 5).map((row, i) => {
+              const isSelected = selectedAssessmentId === row.title;
+              return (
               <tr
                 key={row.title}
-                className={`border-b border-white/[0.06] last:border-b-0 ${
-                  i % 2 === 0 ? "bg-white/[0.03]" : "bg-transparent"
+                onClick={() => onSelectAssessment?.(row.title)}
+                onDoubleClick={() => onViewResults?.(row.title)}
+                className={`cursor-pointer transition-colors ${
+                  i % 2 === 1 ? "bg-white/[0.03] hover:bg-white/[0.06]" : "hover:bg-white/[0.03]"
                 }`}
               >
                 <td className="px-5 py-3.5">
@@ -302,13 +302,14 @@ function CompletedTable({
                 <td className="px-5 py-3.5">
                   <button
                     onClick={() => onViewResults?.(row.title)}
-                    className="flex items-center gap-1 text-[12px] font-medium text-indigo-400 hover:text-indigo-300"
+                    className="flex cursor-pointer items-center gap-1 text-[12px] font-medium text-indigo-400 hover:text-indigo-300"
                   >
                     Results <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 </td>
               </tr>
-            ))}
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -332,10 +333,10 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
           <span className="text-[14px] font-normal text-white/75">Day 13</span>
         </div>
         <div className="flex items-center gap-[14px] text-neutral-400">
-          <button className="grid h-[14px] w-[14px] place-items-center hover:text-white">
+          <button className="grid h-[14px] w-[14px] cursor-pointer place-items-center hover:text-white">
             <ChevronLeft className="h-[14px] w-[14px]" />
           </button>
-          <button className="grid h-[14px] w-[14px] place-items-center hover:text-white">
+          <button className="grid h-[14px] w-[14px] cursor-pointer place-items-center hover:text-white">
             <ChevronRight className="h-[14px] w-[14px]" />
           </button>
         </div>
@@ -359,7 +360,7 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
             <button
               key={i}
               onClick={() => onDateClick?.(day)}
-              className="relative flex h-8 items-center justify-center hover:bg-white/[0.04] transition-colors rounded-full"
+              className="relative flex h-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-white/[0.04]"
             >
               {isToday ? (
                 <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500 text-[12px] font-normal text-white">
@@ -389,10 +390,10 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
       </div>
 
       <div className="mt-2 flex h-9 items-center justify-between border-t border-neutral-800 pt-2 text-[12px]">
-        <button className="font-normal text-emerald-500 hover:text-emerald-400">
+        <button className="cursor-pointer font-normal text-emerald-500 hover:text-emerald-400">
           Lorem
         </button>
-        <button className="font-normal text-white/60 hover:text-white">
+        <button className="cursor-pointer font-normal text-white/60 hover:text-white">
           Rules
         </button>
       </div>
@@ -400,10 +401,16 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
   )
 }
 
-function LeaderboardPanel() {
+function LeaderboardPanel({ assessmentTitle }: { assessmentTitle?: string | null }) {
   return (
-    <div className="relative h-[600px] w-full">
-      <LeaderboardBlock />
+    <div className="w-full">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-base font-semibold text-white">Leaderboard</h2>
+        {assessmentTitle && <span className="text-[13px] font-medium text-indigo-400">{assessmentTitle}</span>}
+      </div>
+      <div className="relative h-[600px] w-full">
+        <LeaderboardBlock />
+      </div>
     </div>
   )
 }
@@ -423,6 +430,8 @@ export function ContestPage({
   onViewAllCompleted?: (date?: number) => void
   onViewLiveAssessment: (id: string) => void
 }) {
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState<string | null>(null)
+
   const handleDateClick = (day: number) => {
     if (day < TODAY) {
       // Past date -> show See All workspace for completed assessments
@@ -456,6 +465,8 @@ export function ContestPage({
           onCreateContest={onCreateContest}
           onViewResults={onViewResults}
           onViewAllCompleted={() => onViewAllCompleted?.()}
+          selectedAssessmentId={selectedAssessmentId}
+          onSelectAssessment={setSelectedAssessmentId}
         />
       </div>
 
@@ -463,7 +474,7 @@ export function ContestPage({
           <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <Calendar onDateClick={handleDateClick} />
           </div>
-        <LeaderboardPanel />
+        <LeaderboardPanel assessmentTitle={selectedAssessmentId} />
       </div>
     </div>
   )

@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { AlertCircle, ChevronDown, ChevronRight } from "lucide-react"
 
 import type { QuestionStatus, WorkspaceTab } from "../../types"
-import { Menu, TabBar } from "../../components/ui"
-import { createEmptyDraft } from "../../data/questionOptions"
+import { Menu, TabBar, TopicPicker } from "../../components/ui"
+import { createEmptyDraft, SUGGESTED_TOPICS } from "../../data/questionOptions"
 import { ProblemDetailsTab, type TouchableField } from "./components/ProblemDetailsTab"
 import { SettingsTab } from "./components/SettingsTab"
 import { TestCasesTab } from "./components/TestCasesTab"
@@ -79,55 +79,75 @@ export function NewQuestionPage({ onExit }: { onExit: () => void }) {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <nav className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.5px] text-white/40">
-            <span>Manage</span>
-            <ChevronRight className="h-3 w-3" />
-            <button onClick={onExit} className="transition-colors hover:text-white/70">
-              Question Bank
+    <div className="mx-auto w-full max-w-[888px] space-y-5 xl:max-w-screen-xl">
+      <div className="pt-2 pb-4">
+        <div className="flex gap-4 mb-4">
+          <div className="grow">
+            <input
+              id="question-title"
+              value={draft.title}
+              onChange={(event) => actions.setTitle(event.target.value.slice(0, 150))}
+              onBlur={() => markTouched("title")}
+              placeholder="Enter your title"
+              className="block w-full outline-none placeholder:text-white/30 border-none text-white bg-transparent text-[22px] font-semibold"
+              autoComplete="off"
+            />
+          </div>
+          <div className="flex gap-2 items-center shrink-0">
+            <button
+              onClick={onExit}
+              className="py-1.5 focus:outline-none inline-flex bg-white/[0.06] hover:bg-white/[0.1] text-white/85 h-8 items-center rounded-lg px-4 text-[13px] font-medium transition-colors"
+            >
+              Cancel
             </button>
-            <ChevronRight className="h-3 w-3" />
-            <span className="text-white/70">New Question</span>
-          </nav>
-          <h1 className="mt-1.5 text-[22px] font-semibold leading-tight text-white">
-            New Question
-          </h1>
-          <p className="mt-1 text-[12px] text-white/50">
-            Create a new coding question for your question bank
-          </p>
-        </div>
-        <div className="flex shrink-0 items-center gap-2.5">
-          <button
-            onClick={onExit}
-            className="rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
-          >
-            Cancel
-          </button>
-          <div className="flex overflow-hidden rounded-md">
             <button
               onClick={() => handleSave()}
-              className="bg-[#5b4aef] px-4 py-[9px] text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+              className="py-1.5 focus:outline-none bg-[#5b4aef] hover:bg-[#4d3ee0] text-white flex h-8 items-center gap-1.5 rounded-lg px-4 text-[13px] font-medium transition-colors"
             >
-              Save Question
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" className="h-3.5 w-3.5">
+                <path fillRule="evenodd" d="M22.707 1.293a1 1 0 01.237 1.037l-7 20a1 1 0 01-1.858.076l-3.844-8.648-8.648-3.844a1 1 0 01.076-1.858l20-7a1 1 0 011.037.237zM12.193 13.22l2.696 6.068 4.72-13.483-7.416 7.416zm6.001-8.83L4.711 9.111l6.067 2.696 7.416-7.416z" clipRule="evenodd"></path>
+              </svg>
+              Post
             </button>
-            <Menu
-              align="end"
-              trigger={({ onClick, expanded }) => (
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <div
+            role="radiogroup"
+            aria-label="Difficulty"
+            className="flex gap-2 mr-2"
+          >
+            {["Easy", "Medium", "Hard"].map((diff) => {
+              const isSelected = draft.difficulty === diff
+              return (
                 <button
-                  onClick={onClick}
-                  aria-label="More save options"
-                  aria-expanded={expanded}
-                  className="grid h-full w-8 place-items-center border-l border-white/15 bg-[#5b4aef] text-white transition-colors hover:bg-[#4d3ee0]"
+                  key={diff}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() => {
+                    actions.setDifficulty(diff as any)
+                    markTouched("difficulty")
+                  }}
+                  className={`flex h-7 items-center rounded-full border px-3 text-[11.5px] font-medium transition-colors focus-visible:outline-none ${
+                    isSelected
+                      ? "border-[#1cbaba]/50 bg-[#1cbaba]/10 text-[#1cbaba]"
+                      : "border-white/10 bg-white/[0.06] text-white/65 hover:text-white/90"
+                  }`}
                 >
-                  <ChevronDown className="h-4 w-4" />
+                  {diff}
                 </button>
-              )}
-              options={[
-                { id: "draft", label: "Save as Draft", onSelect: () => handleSave("draft") },
-                { id: "published", label: "Save & Publish", onSelect: () => handleSave("published") },
-              ]}
+              )
+            })}
+          </div>
+
+          <div className="min-w-[200px]">
+            <TopicPicker
+              tags={draft.tags}
+              suggestions={SUGGESTED_TOPICS}
+              onAdd={(tag) => actions.addTag(tag)}
+              onRemove={(tag) => actions.removeTag(tag)}
             />
           </div>
         </div>

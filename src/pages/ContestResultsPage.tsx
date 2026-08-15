@@ -109,7 +109,7 @@ function ContestRankingReport({
       <div className="flex flex-wrap items-center gap-4 border-b border-neutral-800 pb-4 min-h-[32px]">
         <button
           onClick={onBack}
-          className={`flex items-center gap-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white transition-colors ${FOCUS_RING}`}
+          className={`flex cursor-pointer items-center gap-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white transition-colors ${FOCUS_RING}`}
         >
           <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
@@ -262,7 +262,7 @@ function ContestRankingReport({
                 <td className="px-5 py-3 text-right">
                   <button
                     onClick={() => onViewStudent(row.id)}
-                    className={`rounded-md text-[12px] font-medium text-indigo-400 hover:text-indigo-300 ${FOCUS_RING}`}
+                    className={`cursor-pointer rounded-md text-[12px] font-medium text-indigo-400 hover:text-indigo-300 ${FOCUS_RING}`}
                   >
                     View Detail
                     <span className="sr-only"> for {row.name}</span>
@@ -284,7 +284,7 @@ function ContestRankingReport({
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={safePage === 1}
-              className={`flex items-center gap-1 rounded-md px-2 py-1.5 hover:bg-neutral-800 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
+              className={`flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 hover:bg-neutral-800 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
             >
               <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" /> Previous
             </button>
@@ -298,7 +298,7 @@ function ContestRankingReport({
                   key={p}
                   onClick={() => setCurrentPage(p)}
                   aria-current={p === safePage ? "page" : undefined}
-                  className={`h-7 w-7 rounded-md font-medium transition-colors ${FOCUS_RING} ${
+                  className={`h-7 w-7 cursor-pointer rounded-md font-medium transition-colors ${FOCUS_RING} ${
                     p === safePage
                       ? "bg-indigo-500/20 text-indigo-400"
                       : "hover:bg-neutral-800"
@@ -311,7 +311,7 @@ function ContestRankingReport({
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={safePage === totalPages}
-              className={`flex items-center gap-1 rounded-md px-2 py-1.5 hover:bg-neutral-800 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
+              className={`flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 hover:bg-neutral-800 hover:text-white transition-colors disabled:opacity-40 disabled:pointer-events-none ${FOCUS_RING}`}
             >
               Next <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
