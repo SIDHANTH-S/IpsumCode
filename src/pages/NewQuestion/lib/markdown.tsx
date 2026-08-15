@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import rehypeRaw from "rehype-raw"
 import type { ToolbarTool } from "../../data/questionOptions"
 
 /** Renders a fully featured markdown subset to React nodes using react-markdown. */
@@ -10,7 +11,7 @@ export function RenderMarkdown({ source }: { source: string }) {
 
   return (
     <div className="prose prose-invert max-w-none prose-sm prose-pre:bg-white/10 prose-pre:text-white/90 prose-a:text-[#7c6cf5] hover:prose-a:text-[#9b8dff]">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{source}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>{source}</ReactMarkdown>
     </div>
   )
 }
