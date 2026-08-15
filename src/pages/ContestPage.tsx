@@ -404,9 +404,9 @@ function Calendar({ onDateClick }: { onDateClick?: (day: number) => void }) {
 function LeaderboardPanel({ assessmentTitle }: { assessmentTitle?: string | null }) {
   return (
     <div className="w-full">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-white">Leaderboard</h2>
-        {assessmentTitle && <span className="text-[13px] font-medium text-indigo-400">{assessmentTitle}</span>}
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-base font-semibold text-white shrink-0">Leaderboard</h2>
+        {assessmentTitle && <span className="ml-auto text-right text-[13px] font-medium text-indigo-400">{assessmentTitle}</span>}
       </div>
       <div className="relative h-[600px] w-full">
         <LeaderboardBlock />

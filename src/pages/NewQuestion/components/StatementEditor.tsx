@@ -1,38 +1,7 @@
 import { useEffect, useId, useRef } from "react"
-import EditorComponent from "react-simple-code-editor"
-
-const Editor = (EditorComponent as any).default || EditorComponent
-
 import { FieldLabel, InlineError } from "../../../components/ui"
 import { STATEMENT_TOOLBAR, type ToolbarTool } from "../../../data/questionOptions"
 import { applyToolbarFormat } from "../lib/markdown"
-
-function highlightMarkdown(code: string) {
-  let html = code
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-
-  // Hashtags / Headings
-  html = html.replace(/^(#{1,6})(\s+.*)$/gm, '<span class="text-[#7c6cf5] font-bold">$1$2</span>')
-
-  // HTML Comments (arrows)
-  html = html.replace(/(&lt;!--.*?--&gt;)/g, '<span class="text-white/40 italic">$1</span>')
-
-  // Links [text](url)
-  html = html.replace(/(\[.*?\])(\(.*?\))/g, '<span class="text-[#1cbaba]">$1</span><span class="text-white/40">$2</span>')
-
-  // Bold **text**
-  html = html.replace(/(\*\*.*?\*\*)/g, '<span class="text-white font-bold">$1</span>')
-
-  // Italic _text_
-  html = html.replace(/(_.*?_)/g, '<span class="text-white italic">$1</span>')
-
-  // Code `text`
-  html = html.replace(/(`.*?`)/g, '<span class="text-[#1cbaba] bg-white/5 rounded px-1">$1</span>')
-
-  return html
-}
 
 export function StatementEditor({
   value,
@@ -88,7 +57,7 @@ export function StatementEditor({
               event.preventDefault()
               handleTool(tool)
             }}
-            className="grid h-7 w-7 place-items-center rounded text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+            className="grid h-7 w-7 cursor-pointer place-items-center rounded text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
           >
             <tool.icon className="h-[15px] w-[15px]" aria-hidden="true" />
           </button>
@@ -97,24 +66,15 @@ export function StatementEditor({
 
       <div className="flex flex-1 flex-col xl:flex-row">
         <div className="relative flex w-full flex-col border-b border-white/10 text-[13px] leading-relaxed xl:w-[575px] xl:shrink-0 xl:border-b-0 xl:border-r">
-          <Editor
-            textareaId={fieldId}
+          <textarea
+            id={fieldId}
             value={value}
-            onValueChange={onChange}
-            highlight={highlightMarkdown}
-            padding={16}
+            onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
-            textareaClassName="focus:outline-none placeholder:text-[#8a8a8a]"
-            className="flex-1 font-sans text-white/85"
-            style={{
-              fontFamily: "var(--font-sans)",
-            }}
+            placeholder="Describe the problem. Select text and use the toolbar to format it."
+            className="flex-1 resize-none bg-transparent p-4 font-sans text-white/85 focus:outline-none placeholder:text-[#8a8a8a]"
+            spellCheck={false}
           />
-          {value.length === 0 && (
-            <div className="pointer-events-none absolute left-4 top-4 text-[#8a8a8a]">
-              Describe the problem. Select text and use the toolbar to format it.
-            </div>
-          )}
           {error && (
             <div className="px-4 pb-3">
               <InlineError id={errorId} message={error} />
@@ -131,8 +91,3 @@ export function StatementEditor({
     </div>
   )
 }
-
-// force vite reload
-
-// force vite reload
-// reload

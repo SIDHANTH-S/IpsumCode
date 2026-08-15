@@ -117,7 +117,7 @@ export function AssessmentReview({
           <button
             onClick={onSave}
             disabled={!allRequiredFilled}
-            className="rounded-md bg-[#5b4aef] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="cursor-pointer rounded-md bg-[#5b4aef] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mode === "edit" ? "Save Changes" : isDraft ? "Save Draft" : "Schedule Assessment"}
           </button>

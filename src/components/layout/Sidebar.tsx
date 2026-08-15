@@ -140,7 +140,7 @@ export function Sidebar({
               key={label}
               onClick={() => onSelect(label)}
               title={label}
-              className={`flex items-center rounded-lg py-2.5 transition-colors ${
+              className={`flex cursor-pointer items-center rounded-lg py-2.5 transition-colors ${
                 isIconOnly ? "justify-center px-0" : "gap-3 px-3"
               } ${
                 active === label
@@ -163,7 +163,7 @@ export function Sidebar({
       {isXl && (
         <button
           onClick={toggleCollapse}
-          className="absolute -right-3 top-6 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-neutral-700 bg-[#1a1a1a] text-neutral-400 opacity-0 transition-opacity hover:border-neutral-500 hover:text-white group-hover:opacity-100"
+          className="absolute -right-3 top-6 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-neutral-700 bg-[#1a1a1a] text-neutral-400 opacity-0 transition-opacity hover:border-neutral-500 hover:text-white group-hover:opacity-100"
         >
           {isCollapsed ? (
             <ChevronRight className="h-3 w-3" />

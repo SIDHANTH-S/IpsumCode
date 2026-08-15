@@ -45,7 +45,7 @@ export function QuestionDelivery({
               key={mode}
               onClick={() => !readonly && onChangeMode(mode)}
               disabled={readonly}
-              className={`rounded-md px-4 py-2 text-[13px] font-medium transition-colors ${
+              className={`cursor-pointer rounded-md px-4 py-2 text-[13px] font-medium transition-colors ${
                 deliveryMode === mode
                   ? "bg-[#5b4aef] text-white"
                   : "text-white/60 hover:text-white/90"

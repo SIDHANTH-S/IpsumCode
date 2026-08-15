@@ -184,7 +184,7 @@ export function CreateAssessmentPage({
               <div className="flex items-center gap-3">
                 <button
                   onClick={onExit}
-                  className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                  className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
                 >
                   Close
                 </button>
@@ -196,13 +196,13 @@ export function CreateAssessmentPage({
               <div className="flex items-center gap-3">
                 <button
                   onClick={onExit}
-                  className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                  className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
                 >
                   Close
                 </button>
                 <button
                   onClick={() => onModeChange?.("edit")}
-                  className="shrink-0 rounded-md bg-[#5b4aef] px-4 py-[9px] text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
+                  className="shrink-0 cursor-pointer rounded-md bg-[#5b4aef] px-4 py-[9px] text-[13px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]"
                 >
                   Edit Assessment
                 </button>
@@ -212,13 +212,13 @@ export function CreateAssessmentPage({
             <div className="flex items-center gap-3">
               <button
                 onClick={() => onModeChange?.("view")}
-                className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
               >
                 Discard Changes
               </button>
               <button
                 onClick={onExit}
-                className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+                className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
               >
                 Cancel
               </button>
@@ -226,7 +226,7 @@ export function CreateAssessmentPage({
           ) : (
             <button
               onClick={onExit}
-              className="shrink-0 rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
+              className="shrink-0 cursor-pointer rounded-md border border-white/10 bg-white/[0.06] px-4 py-[9px] text-[13px] font-medium text-white/85 transition-colors hover:bg-white/[0.1]"
             >
               Cancel
             </button>

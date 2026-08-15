@@ -28,7 +28,7 @@ export function ClassroomSelector({
   const trigger = (
     <button
       onClick={() => setIsOpen(!isOpen)}
-      className="flex h-9 items-center gap-1.5 rounded-md bg-[#5b4aef] px-3.5 text-[12px] font-semibold uppercase tracking-[0.5px] text-white transition-colors hover:bg-[#4d3ee0]"
+      className="flex h-9 cursor-pointer items-center gap-1.5 rounded-md bg-[#5b4aef] px-3.5 text-[12px] font-semibold uppercase tracking-[0.5px] text-white transition-colors hover:bg-[#4d3ee0]"
     >
       Select
       <ChevronDown
@@ -47,7 +47,7 @@ export function ClassroomSelector({
           <button
             key={cls}
             onClick={() => toggleClassroom(cls)}
-            className="flex items-center gap-3 rounded-md px-3 py-2 text-left text-[13px] text-white/85 hover:bg-white/10"
+            className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-[13px] text-white/85 hover:bg-white/10"
           >
             <div
               className={`grid h-4 w-4 shrink-0 place-items-center rounded-[3px] border ${

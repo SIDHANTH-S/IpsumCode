@@ -83,7 +83,7 @@ export function AssessmentPool({
                         {!readonly && (
                           <button
                             onClick={() => onToggle(q.num)}
-                            className="grid h-6 w-6 shrink-0 place-items-center rounded text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+                            className="grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded text-white/40 transition-colors hover:bg-white/10 hover:text-white"
                           >
                             <X className="h-3.5 w-3.5" />
                           </button>
@@ -104,7 +104,7 @@ export function AssessmentPool({
           {selectedQuestions.length} questions selected
         </span>
         {!readonly && (
-          <button className="flex items-center gap-1.5 rounded-md bg-[#5b4aef] px-3.5 py-1.5 text-[12px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]">
+          <button className="flex cursor-pointer items-center gap-1.5 rounded-md bg-[#5b4aef] px-3.5 py-1.5 text-[12px] font-semibold text-white transition-colors hover:bg-[#4d3ee0]">
             Confirm <ArrowRight className="h-3.5 w-3.5" />
           </button>
         )}
