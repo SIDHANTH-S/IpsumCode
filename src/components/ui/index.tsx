@@ -1,13 +1,568 @@
-import { ReactNode } from "react"
-
 import {
-  ArrowRight,
-  ChevronDown,
-  ChevronUp,
-  Copy,
-  GripVertical,
-  X,
-} from "lucide-react"
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+  type RefObject,
+} from "react"
+import { AlertCircle, ChevronDown, ChevronRight, X, ArrowRight } from "lucide-react"
+
+// ---------------------------------------------------------------------------
+// Shared style tokens. Pulling these out of NewQuestionPage.tsx means every
+// field, panel, and dropdown in the workspace stays visually identical
+// instead of each tab redefining its own slightly-different classes.
+// ---------------------------------------------------------------------------
+
+export const PANEL_BASE = "rounded-xl border border-[#262626] bg-[#141414]"
+export const FIELD_BASE =
+  "w-full rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-white placeholder:text-[#8a8a8a] focus:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/50"
+
+const ERROR_TEXT = "text-[#ff9b9b]"
+const ERROR_BORDER = "border-[#ff9b9b]/50"
+
+// ---------------------------------------------------------------------------
+// FieldLabel
+// ---------------------------------------------------------------------------
+
+export function FieldLabel({
+  children,
+  required,
+  htmlFor,
+  hint,
+}: {
+  children: ReactNode
+  required?: boolean
+  htmlFor?: string
+  hint?: string
+}) {
+  return (
+    <div className="mb-1.5 flex items-baseline justify-between gap-2">
+      <label htmlFor={htmlFor} className="text-[12.5px] font-medium text-white/70">
+        {children}
+        {required && (
+          <span className="ml-1 text-[#8f7dff]" aria-hidden="true">
+            *
+          </span>
+        )}
+        {required && <span className="sr-only"> (required)</span>}
+      </label>
+      {hint && <span className="text-[11px] text-white/35">{hint}</span>}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// InlineError — quiet, consistent validation messaging
+// ---------------------------------------------------------------------------
+
+export function InlineError({ id, message }: { id?: string; message?: string }) {
+  if (!message) return null
+  return (
+    <p id={id} role="alert" className={`mt-1.5 flex items-center gap-1.5 text-[12px] ${ERROR_TEXT}`}>
+      <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+      {message}
+    </p>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Select — native <select> under the hood for full keyboard/screen-reader
+// support, styled to match the rest of the form fields.
+// ---------------------------------------------------------------------------
+
+export interface SelectOption {
+  value: string
+  label: string
+}
+
+export function Select({
+  options,
+  value,
+  onChange,
+  placeholder,
+  className = "",
+  id,
+  ariaLabel,
+  error,
+}: {
+  options: SelectOption[]
+  value: string | null
+  onChange: (value: string) => void
+  placeholder?: string
+  className?: string
+  id?: string
+  ariaLabel?: string
+  error?: string
+}) {
+  return (
+    <div className={`relative ${className}`}>
+      <select
+        id={id}
+        aria-label={ariaLabel}
+        aria-invalid={Boolean(error)}
+        value={value ?? ""}
+        onChange={(event) => onChange(event.target.value)}
+        className={`${FIELD_BASE} h-10 w-full appearance-none pr-9 ${
+          value ? "text-white" : "text-[#8a8a8a]"
+        } ${error ? ERROR_BORDER : ""}`}
+      >
+        {placeholder && (
+          <option value="" disabled className="bg-[#141414] text-[#8a8a8a]">
+            {placeholder}
+          </option>
+        )}
+        {options.map((option) => (
+          <option key={option.value} value={option.value} className="bg-[#141414] text-white">
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40"
+        aria-hidden="true"
+      />
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// TextArea — controlled, labeled, resizable
+// ---------------------------------------------------------------------------
+
+export function TextArea({
+  label,
+  value,
+  onChange,
+  id,
+  placeholder,
+  error,
+  rows = 3,
+  monospace = true,
+  required,
+}: {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  id?: string
+  placeholder?: string
+  error?: string
+  rows?: number
+  monospace?: boolean
+  required?: boolean
+}) {
+  const autoId = useId()
+  const inputId = id ?? autoId
+  const errorId = `${inputId}-error`
+
+  return (
+    <div className="min-w-0 flex-1">
+      <FieldLabel htmlFor={inputId} required={required}>
+        {label}
+      </FieldLabel>
+      <textarea
+        id={inputId}
+        rows={rows}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? errorId : undefined}
+        className={`${FIELD_BASE} min-h-[84px] resize-y py-2.5 leading-relaxed ${
+          monospace ? "font-mono" : ""
+        } ${error ? ERROR_BORDER : ""}`}
+      />
+      <InlineError id={errorId} message={error} />
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// CaseHeader — accessible disclosure trigger for a test case card
+// ---------------------------------------------------------------------------
+
+export function CaseHeader({
+  title,
+  badge,
+  right,
+  expanded,
+  onToggle,
+  controlsId,
+  headerId,
+}: {
+  title: string
+  badge?: ReactNode
+  right?: ReactNode
+  expanded: boolean
+  onToggle: () => void
+  controlsId: string
+  headerId: string
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 px-4 py-3">
+      <button
+        type="button"
+        id={headerId}
+        aria-expanded={expanded}
+        aria-controls={controlsId}
+        onClick={onToggle}
+        className="flex min-w-0 flex-1 items-center gap-2 rounded text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/60"
+      >
+        <ChevronRight
+          className={`h-4 w-4 shrink-0 text-white/40 transition-transform ${expanded ? "rotate-90" : ""}`}
+          aria-hidden="true"
+        />
+        <span className="truncate text-[13.5px] font-medium text-white/90">{title}</span>
+        {badge}
+      </button>
+      {right && (
+        <div onClick={(event) => event.stopPropagation()} className="shrink-0">
+          {right}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Badges
+// ---------------------------------------------------------------------------
+
+export function SampleBadge() {
+  return (
+    <span className="flex h-5 shrink-0 items-center rounded-full border border-[#1cbaba]/40 bg-[#1cbaba]/10 px-2 text-[10.5px] font-medium text-[#1cbaba]">
+      Sample
+    </span>
+  )
+}
+
+export function HiddenBadge() {
+  return (
+    <span className="flex h-5 shrink-0 items-center rounded-full border border-white/15 bg-white/[0.06] px-2 text-[10.5px] font-medium text-white/55">
+      Hidden
+    </span>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// WeightToggle — enable switch + weight stepper for a hidden test case
+// ---------------------------------------------------------------------------
+
+export function WeightToggle({
+  weight,
+  enabled,
+  onWeightChange,
+  onEnabledChange,
+  label = "this case",
+}: {
+  weight: number
+  enabled: boolean
+  onWeightChange: (weight: number) => void
+  onEnabledChange: (enabled: boolean) => void
+  label?: string
+}) {
+  return (
+    <div className="flex shrink-0 items-center gap-3">
+      <div className="flex items-center gap-1.5">
+        <span className="text-[11px] text-white/40">Weight</span>
+        <div className="flex items-center overflow-hidden rounded-md border border-white/10">
+          <button
+            type="button"
+            aria-label={`Decrease weight for ${label}`}
+            onClick={() => onWeightChange(Math.max(1, weight - 1))}
+            disabled={weight <= 1}
+            className="grid h-6 w-6 place-items-center text-white/50 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30"
+          >
+            −
+          </button>
+          <span
+            className="grid h-6 w-7 place-items-center text-[12px] font-medium text-white/80"
+            aria-hidden="true"
+          >
+            ×{weight}
+          </span>
+          <button
+            type="button"
+            aria-label={`Increase weight for ${label}`}
+            onClick={() => onWeightChange(weight + 1)}
+            className="grid h-6 w-6 place-items-center text-white/50 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={enabled}
+        aria-label={`${enabled ? "Disable" : "Enable"} ${label}`}
+        onClick={() => onEnabledChange(!enabled)}
+        className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
+          enabled ? "bg-[#5b4aef]" : "bg-white/15"
+        }`}
+      >
+        <span
+          aria-hidden="true"
+          className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
+            enabled ? "translate-x-[18px]" : "translate-x-0.5"
+          }`}
+        />
+      </button>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// TabBar — accessible tabs with roving focus + optional error indicators
+// ---------------------------------------------------------------------------
+
+export function TabBar<T extends string>({
+  tabs,
+  activeTab,
+  onChange,
+  errorTabs,
+  idPrefix,
+}: {
+  tabs: readonly T[]
+  activeTab: T
+  onChange: (tab: T) => void
+  errorTabs?: Partial<Record<T, boolean>>
+  idPrefix: string
+}) {
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const index = tabs.indexOf(activeTab)
+    if (event.key === "ArrowRight") {
+      event.preventDefault()
+      onChange(tabs[(index + 1) % tabs.length] as T)
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault()
+      onChange(tabs[(index - 1 + tabs.length) % tabs.length] as T)
+    }
+  }
+
+  return (
+    <div
+      role="tablist"
+      aria-label="Question sections"
+      className="flex gap-1 rounded-lg border border-[#262626] bg-white/[0.03] p-1"
+    >
+      {tabs.map((tab) => {
+        const isActive = tab === activeTab
+        const hasError = Boolean(errorTabs?.[tab])
+        return (
+          <button
+            key={tab}
+            id={`${idPrefix}-tab-${tab}`}
+            role="tab"
+            type="button"
+            aria-selected={isActive}
+            aria-controls={`${idPrefix}-panel-${tab}`}
+            tabIndex={isActive ? 0 : -1}
+            onClick={() => onChange(tab)}
+            onKeyDown={handleKeyDown}
+            className={`relative flex flex-1 items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b4aef]/60 sm:flex-none ${
+              isActive ? "bg-white/[0.06] text-white" : "text-white/55 hover:text-white/85"
+            }`}
+          >
+            {tab}
+            {hasError && (
+              <span
+                className="h-[5px] w-[5px] rounded-full bg-[#ff9b9b]"
+                aria-label="Needs attention"
+              />
+            )}
+            {isActive && (
+              <span className="absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-[#5b4aef]" aria-hidden="true" />
+            )}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// useDisclosure — shared open/close + outside-click + escape logic for the
+// topic picker dropdown, the "Add Languages" popover, and the Save menu.
+// ---------------------------------------------------------------------------
+
+export function useDisclosure<T extends HTMLElement>() {
+  const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<T>(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    function handlePointerDown(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    function handleKeyDown(event: globalThis.KeyboardEvent) {
+      if (event.key === "Escape") setIsOpen(false)
+    }
+
+    document.addEventListener("mousedown", handlePointerDown)
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown)
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isOpen])
+
+  return {
+    isOpen,
+    open: () => setIsOpen(true),
+    close: () => setIsOpen(false),
+    toggle: () => setIsOpen((value) => !value),
+    containerRef,
+  }
+}
+
+// ---------------------------------------------------------------------------
+// TopicPicker — combobox that supports selecting a suggestion or creating a
+// custom topic, with chips for the current selection.
+// ---------------------------------------------------------------------------
+
+export function TopicPicker({
+  tags,
+  suggestions,
+  onAdd,
+  onRemove,
+  error,
+  id,
+}: {
+  tags: string[]
+  suggestions: string[]
+  onAdd: (tag: string) => void
+  onRemove: (tag: string) => void
+  error?: string
+  id?: string
+}) {
+  const autoId = useId()
+  const inputId = id ?? autoId
+  const listboxId = `${inputId}-listbox`
+  const errorId = `${inputId}-error`
+
+  const [query, setQuery] = useState("")
+  const commitHighlighted = () => {
+    const newTag = query.trim()
+    if (newTag && !tags.includes(newTag)) {
+      onAdd(newTag)
+    }
+    setQuery("")
+  }
+
+  return (
+    <div className="relative">
+      <div
+        className={`flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] px-2 py-1.5 focus-within:border-white/25 ${
+          error ? ERROR_BORDER : ""
+        }`}
+      >
+        {tags.map((tag) => (
+          <span
+            key={tag}
+            className="flex h-7 items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] pl-2.5 pr-1.5 text-[12.5px] font-medium text-white/80"
+          >
+            {tag}
+            <button
+              type="button"
+              aria-label={`Remove ${tag}`}
+              onClick={() => onRemove(tag)}
+              className="text-white/40 transition-colors hover:text-white"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </span>
+        ))}
+        <input
+          id={inputId}
+          aria-describedby={error ? errorId : undefined}
+          autoComplete="off"
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value)
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault()
+              commitHighlighted()
+            } else if (event.key === "Backspace" && query === "" && tags.length > 0) {
+              onRemove(tags[tags.length - 1] as string)
+            }
+          }}
+          placeholder={tags.length === 0 ? "e.g. Arrays, Sorting" : ""}
+          className="min-w-[120px] flex-1 bg-transparent text-[13px] text-white placeholder:text-[#8a8a8a] focus:outline-none"
+        />
+      </div>
+      <InlineError id={errorId} message={error} />
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Menu — small popover used for "Add Languages" and the Save split button
+// ---------------------------------------------------------------------------
+
+export interface MenuOption {
+  id: string
+  label: string
+  onSelect: () => void
+  disabled?: boolean
+}
+
+export function Menu({
+  trigger,
+  options,
+  align = "start",
+  emptyLabel,
+}: {
+  trigger: (props: { onClick: () => void; expanded: boolean }) => ReactNode
+  options: MenuOption[]
+  align?: "start" | "end"
+  emptyLabel?: string
+}) {
+  const { isOpen, toggle, close, containerRef } = useDisclosure<HTMLDivElement>()
+  const menuId = useId()
+
+  return (
+    <div className="relative">
+      {trigger({ onClick: toggle, expanded: isOpen })}
+      {isOpen && (
+        <ul
+          id={menuId}
+          role="menu"
+          className={`absolute z-20 mt-1.5 min-w-[180px] overflow-hidden rounded-md border border-[#262626] bg-[#1a1a1a] py-1 shadow-xl ${
+            align === "end" ? "right-0" : "left-0"
+          }`}
+        >
+          {options.length === 0 && emptyLabel && (
+            <li className="px-3 py-1.5 text-[12.5px] text-white/40">{emptyLabel}</li>
+          )}
+          {options.map((option) => (
+            <li key={option.id}>
+              <button
+                type="button"
+                role="menuitem"
+                disabled={option.disabled}
+                onClick={() => {
+                  option.onSelect()
+                  close()
+                }}
+                className="block w-full px-3 py-1.5 text-left text-[13px] text-white/85 transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:text-white/30 disabled:hover:bg-transparent"
+              >
+                {option.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 
 export function SectionLink({
   children = "See all",
@@ -26,140 +581,8 @@ export function SectionLink({
   )
 }
 
-export function FieldLabel({
-  children,
-
-  required,
-}: {
-  children: ReactNode
-
-  required?: boolean
-}) {
-  return (
-    <label className="mb-1.5 block text-[13px] font-medium text-white/85">
-      {children}
-      {required && <span className="ml-0.5 text-[#ef4743]">*</span>}
-    </label>
-  )
-}
-
-export function Select({
-  placeholder,
-
-  className = "",
-}: {
-  placeholder: string
-
-  className?: string
-}) {
-  return (
-    <button
-      className={`flex h-10 items-center justify-between rounded-md border border-white/10 bg-white/[0.06] px-3 text-[13px] text-[#8a8a8a] transition-colors hover:border-white/20 ${className}`}
-    >
-      {placeholder}
-      <ChevronDown className="h-4 w-4 shrink-0 text-white/40" />
-    </button>
-  )
-}
-
-export function SampleBadge() {
-  return (
-    <span className="flex h-[18px] items-center rounded bg-[#5b4aef]/20 px-1.5 text-[10px] font-semibold uppercase tracking-[0.5px] text-[#a99bff]">
-      Sample
-    </span>
-  )
-}
-
-export function TextArea({ label, value }: { label: string value: string }) {
-  return (
-    <div className="min-w-0 flex-1">
-      <p className="mb-1.5 text-[12px] text-white/55">{label}</p>
-      <textarea
-        defaultValue={value}
-        rows={3}
-        className="w-full resize-none rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-[12.5px] leading-relaxed text-white/80 focus:border-white/25 focus:outline-none"
-      />
-    </div>
-  )
-}
-
-export function CaseHeader({
-  title,
-
-  badge,
-
-  right,
-
-  expanded,
-}: {
-  title: string
-
-  badge?: ReactNode
-
-  right?: ReactNode
-
-  expanded?: boolean
-}) {
-  return (
-    <div className="flex items-center gap-3 px-4 py-3">
-      <GripVertical className="h-4 w-4 shrink-0 cursor-grab text-white/25" />
-      <span className="text-[13px] font-medium text-white">{title}</span>
-      {badge}
-      <div className="ml-auto flex items-center gap-2">
-        {right}
-        <button className="grid h-7 w-7 place-items-center rounded text-white/45 transition-colors hover:bg-white/10 hover:text-white">
-          <Copy className="h-3.5 w-3.5" />
-        </button>
-        <button className="grid h-7 w-7 place-items-center rounded text-white/45 transition-colors hover:bg-white/10 hover:text-white">
-          <X className="h-3.5 w-3.5" />
-        </button>
-        <button className="grid h-7 w-7 place-items-center rounded text-white/45 transition-colors hover:bg-white/10 hover:text-white">
-          {expanded ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
-          )}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-export function WeightToggle({
-  weight,
-
-  enabled,
-}: {
-  weight: number
-
-  enabled: boolean
-}) {
-  return (
-    <div className="flex items-center gap-3 text-[12px] text-white/55">
-      <span className="flex items-center gap-1.5">
-        Weight
-        <span className="grid h-6 w-8 place-items-center rounded border border-white/10 bg-white/[0.06] text-white">
-          {weight}
-        </span>
-      </span>
-      <span className="flex items-center gap-1.5">
-        Enabled
-        <span
-          className={`relative h-[18px] w-8 rounded-full transition-colors ${
-            enabled ? "bg-emerald-500" : "bg-white/15"
-          }`}
-        >
-          <span
-            className={`absolute top-0.5 h-[14px] w-[14px] rounded-full bg-white transition-all ${
-              enabled ? "left-[15px]" : "left-0.5"
-            }`}
-          />
-        </span>
-      </span>
-    </div>
-  )
-}
-
 export * from "./Popover"
-
 export * from "./Stepper"
+export * from "./FilterMenu"
+
+
