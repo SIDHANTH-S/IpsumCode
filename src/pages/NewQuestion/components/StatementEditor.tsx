@@ -1,8 +1,38 @@
-import { useEffect, useId, useRef, useState } from "react"
+import { useEffect, useId, useRef } from "react"
+import EditorComponent from "react-simple-code-editor"
+
+const Editor = (EditorComponent as any).default || EditorComponent
 
 import { FieldLabel, InlineError } from "../../../components/ui"
 import { STATEMENT_TOOLBAR, type ToolbarTool } from "../../../data/questionOptions"
 import { applyToolbarFormat } from "../lib/markdown"
+
+function highlightMarkdown(code: string) {
+  let html = code
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+
+  // Hashtags / Headings
+  html = html.replace(/^(#{1,6})(\s+.*)$/gm, '<span class="text-[#7c6cf5] font-bold">$1$2</span>')
+
+  // HTML Comments (arrows)
+  html = html.replace(/(&lt;!--.*?--&gt;)/g, '<span class="text-white/40 italic">$1</span>')
+
+  // Links [text](url)
+  html = html.replace(/(\[.*?\])(\(.*?\))/g, '<span class="text-[#1cbaba]">$1</span><span class="text-white/40">$2</span>')
+
+  // Bold **text**
+  html = html.replace(/(\*\*.*?\*\*)/g, '<span class="text-white font-bold">$1</span>')
+
+  // Italic _text_
+  html = html.replace(/(_.*?_)/g, '<span class="text-white italic">$1</span>')
+
+  // Code `text`
+  html = html.replace(/(`.*?`)/g, '<span class="text-[#1cbaba] bg-white/5 rounded px-1">$1</span>')
+
+  return html
+}
 
 export function StatementEditor({
   value,
@@ -17,20 +47,22 @@ export function StatementEditor({
 }) {
   const fieldId = useId()
   const errorId = `${fieldId}-error`
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const pendingSelection = useRef<{ start: number; end: number } | null>(null)
 
   useEffect(() => {
-    if (pendingSelection.current && textareaRef.current) {
-      const { start, end } = pendingSelection.current
-      textareaRef.current.focus()
-      textareaRef.current.setSelectionRange(start, end)
-      pendingSelection.current = null
+    if (pendingSelection.current) {
+      const el = document.getElementById(fieldId) as HTMLTextAreaElement | null
+      if (el) {
+        const { start, end } = pendingSelection.current
+        el.focus()
+        el.setSelectionRange(start, end)
+        pendingSelection.current = null
+      }
     }
-  }, [value])
+  }, [value, fieldId])
 
   function handleTool(tool: ToolbarTool) {
-    const el = textareaRef.current
+    const el = document.getElementById(fieldId) as HTMLTextAreaElement | null
     if (!el) return
     const result = applyToolbarFormat(value, el.selectionStart, el.selectionEnd, tool)
     pendingSelection.current = { start: result.selectionStart, end: result.selectionEnd }
@@ -69,17 +101,26 @@ export function StatementEditor({
           ))}
         </div>
 
-        <textarea
-          id={fieldId}
-          ref={textareaRef}
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          onBlur={onBlur}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
-          placeholder="Describe the problem. Select text and use the toolbar to format it."
-          className="min-h-[400px] w-full resize-y bg-transparent px-4 py-3.5 text-[13px] leading-relaxed text-white/85 placeholder:text-[#8a8a8a] focus:outline-none"
-        />
+        <div className="relative min-h-[400px] w-full text-[13px] leading-relaxed">
+          <Editor
+            textareaId={fieldId}
+            value={value}
+            onValueChange={onChange}
+            highlight={highlightMarkdown}
+            padding={16}
+            onBlur={onBlur}
+            textareaClassName="focus:outline-none placeholder:text-[#8a8a8a]"
+            className="min-h-[400px] font-sans text-white/85"
+            style={{
+              fontFamily: "var(--font-sans)",
+            }}
+          />
+          {value.length === 0 && (
+            <div className="pointer-events-none absolute left-4 top-4 text-[#8a8a8a]">
+              Describe the problem. Select text and use the toolbar to format it.
+            </div>
+          )}
+        </div>
       </div>
       <InlineError id={errorId} message={error} />
     </div>
@@ -87,3 +128,6 @@ export function StatementEditor({
 }
 
 // force vite reload
+
+// force vite reload
+// reload
