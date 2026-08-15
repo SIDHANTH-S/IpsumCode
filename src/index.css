@@ -28,3 +28,5 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 @plugin 'tailwindcss-animate';
+
+@plugin '@tailwindcss/typography';

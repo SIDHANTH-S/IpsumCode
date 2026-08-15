@@ -1,16 +1,6 @@
 import type { QuestionDraft } from "../../../types"
 import { PANEL_BASE } from "../../../components/ui"
-import { renderMarkdownLite } from "../lib/markdown"
-
-function PreviewSection({ heading, body }: { heading: string; body: string }) {
-  if (!body.trim()) return null
-  return (
-    <div className="space-y-1.5">
-      <p className="font-semibold text-white">{heading}</p>
-      <div className="space-y-2">{renderMarkdownLite(body)}</div>
-    </div>
-  )
-}
+import { RenderMarkdown } from "../lib/markdown"
 
 export function LivePreview({ draft }: { draft: QuestionDraft }) {
   const hasContent =
@@ -56,13 +46,8 @@ export function LivePreview({ draft }: { draft: QuestionDraft }) {
       )}
 
       {hasContent ? (
-        <div className="space-y-4 text-[13px] leading-relaxed text-white/75">
-          {draft.statement.trim() && (
-            <div className="space-y-2">{renderMarkdownLite(draft.statement)}</div>
-          )}
-          <PreviewSection heading="Input Format" body={draft.inputFormat} />
-          <PreviewSection heading="Output Format" body={draft.outputFormat} />
-          <PreviewSection heading="Constraints" body={draft.constraints} />
+        <div className="space-y-4">
+          <RenderMarkdown source={draft.statement} />
         </div>
       ) : (
         <p className="text-[13px] leading-relaxed text-white/35">
@@ -73,4 +58,3 @@ export function LivePreview({ draft }: { draft: QuestionDraft }) {
     </aside>
   )
 }
-
