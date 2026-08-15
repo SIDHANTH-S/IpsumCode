@@ -58,3 +58,5 @@ export function LivePreview({ draft }: { draft: QuestionDraft }) {
     </aside>
   )
 }
+
+// force vite reload

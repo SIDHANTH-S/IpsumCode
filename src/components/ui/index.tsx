@@ -446,12 +446,11 @@ export function TopicPicker({
   const errorId = `${inputId}-error`
 
   const [query, setQuery] = useState("")
-  const commitHighlighted = () => {
-    const newTag = query.trim()
+  const commitQuery = (textToCommit = query) => {
+    const newTag = textToCommit.trim()
     if (newTag && !tags.includes(newTag)) {
       onAdd(newTag)
     }
-    setQuery("")
   }
 
   return (
@@ -483,12 +482,21 @@ export function TopicPicker({
           autoComplete="off"
           value={query}
           onChange={(event) => {
-            setQuery(event.target.value)
+            const val = event.target.value
+            if (val.includes(",")) {
+              const parts = val.split(",")
+              const last = parts.pop() || ""
+              parts.forEach(commitQuery)
+              setQuery(last.trimStart())
+            } else {
+              setQuery(val)
+            }
           }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault()
-              commitHighlighted()
+              commitQuery()
+              setQuery("")
             } else if (event.key === "Backspace" && query === "" && tags.length > 0) {
               onRemove(tags[tags.length - 1] as string)
             }
