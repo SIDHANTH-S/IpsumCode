@@ -8,7 +8,7 @@ import { ClassroomPage } from "./pages/ClassroomPage"
 
 import { QuestionBankPage } from "./pages/QuestionBankPage"
 
-import { NewQuestionPage } from "./pages/NewQuestionPage"
+import { NewQuestionPage } from "./pages/NewQuestion"
 
 import { CreateAssessmentPage } from "./pages/CreateAssessmentPage"
 import { ContestResultsPage } from "./pages/ContestResultsPage"
