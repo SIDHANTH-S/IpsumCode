@@ -1,0 +1,172 @@
+@import 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Asap:wdth,wght@100,400&family=Plus+Jakarta+Sans:wght@400;500;700&family=Roboto+Mono:wght@400&family=JetBrains+Mono:wght@400&display=swap';
+@import 'tailwindcss';
+
+/* ─── Design tokens ─────────────────────────────────────────────────── */
+:root {
+  /* surface */
+  --bg-page:        #f4f5f8;
+  --bg-navbar:      #ffffff;
+  --bg-card:        #ffffff;
+  --bg-card-alt:    rgba(0,0,0,0.03);
+  --bg-row-hover:   rgba(0,0,0,0.02);
+  --bg-row-zebra:   rgba(0,0,0,0.01);
+
+  /* text */
+  --text-primary:   #18233a;
+  --text-secondary: #667085;
+  --text-muted:     rgba(0,0,0,0.45);
+
+  /* borders */
+  --border:         #e7eaf2;
+  --border-navbar:  #e5e7eb;
+
+  /* accents */
+  --accent:         #635ce6;
+  --accent-pill:    #5b4aef;
+  --accent-pill-shadow: rgba(91,74,239,0.28);
+
+  /* hero */
+  --hero-bg-from:   #dcd9f6;
+  --hero-bg-to:     #ece9fd;
+
+  /* calendar */
+  --cal-bg:         #ffffff;
+  --cal-text:       #18233a;
+  --cal-day-hover:  rgba(99,92,230,0.08);
+  --cal-today-bg:   #635ce6;
+  --cal-today-text: #ffffff;
+
+  /* overview */
+  --overview-bg:    #ffffff;
+  --overview-border:#e7eaf2;
+
+  /* rail */
+  --rail-bg:        #e9ecf2;
+
+  /* divider */
+  --col-divider:    #e7eaf2;
+
+  /* shadows */
+  --shadow-card:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-overview:0 0 0 1px #e7eaf2;
+  --shadow-pill:    0 2px 6px rgba(91,74,239,0.28);
+
+  /* ── Assessment Workspace ── */
+  --ws-panel-bg:     #ffffff;
+  --ws-editor-bg:    #ffffff;
+  --ws-input-bg:     #f8fafc;
+  --ws-input-border: #e2e8f0;
+  --ws-input-text:   #334155;
+  --ws-line-num:     #b2b8bf;
+  --ws-muted:        #64748b;
+  --ws-tab-inactive: #94a3b8;
+  --ws-btn-border:   #e2e8f0;
+  --ws-run-shadow:   0 10px 15px #c7d2fe, 0 4px 6px #c7d2fe;
+
+  /* code syntax */
+  --code-keyword:    #8b5cf6;
+  --code-default:    #1b1f2d;
+
+  /* status */
+  --status-ok:       #10b981;
+  --tag-warn-bg:     #feefcf;
+  --tag-warn-text:   #b57005;
+
+  /* ── Profile Page ── */
+  --profile-card-bg:  #ffffff;
+  --profile-ring:     rgba(0,0,0,0.08);
+  --profile-muted:    rgba(60,60,67,0.6);
+  --profile-rank:     rgba(38,38,38,0.75);
+  --heatmap-cell:     rgba(0,0,0,0.04);
+  --heatmap-label:    #afb4bd;
+  --lang-pill-bg:     rgba(0,10,32,0.05);
+  --lang-pill-text:   rgba(60,60,67,0.6);
+
+  /* scrollbar */
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg-page:        #1e1e1e;
+  --bg-navbar:      #282828;
+  --bg-card:        #282828;
+  --bg-card-alt:    rgba(255,255,255,0.04);
+  --bg-row-hover:   rgba(255,255,255,0.04);
+  --bg-row-zebra:   rgba(255,255,255,0.02);
+
+  --text-primary:   #ffffff;
+  --text-secondary: #9aa3b2;
+  --text-muted:     rgba(255,255,255,0.45);
+
+  --border:         rgba(231,234,242,0.12);
+  --border-navbar:  rgba(229,231,235,0.06);
+
+  --hero-bg-from:   #3d3470;
+  --hero-bg-to:     #2e2860;
+
+  --cal-bg:         #282828;
+  --cal-text:       #ffffff;
+  --cal-day-hover:  rgba(99,92,230,0.18);
+
+  --overview-bg:    #282828;
+  --overview-border:rgba(255,255,255,0.08);
+
+  --rail-bg:        rgba(233,236,242,0.20);
+  --col-divider:    rgba(231,234,242,0.25);
+
+  --shadow-card:    0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.16);
+  --shadow-overview:0 0 0 1px rgba(255,255,255,0.08);
+
+  /* ── Assessment Workspace ── */
+  --ws-panel-bg:     #282828;
+  --ws-editor-bg:    #232323;
+  --ws-input-bg:     rgba(255,255,255,0.04);
+  --ws-input-border: rgba(255,255,255,0.12);
+  --ws-input-text:   #d5dae3;
+  --ws-line-num:     rgba(255,255,255,0.28);
+  --ws-muted:        #9aa3b2;
+  --ws-tab-inactive: #7c8698;
+  --ws-btn-border:   rgba(255,255,255,0.14);
+  --ws-run-shadow:   0 8px 20px rgba(79,70,229,0.45);
+
+  /* ── Profile Page ── */
+  --profile-card-bg:  #2e2e2e;
+  --profile-ring:     rgba(255,255,255,0.12);
+  --profile-muted:    rgba(255,255,255,0.45);
+  --profile-rank:     rgba(255,255,255,0.65);
+  --heatmap-cell:     rgba(255,255,255,0.06);
+  --heatmap-label:    rgba(255,255,255,0.3);
+  --lang-pill-bg:     rgba(255,255,255,0.08);
+  --lang-pill-text:   rgba(255,255,255,0.55);
+
+  --code-keyword:    #a78bfa;
+  --code-default:    #e5e7eb;
+
+  --status-ok:       #34d399;
+  --tag-warn-bg:     rgba(245,158,11,0.16);
+  --tag-warn-text:   #f5b04a;
+
+  color-scheme: dark;
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Copperplate Gothic Bold system-font stack */
+.font-copperplate {
+  font-family: 'Copperplate Gothic Bold', 'Copperplate Gothic', 'Copperplate', Georgia, serif;
+  letter-spacing: 0.01em;
+}
+
+/* Segoe UI system-font stack */
+.font-segoe {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
