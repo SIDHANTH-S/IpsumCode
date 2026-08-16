@@ -18,6 +18,13 @@ const ASSESSMENTS = [
   { id: 7, name: "Cloud Computing Assessment",  startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "10:30 AM" },
 ];
 
+const COMPLETED_ASSESSMENTS = [
+  { id: 101, name: "Data Structures Final",      startDate: "23 May", startTime: "10:00 AM", userStartDelayMin: 0,  userStartTime: "10:00 AM", timeSpentMin: 45, windowMin: 60, endDate: "23 May", endTime: "11:00 AM" },
+  { id: 102, name: "Algorithms Quiz 1",          startDate: "21 May", startTime: "02:00 PM", userStartDelayMin: 10, userStartTime: "02:10 PM", timeSpentMin: 30, windowMin: 45, endDate: "21 May", endTime: "02:45 PM" },
+  { id: 103, name: "Database Systems Mid-Term",  startDate: "18 May", startTime: "09:00 AM", userStartDelayMin: 30, userStartTime: "09:30 AM", timeSpentMin: 30, windowMin: 60, endDate: "18 May", endTime: "10:00 AM" },
+  { id: 104, name: "Frontend Coding Challenge",  startDate: "15 May", startTime: "11:00 AM", userStartDelayMin: 5,  userStartTime: "11:05 AM", timeSpentMin: 15, windowMin: 30, endDate: "15 May", endTime: "11:30 AM" },
+];
+
 const OVERVIEW_STATS = [
   { label: "Average Score",   value: "87.5%" },
   { label: "Questions Solved",value: "42 / 48" },
@@ -159,6 +166,92 @@ function AssessmentRow({
         </div>
         {/* track + pill */}
         <AssessmentTimeline durationMin={durationMin} />
+        {/* end */}
+        <div className="flex flex-col items-start gap-[2px] w-[56px] shrink-0">
+          <span className="text-[13px] font-semibold leading-none" style={{ color: "var(--text-primary)" }}>
+            {endDate}
+          </span>
+          <span className="text-[12px] font-medium leading-none" style={{ color: "var(--text-secondary)" }}>
+            {endTime}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CompletedAssessmentTimeline({ timeSpentMin, windowMin, userStartDelayMin, userStartTime }: { timeSpentMin: number; windowMin: number; userStartDelayMin: number; userStartTime: string }) {
+  // Rail width represents the full windowMin.
+  const startPct = Math.min((userStartDelayMin / windowMin) * 100, 100);
+  const widthPct = Math.min((timeSpentMin / windowMin) * 100, 100 - startPct);
+
+  return (
+    <div className="h-[24px] relative w-[200px] sm:w-[240px] shrink-0">
+      {/* rail */}
+      <div
+        className="absolute h-[6px] left-0 right-0 rounded-full top-[9px]"
+        style={{ backgroundColor: "var(--rail-bg)" }}
+      />
+      {/* pill (represents actual session) */}
+      <div
+        className="absolute h-[20px] top-[2px] rounded-full flex items-center justify-center overflow-hidden"
+        title={`Started at ${userStartTime}`}
+        style={{
+          left: `${startPct}%`,
+          width: `${widthPct}%`,
+          backgroundColor: "#5b4aef",
+          boxShadow: "0 2px 6px rgba(91,74,239,0.28)",
+          minWidth: "30px", // Ensure the pill is visible even for very short times
+        }}
+      >
+        <span className="text-white text-[10px] font-bold whitespace-nowrap px-1">
+          {timeSpentMin} min
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function CompletedAssessmentRow({
+  name, startDate, startTime, timeSpentMin, windowMin, userStartDelayMin, userStartTime, endDate, endTime, zebra, onOpen,
+}: (typeof COMPLETED_ASSESSMENTS)[0] & { zebra: boolean; onOpen?: () => void }) {
+  const interactive = Boolean(onOpen);
+  return (
+    <div
+      role={interactive ? "button" : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      onClick={onOpen}
+      onKeyDown={interactive ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(); } } : undefined}
+      aria-label={interactive ? `Open ${name}` : undefined}
+      className={`flex items-center gap-4 px-4 h-[58px] rounded-lg transition-colors duration-100 hover:bg-[var(--bg-row-hover)] group ${interactive ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]" : ""}`}
+      style={{ backgroundColor: zebra ? "var(--bg-row-zebra)" : "transparent" }}
+    >
+      {/* name */}
+      <div className="flex-1 min-w-0 pl-1">
+        <span
+          className="text-[14px] font-semibold leading-5 truncate block"
+          style={{ color: "var(--text-primary)" }}
+        >
+          {name}
+        </span>
+      </div>
+
+      {/* divider */}
+      <div className="h-[28px] w-px shrink-0" style={{ backgroundColor: "var(--col-divider)" }} />
+
+      {/* timeline */}
+      <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+        {/* start */}
+        <div className="flex flex-col items-end gap-[2px] w-[56px] shrink-0">
+          <span className="text-[13px] font-semibold leading-none" style={{ color: "var(--text-primary)" }}>
+            {startDate}
+          </span>
+          <span className="text-[12px] font-medium leading-none" style={{ color: "var(--text-secondary)" }}>
+            {startTime}
+          </span>
+        </div>
+        {/* track + pill */}
+        <CompletedAssessmentTimeline timeSpentMin={timeSpentMin} windowMin={windowMin} userStartDelayMin={userStartDelayMin} userStartTime={userStartTime} />
         {/* end */}
         <div className="flex flex-col items-start gap-[2px] w-[56px] shrink-0">
           <span className="text-[13px] font-semibold leading-none" style={{ color: "var(--text-primary)" }}>
@@ -403,7 +496,9 @@ export default function Dashboard({
                 <span className="text-[9px] font-semibold tracking-wider pl-1" style={{ color: "#808ca1", textTransform: "uppercase" }}>Assessments</span>
                 <div className="flex items-center gap-4 sm:gap-6 shrink-0 pr-1">
                   <span className="text-[9px] font-semibold tracking-wider w-[56px] text-right" style={{ color: "#808ca1" }}>START</span>
-                  <span className="text-[9px] font-semibold tracking-wider text-center w-[200px] sm:w-[240px]" style={{ color: "#808ca1" }}>DURATION</span>
+                  <span className="text-[9px] font-semibold tracking-wider text-center w-[200px] sm:w-[240px]" style={{ color: "#808ca1" }}>
+                    {activeTab === "ongoing" ? "DURATION" : "TIME SPENT"}
+                  </span>
                   <span className="text-[9px] font-semibold tracking-wider w-[56px]" style={{ color: "#808ca1" }}>END</span>
                 </div>
               </div>
@@ -411,14 +506,24 @@ export default function Dashboard({
 
             {/* Assessment rows */}
             <div className="flex flex-col gap-1">
-              {ASSESSMENTS.map((a, i) => (
-                <AssessmentRow
-                  key={a.id}
-                  {...a}
-                  zebra={i % 2 === 0}
-                  onOpen={activeTab === "ongoing" ? () => onOpenAssessment(a.name) : undefined}
-                />
-              ))}
+              {activeTab === "ongoing" ? (
+                ASSESSMENTS.map((a, i) => (
+                  <AssessmentRow
+                    key={a.id}
+                    {...a}
+                    zebra={i % 2 === 0}
+                    onOpen={() => onOpenAssessment(a.name)}
+                  />
+                ))
+              ) : (
+                COMPLETED_ASSESSMENTS.map((a, i) => (
+                  <CompletedAssessmentRow
+                    key={a.id}
+                    {...a}
+                    zebra={i % 2 === 0}
+                  />
+                ))
+              )}
             </div>
           </div>
 
