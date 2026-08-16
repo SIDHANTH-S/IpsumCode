@@ -6,7 +6,7 @@ import imgLeetcodeDateBadge from "@/assets/images/leetcode-badge.png";
 import { ClaudeMascot } from "./components/ui/ClaudeMascot";
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-type Tab = "ongoing" | "assigned" | "completed";
+type Tab = "ongoing" | "completed";
 
 const ASSESSMENTS = [
   { id: 1, name: "Data Structures Mid-Term",    startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "11:00 AM" },
@@ -266,7 +266,6 @@ export default function Dashboard({
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "ongoing",   label: "Ongoing"   },
-    { id: "assigned",  label: "Assigned"  },
     { id: "completed", label: "Completed" },
   ];
 
@@ -399,8 +398,9 @@ export default function Dashboard({
             </div>
 
             {/* Assessment table header */}
-            <div className="px-4 relative">
-              <div className="flex items-center justify-end pr-2">
+            <div className="px-4 relative mt-4 mb-2">
+              <div className="flex items-center justify-between pr-2">
+                <span className="text-[9px] font-semibold tracking-wider pl-1" style={{ color: "#808ca1", textTransform: "uppercase" }}>Assessments</span>
                 <div className="flex items-center gap-4 sm:gap-6 shrink-0 pr-1">
                   <span className="text-[9px] font-semibold tracking-wider w-[56px] text-right" style={{ color: "#808ca1" }}>START</span>
                   <span className="text-[9px] font-semibold tracking-wider text-center w-[200px] sm:w-[240px]" style={{ color: "#808ca1" }}>DURATION</span>
