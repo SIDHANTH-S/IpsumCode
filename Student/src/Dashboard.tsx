@@ -3,7 +3,7 @@ import svgPaths from "@/assets/icons/dashboard-icons";
 import imgClouds from "@/assets/images/clouds.png";
 import imgAvatar from "@/assets/images/avatar.png";
 import imgLeetcodeDateBadge from "@/assets/images/leetcode-badge.png";
-
+import { ClaudeMascot } from "./components/ui/ClaudeMascot";
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 type Tab = "ongoing" | "assigned" | "completed";
@@ -86,90 +86,6 @@ function BellIcon() {
   );
 }
 
-function ClaudeMascot() {
-  return (
-    <svg fill="none" height="140" viewBox="0 0 135.135 140.948" width="134" className="shrink-0">
-      <g clipPath="url(#mascot-clip)">
-        <path d={svgPaths.p8083000}  fill="#DD775B" />
-        <path d={svgPaths.p163b5680} fill="#DD775B" />
-        <path d={svgPaths.p12df9270} fill="#DD775B" />
-        <path d={svgPaths.p771cd00}  fill="#DD775B" />
-        <path d={svgPaths.pf19a200}  fill="#DD775B" />
-        <path d={svgPaths.p1ae7df00} fill="#DD775B" />
-        <path d={svgPaths.p1c00afa0} fill="#DD775B" />
-        <path d={svgPaths.p12ec16c0} fill="#DD775B" />
-        <path d={svgPaths.p33bda3c0} fill="#DD775B" />
-        <path d={svgPaths.p36a47400} fill="#DD775B" />
-        <path d={svgPaths.p38affe00} fill="black" />
-        <path d={svgPaths.pa9ef700}  fill="black" />
-        <path d={svgPaths.p33596500} fill="black" />
-        <path d={svgPaths.p2780f900} fill="black" />
-        <path d={svgPaths.p7a33580}  fill="black" />
-        <path d={svgPaths.p3bfddd80} fill="black" />
-        <path d={svgPaths.pa5878b0}  fill="#DD775B" />
-        {/* flag checkerboard */}
-        <path d={svgPaths.p1f5e1ff0} fill="black" />
-        <path d={svgPaths.p1fccd300} fill="white" />
-        <path d={svgPaths.p1f640000} fill="white" />
-        <path d={svgPaths.p44e2c00}  fill="white" />
-        <path d={svgPaths.p37e19500} fill="white" />
-        <path d={svgPaths.pba03c00}  fill="white" />
-        <path d={svgPaths.p3f4ec000} fill="white" />
-        <path d={svgPaths.p273f2c00} fill="white" />
-        <path d={svgPaths.p214a5600} fill="white" />
-        <path d={svgPaths.p26e46380} fill="white" />
-        <path d={svgPaths.p14dd9b00} fill="white" />
-        <path d={svgPaths.p3a97df00} fill="white" />
-        <path d={svgPaths.p26be0700} fill="white" />
-        <path d={svgPaths.p2d938400} fill="white" />
-        <path d={svgPaths.p7ecb500}  fill="white" />
-        <path d={svgPaths.p1cceda00} fill="white" />
-        <path d={svgPaths.p145c1c70} fill="white" />
-        <path d={svgPaths.p38ced000} fill="white" />
-        <path d={svgPaths.p379dbc0}  fill="white" />
-        <path d={svgPaths.p17ca3a00} fill="white" />
-        <path d={svgPaths.p5645e00}  fill="white" />
-        <path d={svgPaths.p29e7edf0} fill="white" />
-        <path d={svgPaths.p40fb4c0}  fill="white" />
-        <path d={svgPaths.p1e035800} fill="white" />
-        <path d={svgPaths.p1ca26a00} fill="white" />
-        <path d={svgPaths.p19085000} fill="white" />
-        <path d={svgPaths.p104d4580} fill="black" />
-        <path d={svgPaths.p32c4980}  fill="black" />
-        <path d={svgPaths.p3fbe1100} fill="black" />
-        <path d={svgPaths.pc0afc00}  fill="black" />
-        <path d={svgPaths.padc3480}  fill="black" />
-        <path d={svgPaths.p32091580} fill="black" />
-        <path d={svgPaths.p225c0c80} fill="black" />
-        <path d={svgPaths.p1ed7ba80} fill="black" />
-        <path d={svgPaths.p3cf2dd00} fill="black" />
-        <path d={svgPaths.p164dd780} fill="black" />
-        <path d={svgPaths.p3afd4600} fill="black" />
-        <path d={svgPaths.p650b380}  fill="black" />
-        <path d={svgPaths.p29206480} fill="black" />
-        <path d={svgPaths.p381d6800} fill="black" />
-        <path d={svgPaths.p3a75d700} fill="black" />
-        <path d={svgPaths.pa17a000}  fill="black" />
-        <path d={svgPaths.p65c2600}  fill="black" />
-        <path d={svgPaths.pd587d00}  fill="black" />
-        <path d={svgPaths.p1ea09400} fill="black" />
-        <path d={svgPaths.p2f35f030} fill="black" />
-        <path d={svgPaths.p3e78b9c0} fill="black" />
-        <path d={svgPaths.pa205f80}  fill="black" />
-        <path d={svgPaths.p33e56600} fill="black" />
-        <path d={svgPaths.p1e531500} fill="black" />
-        <path d={svgPaths.p1071dc00} fill="black" />
-        <path d={svgPaths.p3dc7cc80} fill="black" />
-        <path d={svgPaths.p1c140700} fill="black" />
-      </g>
-      <defs>
-        <clipPath id="mascot-clip">
-          <rect fill="white" height="140.948" width="135.135" />
-        </clipPath>
-      </defs>
-    </svg>
-  );
-}
 
 // Assessment row timeline: START → [pill on track] → END
 function AssessmentTimeline({ durationMin }: { durationMin: number }) {
@@ -436,15 +352,17 @@ export default function Dashboard({
               {/* greeting text */}
               <div className="absolute left-10 bottom-0 top-0 flex flex-col justify-center">
                 <p className="text-[28px] sm:text-[32px] font-bold leading-tight">
-                  <span style={{ color: dark ? "#f0f0f0" : "#1a1a2e" }}>Good morning, </span>
-                  <span style={{ color: "#7c3aed" }}>Alex!</span>
-                  <span style={{ color: dark ? "#f0f0f0" : "#1a1a2e" }}> 👋</span>
+                  <span style={{ color: dark ? "#f0f0f0" : "#1a1a2e" }}>Welcome back, </span>
+                  <span style={{ color: "#7c3aed" }}>Alex.</span>
+                </p>
+                <p className="text-[15px] sm:text-[16px] font-medium mt-1.5" style={{ color: dark ? "#a1a1aa" : "#52525b" }}>
+                  <span className="font-bold text-[#635ce6]">3 assessments</span> are on your schedule today.
                 </p>
               </div>
 
               {/* mascot */}
               <div className="absolute right-4 bottom-0 flex items-end pointer-events-none select-none">
-                <ClaudeMascot />
+                <ClaudeMascot variant="flag" />
               </div>
             </div>
 
