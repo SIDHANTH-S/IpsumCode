@@ -36,7 +36,7 @@ export function AppLayout() {
       <TopBar />
       <div className="flex">
         <Sidebar active={getActiveTab()} onSelect={handleSelectTab} />
-        <main className="min-w-0 flex-1 px-5 py-6 lg:px-8">
+        <main className="min-w-0 flex-1 px-5 py-6 pb-12 lg:px-8">
           <Outlet />
         </main>
       </div>

@@ -275,7 +275,7 @@ function CompletedTable({
                 onClick={() => onSelectAssessment?.(row.title)}
                 onDoubleClick={() => onViewResults?.(row.title)}
                 className={`cursor-pointer transition-colors ${
-                  i % 2 === 1 ? "bg-surface-hover/50 hover:bg-surface-hover" : "hover:bg-surface-hover/50"
+                  i % 2 === 1 ? "bg-surface-hover/50" : ""
                 }`}
               >
                 <td className="px-5 py-3.5">

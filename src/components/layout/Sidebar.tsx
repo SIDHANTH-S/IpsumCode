@@ -26,25 +26,26 @@ export function Sidebar({
   active: Tab;
   onSelect: (tab: Tab) => void
 }) {
-  const [width, setWidth] = useState(240)
+  // Initialize from localStorage synchronously to prevent layout shift
+  const [width, setWidth] = useState(() => {
+    const saved = localStorage.getItem("sidebarWidth")
+    return saved ? parseInt(saved, 10) : 240
+  })
 
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const saved = localStorage.getItem("sidebarCollapsed")
+    return saved === "true"
+  })
 
   const [isResizing, setIsResizing] = useState(false)
 
-  const [isXl, setIsXl] = useState(true)
-
-  // Load user preferences
-
-  useEffect(() => {
-    const savedWidth = localStorage.getItem("sidebarWidth")
-
-    if (savedWidth) setWidth(parseInt(savedWidth, 10))
-
-    const savedCollapsed = localStorage.getItem("sidebarCollapsed")
-
-    if (savedCollapsed) setIsCollapsed(savedCollapsed === "true")
-  }, [])
+  // Initialize screen size synchronously to prevent layout shift
+  const [isXl, setIsXl] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia("(min-width: 1280px)").matches
+    }
+    return true
+  })
 
   // Save collapsed state
 
