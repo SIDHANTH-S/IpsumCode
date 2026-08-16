@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import imgAvatar from "@/assets/images/avatar.png";
 import imgBadgeDcc from "@/assets/images/dcc-badge.png";
 import img50Days from "@/assets/images/50-days.png";
@@ -18,22 +18,14 @@ const DIFFICULTY = [
   { label: "Hard", color: "#f63737", solved: 31,  total: 962  },
 ];
 
-const MONTHS = ["Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"];
-
-// Deterministic heatmap seeded by column+row
-function cellIntensity(col: number, row: number) {
-  const v = ((col * 7 + row * 13) % 31);
-  if (v < 18) return 0;
-  if (v < 24) return 1;
-  if (v < 28) return 2;
+// Deterministic heatmap seeded by date
+function getIntensityForDate(d: Date) {
+  const seed = (d.getFullYear() * 1000 + d.getMonth() * 100 + d.getDate()) % 31;
+  if (seed < 18) return 0;
+  if (seed < 24) return 1;
+  if (seed < 28) return 2;
   return 3;
 }
-
-const HEATMAP_COLS = 53;
-const HEATMAP_ROWS = 7;
-
-const SUBMISSIONS_TABS = ["Recent AC", "List", "Solutions", "Discuss"] as const;
-type SubmissionTab = (typeof SUBMISSIONS_TABS)[number];
 
 const RECENT = [
   { name: "Triangle Judgement",                             ago: "8 days ago" },
@@ -108,19 +100,44 @@ function CheckIcon() {
 // ─── Donut chart for solved problems ─────────────────────────────────────────
 
 function DonutChart() {
+  const [hoverState, setHoverState] = useState<'default' | 'acceptance' | 'beats'>('default');
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const cx = 80, cy = 80, r = 62, stroke = 8;
   const circumference = 2 * Math.PI * r;
-  // arcs: easy teal, medium yellow, hard red, empty grey
+
   const total = DIFFICULTY.reduce((a, d) => a + d.total, 0);
   const solved = DIFFICULTY.reduce((a, d) => a + d.solved, 0);
-  const arcs = [
-    ...DIFFICULTY.map(d => ({ color: d.color, frac: d.solved / total })),
-    { color: "var(--heatmap-cell)", frac: (total - solved) / total },
-  ];
-  let offset = 0;
+
+  const arcs = DIFFICULTY.map(d => ({ color: d.color, frac: d.solved / solved }));
+
+  const handleMouseEnter = () => {
+    setHoverState('acceptance');
+    timerRef.current = setInterval(() => {
+      setHoverState(prev => prev === 'acceptance' ? 'beats' : 'acceptance');
+    }, 2000);
+  };
+
+  const handleMouseLeave = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setHoverState('default');
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, []);
+
+  let currentOffset = 0;
+
   return (
-    <div className="relative size-[160px] shrink-0">
-      <svg viewBox="0 0 160 160" width="160" height="160" style={{ transform: "rotate(-90deg)" }}>
+    <div
+      className="relative w-[130px] h-[130px] sm:w-[150px] sm:h-[150px] lg:w-[160px] lg:h-[160px] shrink-0 cursor-pointer mx-auto sm:mx-0"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <svg viewBox="0 0 160 160" className="w-full h-full" style={{ transform: "rotate(-90deg)" }}>
         {arcs.map((arc, i) => {
           const dash = arc.frac * circumference;
           const gap = circumference - dash;
@@ -132,31 +149,61 @@ function DonutChart() {
               stroke={arc.color}
               strokeWidth={stroke}
               strokeDasharray={`${dash} ${gap}`}
-              strokeDashoffset={-offset * circumference}
+              strokeDashoffset={currentOffset}
               strokeLinecap="round"
+              className="transition-all duration-500 ease-out"
             />
           );
-          offset += arc.frac;
+          currentOffset -= dash;
           return el;
         })}
       </svg>
-      {/* centre text */}
+      {/* centre text overlay with smooth transitions */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-        <div className="flex items-end gap-[2px]">
-          <span className="text-[30px] font-bold leading-none" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>273</span>
-          <span className="text-[14px] mb-[2px]" style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}>/4018</span>
+
+        {/* Default State */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-1 transition-opacity duration-300"
+          style={{ opacity: hoverState === 'default' ? 1 : 0, pointerEvents: 'none' }}
+        >
+          <div className="flex items-end gap-[2px]">
+            <span className="text-[26px] sm:text-[30px] font-bold leading-none" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>{solved}</span>
+            <span className="text-[13px] sm:text-[14px] mb-[2px]" style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}>/{total}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <CheckIcon />
+            <span className="text-[12px] sm:text-[13px]" style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}>Solved</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1">
-          <CheckIcon />
-          <span className="text-[13px]" style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}>Solved</span>
+
+        {/* Acceptance State */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-1 transition-opacity duration-300"
+          style={{ opacity: hoverState === 'acceptance' ? 1 : 0, pointerEvents: 'none' }}
+        >
+          <span className="text-[12px] sm:text-[13px]" style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}>Acceptance Rate</span>
+          <span className="text-[22px] sm:text-[26px] font-bold leading-none mt-1" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>75.12%</span>
         </div>
-        <span className="text-[12px]" style={{ color: "#737373", fontFamily: "'Segoe UI', sans-serif" }}>3 Attempting</span>
+
+        {/* Beats State */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-1 transition-opacity duration-300"
+          style={{ opacity: hoverState === 'beats' ? 1 : 0, pointerEvents: 'none' }}
+        >
+          <span className="text-[12px] sm:text-[13px]" style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}>Beats</span>
+          <span className="text-[22px] sm:text-[26px] font-bold leading-none mt-1" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>93.91%</span>
+        </div>
+
       </div>
     </div>
   );
 }
 
 // ─── Heatmap ─────────────────────────────────────────────────────────────────
+// Fully fluid: every week-column ends up the same width regardless of which
+// month it belongs to (each month's flex-grow == its own week count, so the
+// per-month division by that same count cancels out). That fills the parent's
+// width exactly, keeps every row aligned, and never needs horizontal scroll.
 
 const CELL_INTENSITIES: [string, string, string, string] = [
   "var(--heatmap-cell)", // 0 – empty
@@ -166,43 +213,85 @@ const CELL_INTENSITIES: [string, string, string, string] = [
 ];
 
 function Heatmap() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const startDate = new Date(today);
+  startDate.setFullYear(startDate.getFullYear() - 1);
+
+  const dates: Date[] = [];
+  let curr = new Date(startDate);
+  while (curr <= today) {
+    dates.push(new Date(curr));
+    curr.setDate(curr.getDate() + 1);
+  }
+
+  const monthsMap = new Map<string, Date[]>();
+  dates.forEach(d => {
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    if (!monthsMap.has(key)) monthsMap.set(key, []);
+    monthsMap.get(key)!.push(d);
+  });
+
+  const monthsData = Array.from(monthsMap.values()).map(monthDates => {
+    const weeks: (Date | null)[][] = [];
+    let currentWeek: (Date | null)[] = new Array(7).fill(null);
+
+    monthDates.forEach(d => {
+      const dayOfWeek = d.getDay();
+      currentWeek[dayOfWeek] = d;
+
+      if (dayOfWeek === 6 || d === monthDates[monthDates.length - 1]) {
+        weeks.push(currentWeek);
+        currentWeek = new Array(7).fill(null);
+      }
+    });
+
+    return {
+      label: monthDates[0].toLocaleString('default', { month: 'short' }),
+      weeks
+    };
+  });
+
   return (
-    <div className="w-full overflow-x-auto">
-      <div style={{ minWidth: 660 }}>
-        {/* month labels */}
-        <div className="flex mb-1" style={{ paddingLeft: 0 }}>
-          {MONTHS.map((m, i) => (
+    <div className="w-full">
+      <div className="flex w-full gap-[3px] sm:gap-1">
+        {monthsData.map((month, mIndex) => (
+          <div
+            key={mIndex}
+            className="flex min-w-0 flex-col gap-1"
+            style={{ flexGrow: month.weeks.length, flexShrink: 1, flexBasis: 0 }}
+          >
             <div
-              key={i}
-              className="text-[11px] flex-1 text-left"
+              className="truncate text-[10px] sm:text-[11px]"
               style={{ color: "var(--heatmap-label)", fontFamily: "'Inter', sans-serif" }}
             >
-              {m}
+              {month.label}
             </div>
-          ))}
-        </div>
-        {/* grid: rows = day of week */}
-        <div className="flex gap-[2px]">
-          {Array.from({ length: HEATMAP_COLS }, (_, col) => (
-            <div key={col} className="flex flex-col gap-[2px]">
-              {Array.from({ length: HEATMAP_ROWS }, (_, row) => {
-                const lvl = cellIntensity(col, row);
-                return (
-                  <div
-                    key={row}
-                    className="rounded-[2px]"
-                    style={{
-                      width: 10,
-                      height: 10,
-                      backgroundColor: CELL_INTENSITIES[lvl],
-                    }}
-                    aria-hidden
-                  />
-                );
-              })}
+            <div className="flex w-full gap-[2px] sm:gap-[3px]">
+              {month.weeks.map((week, wIndex) => (
+                <div key={wIndex} className="flex min-w-0 flex-1 flex-col gap-[2px] sm:gap-[3px]">
+                  {week.map((date, rowIndex) => {
+                    if (!date) {
+                      return <div key={rowIndex} className="aspect-square w-full" />;
+                    }
+                    const lvl = getIntensityForDate(date);
+                    return (
+                      <div
+                        key={rowIndex}
+                        className="group relative z-0 aspect-square w-full cursor-pointer rounded-[2px] transition-transform hover:z-20 hover:scale-125"
+                        style={{ backgroundColor: CELL_INTENSITIES[lvl] }}
+                      >
+                        <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[11px] text-white opacity-0 group-hover:opacity-100">
+                          {lvl === 0 ? "No" : lvl * 2} submissions on {date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -282,26 +371,29 @@ function ProfileSidebar() {
 }
 
 // ─── Stats cards ──────────────────────────────────────────────────────────────
+// SolvedCard and BadgesCard are direct siblings inside a CSS grid row with
+// items-stretch, and each carries h-full itself, so both are always exactly
+// the same height — including as the grid reflows from 1 to 2 columns.
 
 function SolvedCard() {
   return (
     <div
-      className="flex gap-3 p-4 rounded-lg"
+      className="flex h-full min-w-0 flex-col items-center gap-4 rounded-lg p-4 sm:flex-row sm:items-stretch"
       style={{
         backgroundColor: "var(--profile-card-bg)",
         boxShadow: "0 2px 3px rgba(0,0,0,0.04), 0 4px 4px rgba(0,0,0,0.02), 0 6px 6px rgba(0,0,0,0.02)",
       }}
     >
       <DonutChart />
-      <div className="flex flex-col gap-2 justify-center flex-1">
+      <div className="flex w-full min-w-0 flex-1 flex-row justify-center gap-2 sm:w-auto sm:flex-col">
         {DIFFICULTY.map(d => (
           <div
             key={d.label}
-            className="flex flex-col items-center justify-center flex-1 rounded p-2 gap-1"
+            className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded p-2"
             style={{ backgroundColor: "rgba(0,0,0,0.02)" }}
           >
-            <span className="text-[12px] font-semibold" style={{ color: d.color, fontFamily: "'Segoe UI', sans-serif" }}>{d.label}</span>
-            <span className="text-[12px] font-semibold" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>{d.solved}/{d.total}</span>
+            <span className="truncate text-[12px] font-semibold" style={{ color: d.color, fontFamily: "'Segoe UI', sans-serif" }}>{d.label}</span>
+            <span className="truncate text-[12px] font-semibold" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>{d.solved}/{d.total}</span>
           </div>
         ))}
       </div>
@@ -312,7 +404,7 @@ function SolvedCard() {
 function BadgesCard() {
   return (
     <div
-      className="flex flex-col gap-3 p-4 rounded-lg"
+      className="flex h-full min-w-0 flex-col justify-between gap-3 rounded-lg p-4"
       style={{
         backgroundColor: "var(--profile-card-bg)",
         boxShadow: "0 2px 3px rgba(0,0,0,0.04), 0 4px 4px rgba(0,0,0,0.02), 0 6px 6px rgba(0,0,0,0.02)",
@@ -332,14 +424,14 @@ function BadgesCard() {
       </div>
 
       {/* badge images */}
-      <div className="flex items-center justify-center gap-4 py-1">
-        <div className="size-[56px]">
+      <div className="flex flex-wrap items-center justify-center gap-4 py-1">
+        <div className="size-12 sm:size-14">
           <img src={imgBadgeDcc} alt="Jul LeetCoding Challenge badge" className="size-full object-contain" />
         </div>
-        <div className="size-[72px]">
+        <div className="size-16 sm:size-[72px]">
           <img src={img50Days} alt="50 Days Badge 2025" className="size-full object-contain" />
         </div>
-        <div className="size-[56px]" />
+        <div className="size-12 sm:size-14" />
       </div>
 
       <div className="flex flex-col gap-[2px]">
@@ -371,18 +463,6 @@ function ActivityCard() {
           <span style={{ color: "var(--profile-muted)", fontFamily: "'Segoe UI', sans-serif" }}>
             Total active days: <strong style={{ color: "var(--profile-rank)" }}>63</strong>
           </span>
-          <span style={{ color: "var(--profile-muted)", fontFamily: "'Segoe UI', sans-serif" }}>
-            Max streak: <strong style={{ color: "var(--profile-rank)" }}>21</strong>
-          </span>
-          <div
-            className="flex items-center gap-2 px-3 py-1 rounded"
-            style={{ backgroundColor: "var(--lang-pill-bg)", color: "var(--text-secondary)", fontSize: 12, fontFamily: "'Segoe UI', sans-serif" }}
-          >
-            Current
-            <svg fill="none" height="8" viewBox="0 0 8 5" width="8" aria-hidden>
-              <path d="M1 1l3 3 3-3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2"/>
-            </svg>
-          </div>
         </div>
       </div>
 
@@ -393,9 +473,10 @@ function ActivityCard() {
 }
 
 // ─── Recent submissions ───────────────────────────────────────────────────────
+// Just the header + list — the Recent AC / List / Solutions / Discuss tabs
+// are gone since there's only ever one view to show.
 
 function RecentSubmissions() {
-  const [tab, setTab] = useState<SubmissionTab>("Recent AC");
   return (
     <div
       className="flex flex-col rounded-lg w-full overflow-hidden"
@@ -404,30 +485,11 @@ function RecentSubmissions() {
         boxShadow: "0 2px 3px rgba(0,0,0,0.04), 0 4px 4px rgba(0,0,0,0.02), 0 6px 6px rgba(0,0,0,0.02)",
       }}
     >
-      {/* tab bar + view all */}
-      <div className="flex items-center justify-between px-4 pt-2 flex-wrap gap-y-2 border-b" style={{ borderColor: "var(--border)" }}>
-        <div role="tablist" aria-label="Submission views" className="flex gap-1 flex-wrap">
-          {SUBMISSIONS_TABS.map(t => {
-            const active = t === tab;
-            return (
-              <button
-                key={t}
-                role="tab"
-                aria-selected={active}
-                onClick={() => setTab(t)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded text-[14px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                style={{
-                  backgroundColor: active ? "var(--lang-pill-bg)" : "transparent",
-                  color: active ? "var(--text-primary)" : "var(--profile-rank)",
-                  fontWeight: active ? 700 : 500,
-                  fontFamily: "'Segoe UI', sans-serif",
-                }}
-              >
-                {t}
-              </button>
-            );
-          })}
-        </div>
+      {/* header + view all */}
+      <div className="flex items-center justify-between px-4 py-3 border-b flex-wrap gap-y-2" style={{ borderColor: "var(--border)" }}>
+        <h2 className="text-[16px] font-semibold" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>
+          Recent AC
+        </h2>
         <button
           className="flex items-center gap-1 text-[12px] transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
           style={{ color: "var(--text-secondary)", fontFamily: "'Segoe UI', sans-serif" }}
@@ -442,11 +504,11 @@ function RecentSubmissions() {
           <div
             key={i}
             role="listitem"
-            className="flex items-center justify-between px-4 py-3 border-b last:border-b-0 hover:bg-[var(--bg-row-hover)] transition-colors"
+            className="flex items-center justify-between gap-3 px-4 py-3 border-b last:border-b-0 hover:bg-[var(--bg-row-hover)] transition-colors"
             style={{ borderColor: "var(--border)" }}
           >
-            <span className="text-[14px]" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>{r.name}</span>
-            <span className="text-[12px] shrink-0 ml-4" style={{ color: "var(--profile-muted)", fontFamily: "'Segoe UI', sans-serif" }}>{r.ago}</span>
+            <span className="text-[14px] truncate" style={{ color: "var(--text-primary)", fontFamily: "'Segoe UI', sans-serif" }}>{r.name}</span>
+            <span className="text-[12px] shrink-0" style={{ color: "var(--profile-muted)", fontFamily: "'Segoe UI', sans-serif" }}>{r.ago}</span>
           </div>
         ))}
       </div>
@@ -508,18 +570,16 @@ export default function ProfilePage({
       </header>
 
       {/* page content */}
-      <main className="max-w-[1512px] mx-auto px-6 py-8">
+      <main className="mx-auto w-full grow p-4 md:max-w-[888px] md:p-6 lg:max-w-screen-xl">
         <div className="flex gap-6 items-start flex-col lg:flex-row">
           {/* left sidebar */}
           <ProfileSidebar />
 
           {/* right main content */}
-          <div className="flex-1 min-w-0 flex flex-col gap-4">
-            {/* top row: solved + badges */}
-            <div className="grid gap-4 grid-cols-1 xl:grid-cols-[1fr_420px]">
-              <div className="min-w-0">
-                <SolvedCard />
-              </div>
+          <div className="flex-1 w-full min-w-0 flex flex-col gap-4">
+            {/* top row: solved + badges — equal-height, fluid split */}
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-stretch">
+              <SolvedCard />
               <BadgesCard />
             </div>
 
