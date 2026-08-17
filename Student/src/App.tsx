@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import Dashboard from "./Dashboard";
-import AssessmentWorkspace from "./AssessmentWorkspace";
-import ProfilePage from "./ProfilePage";
+import { RouterProvider, Outlet, createBrowserRouter } from "react-router-dom";
+import { router } from "./routes";
 
-type View = "dashboard" | "assessment" | "profile";
-
-export default function App() {
+export function AppLayout() {
   const [dark, setDark] = useState(false);
-  const [view, setView] = useState<View>("dashboard");
-  const [openAssessment, setOpenAssessment] = useState<string | null>(null);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -16,33 +11,13 @@ export default function App() {
 
   const toggleTheme = () => setDark((d) => !d);
 
-  if (view === "assessment" && openAssessment) {
-    return (
-      <AssessmentWorkspace
-        assessmentName={openAssessment}
-        dark={dark}
-        onToggleTheme={toggleTheme}
-        onBack={() => { setView("dashboard"); setOpenAssessment(null); }}
-      />
-    );
-  }
+  return <Outlet context={{ dark, toggleTheme }} />;
+}
 
-  if (view === "profile") {
-    return (
-      <ProfilePage
-        dark={dark}
-        onToggleTheme={toggleTheme}
-        onBack={() => setView("dashboard")}
-      />
-    );
-  }
+// Recreate router here if needed or inject AppLayout into the existing router
+// Actually, it's cleaner to just render RouterProvider with our router, 
+// and update `src/routes/index.tsx` to use AppLayout.
 
-  return (
-    <Dashboard
-      dark={dark}
-      onToggleTheme={toggleTheme}
-      onOpenAssessment={(name) => { setOpenAssessment(name); setView("assessment"); }}
-      onOpenProfile={() => setView("profile")}
-    />
-  );
+export default function App() {
+  return <RouterProvider router={router} />;
 }
