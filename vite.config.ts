@@ -39,5 +39,14 @@ export default defineConfig(({ mode }) => {
 
       allowedHosts: [".ngrok-free.dev"],
     },
+
+    build: {
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          student: path.resolve(__dirname, 'student.html'),
+        },
+      },
+    },
   }
 })

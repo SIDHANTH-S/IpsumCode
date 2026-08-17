@@ -11,16 +11,16 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   server: {
     host: '0.0.0.0',
-    port: parseInt(process.env.PORT || '8443'),
+    port: parseInt(process.env.PORT || '8444'),
     strictPort: true,
   },
   preview: {
     host: '0.0.0.0',
-    port: parseInt(process.env.PORT || '8443'),
+    port: parseInt(process.env.PORT || '8444'),
   },
 })
