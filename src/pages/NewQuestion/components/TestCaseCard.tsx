@@ -97,16 +97,7 @@ export function TestCaseCard({
           aria-labelledby={headerId}
           className="space-y-4 border-t border-border-default px-4 py-4"
         >
-          <div>
-            <FieldLabel htmlFor={`${testCase.id}-label`}>Label (optional)</FieldLabel>
-            <input
-              id={`${testCase.id}-label`}
-              value={testCase.label}
-              onChange={(event) => onUpdate({ label: event.target.value })}
-              placeholder="e.g. Basic case"
-              className="w-full rounded-md border border-border-default bg-surface-elevated px-3 h-9 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
-            />
-          </div>
+
 
           <div className="flex flex-col gap-4 sm:flex-row">
             <TextArea
@@ -129,18 +120,7 @@ export function TestCaseCard({
             />
           </div>
 
-          {kind === "sample" && (
-            <div>
-              <FieldLabel htmlFor={`${testCase.id}-explanation`}>Explanation (optional)</FieldLabel>
-              <input
-                id={`${testCase.id}-explanation`}
-                value={testCase.explanation}
-                onChange={(event) => onUpdate({ explanation: event.target.value })}
-                placeholder="Why this input produces this output"
-                className="w-full rounded-md border border-border-default bg-surface-elevated px-3 h-9 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-base/50"
-              />
-            </div>
-          )}
+
         </div>
       )}
     </div>
