@@ -1,0 +1,276 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------
+// ENUMS
+// ---------------------------------------------
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AssessmentStatus {
+  DRAFT
+  SCHEDULED
+  LIVE
+  COMPLETED
+}
+
+enum DeliveryMode {
+  RANDOM
+  SMART_SHUFFLE
+  SAME_ORDER
+}
+
+enum LanguageCode {
+  C
+  CPP
+  JAVA
+  JS
+  PYTHON
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+}
+
+enum ActivityEventType {
+  STARTED
+  OPENED_QUESTION
+  COMPLETED
+}
+
+enum ExecutionEventType {
+  RUN
+  COMPILE
+}
+
+// ---------------------------------------------
+// USERS & CLASSROOMS
+// ---------------------------------------------
+model User {
+  id          String      @id @default(uuid())
+  role        Role        @default(STUDENT)
+  email       String      @unique
+  name        String
+  classroomId String?
+  classroom   Classroom?  @relation(fields: [classroomId], references: [id], onDelete: SetNull)
+  
+  attempts    AssessmentAttempt[]
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Classroom {
+  id          String      @id @default(uuid())
+  name        String
+  year        String?
+  students    User[]
+  assessments AssessmentClassroom[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+// ---------------------------------------------
+// ASSESSMENTS & QUESTIONS
+// ---------------------------------------------
+model Assessment {
+  id                  String      @id @default(uuid())
+  title               String
+  status              AssessmentStatus @default(DRAFT)
+  isPublic            Boolean     @default(false)
+  availabilityStart   DateTime
+  availabilityEnd     DateTime
+  durationMinutes     Int
+  deliveryMode        DeliveryMode
+  questionsPerStudent Int
+
+  classrooms          AssessmentClassroom[]
+  questions           AssessmentQuestion[]
+  attempts            AssessmentAttempt[]
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+model AssessmentClassroom {
+  assessmentId String
+  classroomId  String
+  
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  classroom    Classroom  @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  
+  @@id([assessmentId, classroomId])
+  @@index([classroomId])
+}
+
+model Question {
+  id               String      @id @default(uuid())
+  title            String
+  content          String      @db.Text
+  difficulty       Difficulty
+  timeLimitSeconds Float       @default(2.0)
+  memoryLimitKb    Int         @default(128000)
+  tags             String[]
+  status           QuestionStatus @default(DRAFT)
+
+  testCases        TestCase[]
+  languages        QuestionLanguageSupport[]
+  assessments      AssessmentQuestion[]
+  snapshots        AttemptQuestionSnapshot[]
+  submissions      Submission[]
+  executionLogs    ExecutionLog[]
+  activities       AttemptActivity[]
+
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model TestCase {
+  id             String    @id @default(uuid())
+  questionId     String
+  orderIndex     Int
+  input          String    @db.Text
+  expectedOutput String    @db.Text
+  isHidden       Boolean   @default(false)
+  weight         Int       @default(1)
+  
+  question       Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, orderIndex])
+}
+
+model QuestionLanguageSupport {
+  questionId        String
+  languageCode      LanguageCode
+  referenceSolution String?      @db.Text
+
+  question          Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, languageCode])
+}
+
+model AssessmentQuestion {
+  assessmentId String
+  questionId   String
+  orderIndex   Int
+
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  question     Question   @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@id([assessmentId, questionId])
+  @@unique([assessmentId, orderIndex])
+  @@index([questionId])
+}
+
+// ---------------------------------------------
+// ATTEMPTS, EXECUTION, & SUBMISSIONS
+// ---------------------------------------------
+model AssessmentAttempt {
+  id           String        @id @default(uuid())
+  userId       String
+  assessmentId String
+  status       AttemptStatus @default(IN_PROGRESS)
+  startedAt    DateTime      @default(now())
+  deadlineAt   DateTime
+  completedAt  DateTime?
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  assessment   Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Restrict)
+
+  snapshots     AttemptQuestionSnapshot[]
+  activities    AttemptActivity[]
+  submissions   Submission[]
+  executionLogs ExecutionLog[]
+
+  @@unique([userId, assessmentId])
+  @@index([status])
+  @@index([assessmentId])
+  @@index([userId])
+}
+
+model AttemptQuestionSnapshot {
+  id         String   @id @default(uuid())
+  attemptId  String
+  questionId String
+  orderIndex Int
+  testCases  Json?
+
+  attempt    AssessmentAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question   Question          @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@unique([attemptId, questionId])
+  @@unique([attemptId, orderIndex])
+  @@index([questionId])
+}
+
+model AttemptActivity {
+  id         String             @id @default(uuid())
+  attemptId  String
+  questionId String?
+  eventType  ActivityEventType
+  timestamp  DateTime           @default(now())
+
+  attempt    AssessmentAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question   Question?          @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@index([attemptId, timestamp])
+}
+
+model ExecutionLog {
+  id           String             @id @default(uuid())
+  attemptId    String
+  questionId   String
+  eventType    ExecutionEventType
+  languageCode LanguageCode
+  status       String
+  runtimeMs    Int?
+  memoryKb     Int?
+  timestamp    DateTime           @default(now())
+
+  attempt      AssessmentAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question     Question           @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@index([attemptId, timestamp])
+  @@index([questionId, timestamp])
+}
+
+model Submission {
+  id           String             @id @default(uuid())
+  attemptId    String
+  questionId   String
+  sourceCode   String             @db.Text
+  languageCode LanguageCode
+  verdict      String
+  score        Float
+  runtimeMs    Int?
+  memoryKb     Int?
+  submittedAt  DateTime           @default(now())
+
+  attempt      AssessmentAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question     Question           @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@index([attemptId, questionId, submittedAt])
+}

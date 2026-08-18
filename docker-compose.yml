@@ -1,0 +1,78 @@
+
+x-logging:
+  &default-logging
+  logging:
+    driver: json-file
+    options:
+      max-size: 100m
+
+services:
+  # ---------------------------------------------
+  # JUDGE0 CE EXECUTION ENGINE
+  # ---------------------------------------------
+  judge0-server:
+    image: judge0/judge0:1.13.1
+    volumes:
+      - ./judge0/judge0.conf:/judge0.conf:ro
+    ports:
+      - "2358:2358"
+    privileged: true
+    <<: *default-logging
+    restart: always
+    depends_on:
+      - judge0-db
+      - judge0-redis
+
+  judge0-workers:
+    image: judge0/judge0:1.13.1
+    command: ["./scripts/workers"]
+    volumes:
+      - ./judge0/judge0.conf:/judge0.conf:ro
+    privileged: true
+    cgroupns: host
+    <<: *default-logging
+    restart: always
+    depends_on:
+      - judge0-db
+      - judge0-redis
+
+  judge0-db:
+    image: postgres:15
+    env_file: ./judge0/judge0.conf
+    volumes:
+      - judge0-postgres-data:/var/lib/postgresql/data/
+    <<: *default-logging
+    restart: always
+
+  judge0-redis:
+    image: redis:7.0
+    command: [
+      "bash", "-c",
+      'docker-entrypoint.sh --appendonly yes --requirepass "$$REDIS_PASSWORD"'
+    ]
+    env_file: ./judge0/judge0.conf
+    volumes:
+      - judge0-redis-data:/data/
+    <<: *default-logging
+    restart: always
+
+  # ---------------------------------------------
+  # MAIN PLATFORM DATABASE (Prisma)
+  # ---------------------------------------------
+  backend-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ipsumcode
+      POSTGRES_PASSWORD: ipsumcode_password
+      POSTGRES_DB: ipsumcode
+    ports:
+      - "5433:5432" # Exposed to host so we can run `npx prisma` locally
+    volumes:
+      - backend-postgres-data:/var/lib/postgresql/data/
+    <<: *default-logging
+    restart: always
+
+volumes:
+  judge0-postgres-data:
+  judge0-redis-data:
+  backend-postgres-data:
