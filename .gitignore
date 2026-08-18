@@ -14,5 +14,9 @@ logs/
 /.plugins/
 /.opencode-skills/
 scratch/
+<<<<<<< HEAD
+Mascot/
+=======
 Mascot/
 compiler/
+>>>>>>> df1fc53 (Update Student layout, adjust Mascot UI, ignore compiler)
