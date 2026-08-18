@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import svgPaths from "@/assets/icons/dashboard-icons";
 import imgClouds from "@/assets/images/clouds.png";
 import imgAvatar from "@/assets/images/avatar.png";
@@ -8,15 +8,7 @@ import { ClaudeMascot } from "./components/ui/ClaudeMascot";
 
 type Tab = "ongoing" | "completed";
 
-const ASSESSMENTS = [
-  { id: 1, name: "Data Structures Mid-Term",    startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "11:00 AM" },
-  { id: 2, name: "Algorithms Assessment",       startDate: "24 May", startTime: "10:00 AM", durationMin: 60,  endDate: "24 May", endTime: "11:00 AM" },
-  { id: 3, name: "Database Systems Assessment", startDate: "24 May", startTime: "10:00 AM", durationMin: 45,  endDate: "24 May", endTime: "11:00 AM" },
-  { id: 4, name: "Frontend Coding Assessment",  startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "10:30 AM" },
-  { id: 5, name: "System Design Mock Test",     startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "10:30 AM" },
-  { id: 6, name: "Python Programming Test",     startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "10:30 AM" },
-  { id: 7, name: "Cloud Computing Assessment",  startDate: "24 May", startTime: "10:00 AM", durationMin: 30,  endDate: "24 May", endTime: "10:30 AM" },
-];
+// API data will populate this
 
 const COMPLETED_ASSESSMENTS = [
   { id: 101, name: "Data Structures Final",      startDate: "23 May", startTime: "10:00 AM", userStartDelayMin: 0,  userStartTime: "10:00 AM", timeSpentMin: 45, windowMin: 60, endDate: "23 May", endTime: "11:00 AM" },
@@ -127,15 +119,15 @@ function AssessmentTimeline({ durationMin }: { durationMin: number }) {
 }
 
 function AssessmentRow({
-  name, startDate, startTime, durationMin, endDate, endTime, zebra, onOpen,
-}: (typeof ASSESSMENTS)[0] & { zebra: boolean; onOpen?: () => void }) {
+  id, name, startDate, startTime, durationMin, endDate, endTime, zebra, onOpen,
+}: any & { zebra: boolean; onOpen?: (id: string) => void }) {
   const interactive = Boolean(onOpen);
   return (
     <div
       role={interactive ? "button" : undefined}
       tabIndex={interactive ? 0 : undefined}
-      onClick={onOpen}
-      onKeyDown={interactive ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(); } } : undefined}
+      onClick={() => onOpen?.(id)}
+      onKeyDown={interactive ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(id); } } : undefined}
       aria-label={interactive ? `Open ${name}` : undefined}
       className={`flex items-center gap-4 px-4 h-[58px] rounded-lg transition-colors duration-100 hover:bg-[var(--bg-row-hover)] group ${interactive ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]" : ""}`}
       style={{ backgroundColor: zebra ? "var(--bg-row-zebra)" : "transparent" }}
@@ -347,15 +339,48 @@ function OverviewWidget() {
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
+import { api } from "./services/api";
+
 export default function Dashboard({
-  dark, onToggleTheme, onOpenAssessment, onOpenProfile,
+  dark,
+  onToggleTheme,
+  onOpenAssessment,
+  onOpenProfile,
+  onOpenAttempt,
 }: {
   dark: boolean;
   onToggleTheme: () => void;
   onOpenAssessment: (name: string) => void;
   onOpenProfile: () => void;
+  onOpenAttempt: (attemptId: string, state: any) => void;
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("ongoing");
+  const [assessments, setAssessments] = useState<any[]>([]);
+
+  useEffect(() => {
+    api.getAvailableAssessments().then(data => {
+      // Map API response to UI shape temporarily
+      setAssessments(data.map((a: any) => ({
+        id: a.id,
+        name: a.title,
+        startDate: new Date(a.availabilityStart).toLocaleDateString(),
+        startTime: new Date(a.availabilityStart).toLocaleTimeString(),
+        durationMin: a.durationMinutes,
+        endDate: new Date(a.availabilityEnd).toLocaleDateString(),
+        endTime: new Date(a.availabilityEnd).toLocaleTimeString(),
+      })));
+    }).catch(console.error);
+  }, []);
+
+  const handleOpen = async (id: string) => {
+    try {
+      const result = await api.startAssessment(id);
+      onOpenAttempt(result.attemptId, result);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to start assessment");
+    }
+  };
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "ongoing",   label: "Ongoing"   },
@@ -507,12 +532,12 @@ export default function Dashboard({
             {/* Assessment rows */}
             <div className="flex flex-col gap-1">
               {activeTab === "ongoing" ? (
-                ASSESSMENTS.map((a, i) => (
+                assessments.map((a, i) => (
                   <AssessmentRow
                     key={a.id}
                     {...a}
                     zebra={i % 2 === 0}
-                    onOpen={() => onOpenAssessment(a.name)}
+                    onOpen={() => handleOpen(a.id)}
                   />
                 ))
               ) : (

@@ -578,9 +578,9 @@ export default function ProfilePage({
           {/* right main content */}
           <div className="flex-1 w-full min-w-0 flex flex-col gap-4">
             {/* top row: solved + badges — equal-height, fluid split */}
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 items-stretch">
+            <div className="grid gap-4 grid-cols-1 items-stretch">
               <SolvedCard />
-              <BadgesCard />
+              {/* <BadgesCard /> */}
             </div>
 
             {/* activity heatmap */}

@@ -28,6 +28,23 @@ function AssessmentWrapper() {
   )
 }
 
+function AttemptWrapper() {
+  const { attemptId } = useParams()
+  const { dark, toggleTheme } = useLayoutContext()
+  const navigate = useNavigate()
+  
+  // We use history state to pass the snapshots so the workspace knows what questions to load.
+  // We can't use `useLocation` at the top level route definition easily, but it's passed below.
+  return (
+    <AssessmentWorkspace 
+      attemptId={attemptId}
+      dark={dark} 
+      onToggleTheme={toggleTheme} 
+      onBack={() => navigate('/')} 
+    />
+  )
+}
+
 function ProfileWrapper() {
   const { dark, toggleTheme } = useLayoutContext()
   const navigate = useNavigate()
@@ -49,6 +66,7 @@ function DashboardWrapper() {
       onToggleTheme={toggleTheme} 
       onOpenAssessment={(name) => navigate(`/assessment/${encodeURIComponent(name)}`)} 
       onOpenProfile={() => navigate('/profile')} 
+      onOpenAttempt={(attemptId, state) => navigate(`/attempt/${attemptId}`, { state })}
     />
   )
 }
@@ -69,6 +87,10 @@ export const router = createBrowserRouter([
       {
         path: "assessment/:id",
         element: <AssessmentWrapper />
+      },
+      {
+        path: "attempt/:attemptId",
+        element: <AttemptWrapper />
       }
     ]
   }
