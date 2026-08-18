@@ -128,7 +128,7 @@ router.post('/assessments/:id/start', async (req, res) => {
             attemptId: newAttempt.id,
             questionId: aq.questionId,
             orderIndex: idx,
-            testCases: snapshotTestCases
+            testCases: snapshotTestCases as any
           }
         });
       }));

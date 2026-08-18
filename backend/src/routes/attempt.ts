@@ -1,9 +1,18 @@
 import { Router } from 'express';
-import { PrismaClient, LanguageCode, ExecutionEventType, ActivityEventType } from '@prisma/client';
+import { PrismaClient, LanguageCode, ExecutionEventType, ActivityEventType, Prisma } from '@prisma/client';
 import { Judge0Service, JUDGE0_LANGUAGE_MAP } from '../services/Judge0Service';
 
 const router = Router();
 const prisma = new PrismaClient();
+
+// Local interface for AttemptQuestionSnapshot with the Json testCases field
+interface SnapshotRow {
+  id: string;
+  attemptId: string;
+  questionId: string;
+  orderIndex: number;
+  testCases: Prisma.JsonValue | null;
+}
 
 // Mock authentication for scaffold
 const getStudentId = async () => {
@@ -104,7 +113,7 @@ router.get('/:attemptId/questions/:questionId', validateAttemptAndQuestion, asyn
     // Fetch snapshot to get the sample test cases
     const snapshot = await prisma.attemptQuestionSnapshot.findUnique({
       where: { attemptId_questionId: { attemptId, questionId } }
-    });
+    }) as unknown as SnapshotRow | null;
     
     let sampleTestCases: any[] = [];
     if (snapshot && snapshot.testCases) {
@@ -154,7 +163,7 @@ router.post('/:attemptId/questions/:questionId/run', validateAttemptAndQuestion,
 
     const snapshot = await prisma.attemptQuestionSnapshot.findUnique({
       where: { attemptId_questionId: { attemptId, questionId } }
-    });
+    }) as unknown as SnapshotRow | null;
 
     let payloads = [];
     let isCustom = false;
