@@ -1,11 +1,19 @@
 import { ChevronLeft } from "lucide-react"
-import { upcoming } from "../data/mockData"
+import { adminApi, AssessmentSummary } from "../services/api"
+import { useEffect, useState } from "react"
 import { useNavigation } from "../hooks/useNavigation"
 
 export function UpcomingAssessmentsPage() {
   const { navigate, toViewAssessment } = useNavigation()
   const onBack = () => navigate(-1)
   const onViewAssessment = (id: string) => toViewAssessment(id)
+  const [upcoming, setUpcoming] = useState<AssessmentSummary[]>([])
+
+  useEffect(() => {
+    adminApi.getAssessments().then((data) => {
+      setUpcoming(data.filter((a) => a.status === "Upcoming"))
+    }).catch(console.error)
+  }, [])
 
   return (
     <div className="flex h-full flex-col w-full max-w-[1200px] mx-auto pb-12">
@@ -39,7 +47,7 @@ export function UpcomingAssessmentsPage() {
                 key={item.id}
                 className="border-b border-border-default last:border-b-0 hover:bg-surface-hover transition-colors"
               >
-                <td className="px-5 py-4 font-semibold text-text-primary text-text-base">{item.name}</td>
+                <td className="px-5 py-4 font-semibold text-text-primary text-text-base">{item.title}</td>
                 <td className="px-5 py-4 text-text-base text-text-secondary">{item.classrooms.join(", ")}</td>
                 <td className="px-5 py-4 text-text-base text-text-secondary">
                   {item.scheduledDate}, {item.scheduledTime}

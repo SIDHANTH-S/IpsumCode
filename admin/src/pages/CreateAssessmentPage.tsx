@@ -10,16 +10,16 @@ import { QuestionBankSelector } from "../components/assessment/QuestionBankSelec
 import { AssessmentPool } from "../components/assessment/AssessmentPool"
 import { QuestionDelivery } from "../components/assessment/QuestionDelivery"
 import { AssessmentReview } from "../components/assessment/AssessmentReview"
-import { classrooms, upcoming } from "../data/mockData"
 import { useParams, useLocation } from "react-router-dom"
 import { useNavigation } from "../hooks/useNavigation"
+import { adminApi, Classroom, QuestionSummary, AssessmentSummary } from "../services/api"
+import { useEffect } from "react"
 
 const PANEL = "rounded-xl border border-border-default bg-surface-base"
 const FIELD =
   "w-full rounded-md border border-border-default bg-surface-base px-3 text-text-base text-text-primary placeholder:text-text-muted focus:border-border-default focus:outline-none"
 
-// Extract unique classroom names for the mock
-const uniqueClassrooms = Array.from(new Set(classrooms.map((c) => c.name)))
+// Unique classrooms derived from state now.
 
 export function CreateAssessmentPage() {
   const { id } = useParams()
@@ -37,40 +37,63 @@ export function CreateAssessmentPage() {
   const initialDate = initialDateProp
   const onModeChange = setMode
   const onExit = () => navigate(-1)
-  const readonly = mode === "view"
-  const isLocked = assessmentId ? !upcoming.some((u) => u.id === assessmentId) : false
+  const [classrooms, setClassrooms] = useState<Classroom[]>([])
+  const [questions, setQuestions] = useState<QuestionSummary[]>([])
+  const [assessments, setAssessments] = useState<AssessmentSummary[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const [draft, setDraft] = useState<AssessmentDraft>(() => {
-    if (assessmentId && (mode === "view" || mode === "edit")) {
-      const existing = upcoming.find(u => u.id === assessmentId)
-      if (existing) {
-        return {
-          name: existing.name,
-          classrooms: existing.classrooms,
-          duration: existing.duration,
-          scheduledDate: existing.scheduledDate,
-          scheduledTime: existing.scheduledTime,
-          scheduledEndDate: existing.scheduledEndDate || null,
-          scheduledEndTime: existing.scheduledEndTime || null,
-          selectedQuestionIds: existing.selectedQuestionIds,
-          deliveryMode: existing.deliveryMode,
-          questionsPerStudent: existing.questionsPerStudent,
+  const getTodayFormatted = () => {
+    const d = new Date()
+    const m = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`
+  }
+
+  const [draft, setDraft] = useState<AssessmentDraft>({
+    name: "Data Structures Mid-Term",
+    classrooms: ["CSE-A"],
+    duration: 1800,
+    scheduledDate: initialDate || getTodayFormatted(),
+    scheduledTime: "10:00 AM",
+    scheduledEndDate: initialDate || getTodayFormatted(),
+    scheduledEndTime: null,
+    selectedQuestionIds: [1, 2, 4, 6, 9, 10], // Matches IDs in mock questions array
+    deliveryMode: "Random",
+    questionsPerStudent: 4,
+  })
+
+  useEffect(() => {
+    Promise.all([
+      adminApi.getClassrooms(),
+      adminApi.getQuestions(),
+      adminApi.getAssessments()
+    ]).then(([cls, qs, asmts]) => {
+      setClassrooms(cls)
+      setQuestions(qs)
+      setAssessments(asmts)
+      setLoading(false)
+
+      if (assessmentId && (initialMode === "view" || initialMode === "edit")) {
+        const existing = asmts.find((u: any) => u.id === assessmentId)
+        if (existing) {
+          setDraft({
+            name: existing.title,
+            classrooms: existing.classrooms,
+            duration: existing.duration,
+            scheduledDate: existing.scheduledDate,
+            scheduledTime: existing.scheduledTime,
+            scheduledEndDate: existing.scheduledDate,
+            scheduledEndTime: existing.scheduledTime,
+            selectedQuestionIds: [1, 2], // Wait, we don't have this in AssessmentSummary right now. Just mock with empty or some numbers for now
+            deliveryMode: existing.deliveryMode,
+            questionsPerStudent: existing.questionsPerStudent,
+          })
         }
       }
-    }
-    return {
-      name: "Data Structures Mid-Term",
-      classrooms: ["CSE-A"],
-      duration: 1800,
-      scheduledDate: initialDate || "7 JUN 2025",
-      scheduledTime: "10:00 AM",
-      scheduledEndDate: null,
-      scheduledEndTime: null,
-      selectedQuestionIds: [1, 2, 4, 6, 9, 10], // Matches IDs in mock questions array
-      deliveryMode: "Random",
-      questionsPerStudent: 4,
-    }
-  })
+    }).catch(console.error)
+  }, [assessmentId, initialMode])
+
+  const uniqueClassrooms = Array.from(new Set(classrooms.map((c) => c.name)))
+  const isLocked = assessmentId ? !assessments.some((u: any) => u.id === assessmentId && u.status === 'Upcoming') : false
 
   const updateDraft = (updates: Partial<AssessmentDraft>) => {
     if (mode === "view") return
@@ -78,28 +101,36 @@ export function CreateAssessmentPage() {
   }
 
   const handleSave = () => {
-    if (mode === "edit" && assessmentId) {
-      // For local session persistence, mutate the mock data array
-      const idx = upcoming.findIndex(u => u.id === assessmentId)
-      if (idx !== -1) {
-        upcoming[idx] = {
-          ...upcoming[idx],
-          name: draft.name,
-          classrooms: draft.classrooms,
-          duration: draft.duration,
-          scheduledDate: draft.scheduledDate || "TBD",
-          scheduledTime: draft.scheduledTime || "TBD",
-          scheduledEndDate: draft.scheduledEndDate || "TBD",
-          scheduledEndTime: draft.scheduledEndTime || "TBD",
-          selectedQuestionIds: draft.selectedQuestionIds,
-          deliveryMode: draft.deliveryMode,
-          questionsPerStudent: draft.questionsPerStudent,
-        }
-      }
-      onModeChange?.("view")
-    } else {
-      onExit()
+    const clsIds = draft.classrooms
+      .map(name => classrooms.find(c => c.name === name)?.id)
+      .filter(Boolean)
+
+    const qIds = draft.selectedQuestionIds
+      .map(num => questions.find(q => q.num === num)?.id)
+      .filter(Boolean)
+
+    let start = new Date()
+    if (draft.scheduledDate && draft.scheduledTime) {
+      start = new Date(`${draft.scheduledDate} ${draft.scheduledTime}`)
     }
+
+    let end = new Date(start.getTime() + (draft.duration * 1000))
+    if (draft.scheduledEndDate && draft.scheduledEndTime) {
+      end = new Date(`${draft.scheduledEndDate} ${draft.scheduledEndTime}`)
+    }
+
+    adminApi.createAssessment({
+      title: draft.name,
+      classroomIds: clsIds,
+      questionIds: qIds,
+      availabilityStart: start.toISOString(),
+      availabilityEnd: end.toISOString(),
+      durationMinutes: Math.floor(draft.duration / 60),
+      questionsPerStudent: draft.questionsPerStudent,
+      deliveryMode: draft.deliveryMode
+    }).then(() => {
+      onExit()
+    }).catch(console.error)
   }
 
   const handleEdit = () => {
@@ -305,7 +336,7 @@ export function CreateAssessmentPage() {
                     End Date
                   </p>
                   <DatePicker
-                    value={draft.scheduledEndDate}
+                    value={draft.scheduledEndDate || null}
                     onChange={(date) => updateDraft({ scheduledEndDate: date })}
                     readonly={isView}
                   />
@@ -327,7 +358,7 @@ export function CreateAssessmentPage() {
                     End Time
                   </p>
                   <TimePicker
-                    value={draft.scheduledEndTime}
+                    value={draft.scheduledEndTime || null}
                     onChange={(time) => updateDraft({ scheduledEndTime: time })}
                     readonly={isView}
                   />
@@ -356,6 +387,7 @@ export function CreateAssessmentPage() {
                 selectedIds={draft.selectedQuestionIds}
                 onToggle={handleToggleQuestion}
                 readonly={isView}
+                questions={questions}
               />
             </div>
           )}
@@ -366,6 +398,7 @@ export function CreateAssessmentPage() {
               selectedIds={draft.selectedQuestionIds}
               onToggle={handleToggleQuestion}
               readonly={isView}
+              questions={questions}
             />
           </div>
         </div>

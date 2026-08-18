@@ -23,48 +23,57 @@ import {
   CARD_GRADIENTS,
   ARROW_COLORS,
   BADGE_GRADIENTS,
-  liveCards,
-  upcoming,
-  completed,
   dayDots,
   TODAY,
   LEADING_BLANKS,
-  classrooms,
 } from "../data/mockData"
+
+import { adminApi, AssessmentSummary, Classroom } from "../services/api"
+import { useEffect } from "react"
 
 import { LeaderboardBlock } from "../components/contest/LeaderboardBlock"
 
-function ContestCards({ onView }: { onView: (id: string) => void }) {
+function ContestCards({ onView, live }: { onView: (id: string) => void, live: AssessmentSummary[] }) {
+  if (live.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border-default bg-surface-base p-8 text-center h-[135px]">
+        <div className="mb-2 rounded-full bg-surface-hover p-2">
+          <Gauge className="h-5 w-5 text-text-muted" />
+        </div>
+        <p className="text-text-sm font-medium text-text-primary">No live contests</p>
+        <p className="text-text-xs text-text-muted">There are no contests running right now.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-2 rounded-r-2xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      {liveCards.map((card, i) => (
+      {live.map((card) => (
         <div
-          key={i}
-          onClick={() => onView(`live-${i}`)}
-          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-[10.74px] px-[17px] pt-4 pb-3 text-white shadow-shadow-elevated"
-          style={{ background: CARD_GRADIENTS[card.tone] }}
+          key={card.id}
+          onClick={() => onView(card.id)}
+          className="cursor-pointer relative flex h-[135px] w-[248px] shrink-0 flex-col overflow-hidden rounded-[10.74px] px-[17px] pt-4 pb-3 text-white shadow-shadow-elevated transition-transform hover:-translate-y-1"
+          style={{ background: CARD_GRADIENTS[card.tone as keyof typeof CARD_GRADIENTS] || CARD_GRADIENTS.purple }}
         >
           <div className="flex-1">
             <p className="text-text-md font-bold leading-none text-white">{card.title}</p>
             <div className="mt-2 space-y-[3px] text-text-xs leading-[15px] text-white/80">
-              {card.lines.map((line) => (
-                <p key={line} className="whitespace-pre">
-                  {line}
-                </p>
-              ))}
+              <p className="whitespace-pre">
+                {card.classrooms.join(", ")}
+              </p>
             </div>
           </div>
           <div className="mt-auto border-t border-white/24 pt-2.5">
             <div className="flex items-center justify-between">
               <span className="text-text-xs leading-none text-white/80">
-                {card.time}
+                {card.scheduledTime} - {Math.floor(card.duration / 60)}m
               </span>
               <button 
                 className="grid h-[26px] w-[26px] place-items-center rounded-full bg-white shadow-sm transition-transform hover:scale-105"
               >
                 <ArrowRight
                   className="h-3.5 w-3.5"
-                  style={{ color: ARROW_COLORS[card.tone] }}
+                  style={{ color: ARROW_COLORS[card.tone as keyof typeof ARROW_COLORS] || ARROW_COLORS.purple }}
                   strokeWidth={2.5}
                 />
               </button>
@@ -80,7 +89,7 @@ function UpcomingCard({
   item,
   onView,
 }: { 
-  item: typeof upcoming[number] 
+  item: AssessmentSummary
   onView: (id: string) => void
 }) {
   return (
@@ -105,7 +114,7 @@ function UpcomingCard({
         />
         <div
           className="relative flex h-5 items-center justify-center"
-          style={{ background: BADGE_GRADIENTS[item.tone] }}
+          style={{ background: BADGE_GRADIENTS[item.tone as keyof typeof BADGE_GRADIENTS] }}
         >
           <span className="text-[9.5px] font-bold uppercase leading-none tracking-[0.95px] text-white/80">
             MAY
@@ -119,7 +128,7 @@ function UpcomingCard({
       </div>
       <div className="min-w-0">
         <p className="truncate text-text-base font-semibold text-text-primary">
-          {item.name}
+          {item.title}
         </p>
         <p className="mt-1 text-text-xs text-text-secondary">
           {item.classrooms.join(", ")}
@@ -142,13 +151,13 @@ const toolbarButtons = [
   { label: "Create Classroom", icon: null },
 ]
 
-const contestFilters: FilterDefinition[] = [
+const contestFilters = (classes: string[]): FilterDefinition[] => [
   {
     id: "class",
     label: "Class",
     icon: GraduationCap,
     type: "multi-select",
-    options: Array.from(new Set(classrooms.map((c) => c.name))).map((name) => ({
+    options: classes.map((name) => ({
       value: name,
       label: name,
     })),
@@ -174,17 +183,23 @@ function CompletedTable({
   onViewAllCompleted,
   selectedAssessmentId,
   onSelectAssessment,
+  completed,
+  classes,
 }: {
   onCreateContest?: () => void
   onViewResults?: (id: string) => void
   onViewAllCompleted?: () => void
   selectedAssessmentId?: string | null
   onSelectAssessment?: (id: string) => void
+  completed: AssessmentSummary[]
+  classes: string[]
 }) {
   const [activeFilters, setActiveFilters] = useState<any[]>([])
+  
+  const filters = contestFilters(classes)
 
   const getFilterSummary = (f: any) => {
-    const def = contestFilters.find((d) => d.id === f.definitionId)
+    const def = filters.find((d) => d.id === f.definitionId)
     if (!def) return null
     if (def.type === "number") {
       const op =
@@ -239,7 +254,7 @@ function CompletedTable({
         ))}
         <div className="ml-auto flex items-center gap-3">
           <FilterMenu
-            availableFilters={contestFilters}
+            availableFilters={filters}
             initialFilters={activeFilters}
             onApply={(filters) => setActiveFilters(filters)}
             trigger={
@@ -281,7 +296,7 @@ function CompletedTable({
                 <td className="px-5 py-3.5">
                   <p className="font-semibold text-text-primary">{row.title}</p>
                   <p className="mt-0.5 text-text-xs text-text-muted">
-                    {row.cls}
+                    {row.classrooms.join(", ")}
                   </p>
                 </td>
                 <td className="px-5 py-3.5 text-text-base text-text-secondary">
@@ -414,6 +429,22 @@ import { useNavigation } from "../hooks/useNavigation"
 export function ContestPage() {
   const { toCreateAssessment, toViewAssessment, toContestResults, toUpcomingAssessments, toCompletedAssessments } = useNavigation()
   const [selectedAssessmentId, setSelectedAssessmentId] = useState<string | null>(null)
+  const [live, setLive] = useState<AssessmentSummary[]>([])
+  const [upcoming, setUpcoming] = useState<AssessmentSummary[]>([])
+  const [completed, setCompleted] = useState<AssessmentSummary[]>([])
+  const [classes, setClasses] = useState<string[]>([])
+
+  useEffect(() => {
+    Promise.all([
+      adminApi.getAssessments(),
+      adminApi.getClassrooms()
+    ]).then(([asmts, clsRes]) => {
+      setLive(asmts.filter(a => a.status === 'Live'))
+      setUpcoming(asmts.filter(a => a.status === 'Upcoming'))
+      setCompleted(asmts.filter(a => a.status === 'Completed'))
+      setClasses(Array.from(new Set(clsRes.map(c => c.name))))
+    }).catch(console.error)
+  }, [])
 
   const handleDateClick = (day: number) => {
     if (day < TODAY) {
@@ -427,7 +458,7 @@ export function ContestPage() {
   return (
     <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_256px]">
       <div className="min-w-0 space-y-8">
-        <ContestCards onView={(id) => toViewAssessment(id)} />
+        <ContestCards onView={(id) => toViewAssessment(id)} live={live} />
 
         <section>
           <div className="mb-4 flex items-center justify-between">
@@ -448,6 +479,8 @@ export function ContestPage() {
           onViewAllCompleted={() => toCompletedAssessments()}
           selectedAssessmentId={selectedAssessmentId}
           onSelectAssessment={setSelectedAssessmentId}
+          completed={completed}
+          classes={classes}
         />
       </div>
 

@@ -28,9 +28,9 @@ const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  // Basic mock date state for the calendar
-  const [currentMonth, setCurrentMonth] = useState(5) // June
-  const [currentYear, setCurrentYear] = useState(2025)
+  const today = new Date()
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth())
+  const [currentYear, setCurrentYear] = useState(today.getFullYear())
 
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
@@ -113,20 +113,24 @@ export function DatePicker({ value, onChange, readonly }: DatePickerProps) {
           const day = i + 1
           const dateStr = `${day} ${MONTHS[currentMonth].substring(0, 3).toUpperCase()} ${currentYear}`
           const isSelected = value === dateStr
-          // mock today as June 7, 2025 for design fidelity
           const isToday =
-            currentMonth === 5 && currentYear === 2025 && day === 7
+            currentMonth === today.getMonth() && currentYear === today.getFullYear() && day === today.getDate()
+          const buttonDate = new Date(currentYear, currentMonth, day)
+          const isPast = buttonDate.getTime() < new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()
 
           return (
             <button
               key={day}
-              onClick={() => handleSelectDate(day)}
+              onClick={() => !isPast && handleSelectDate(day)}
+              disabled={isPast}
               className={`grid h-7 w-7 place-items-center rounded-full text-text-sm transition-colors ${
-                isSelected
-                  ? "bg-accent-base text-white font-medium shadow-md shadow-accent-base/30"
-                  : isToday
-                    ? "bg-surface-hover text-text-primary font-medium"
-                    : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                isPast 
+                  ? "text-text-muted cursor-not-allowed opacity-50"
+                  : isSelected
+                    ? "bg-accent-base text-white font-medium shadow-md shadow-accent-base/30"
+                    : isToday
+                      ? "bg-surface-hover text-text-primary font-medium"
+                      : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
               }`}
             >
               {day}

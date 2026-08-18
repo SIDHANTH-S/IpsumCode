@@ -25,31 +25,7 @@ import {
 } from "lucide-react"
 import { FilterMenu, type ActiveFilter, type FilterDefinition } from "../components/ui"
 
-import { classrooms as INITIAL_CLASSROOMS, students as INITIAL_STUDENTS, upcoming, completed } from "../data/mockData"
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-interface Classroom {
-  id: string
-  name: string
-  year: string
-  students: number
-  section: string
-  academicYear: string
-  color: string
-  status: "active" | "archived"
-}
-
-interface Student {
-  id: string
-  name: string
-  email: string
-  solved: number
-  score: string
-  classroomId: string
-}
+import { adminApi, type Classroom, type Student, type AssessmentSummary } from "../services/api"
 
 type EmailStatus = "valid" | "duplicate" | "enrolled" | "invalid"
 
@@ -623,22 +599,22 @@ const CLS_ID_MAP: Record<string, string> = {
   "CSE-D": "cls-d",
 }
 
-function AssessmentsTab({ classroomId }: { classroomId: string }) {
-  const upcomingRows: AssessmentRow[] = upcoming
-    .filter((u) => (u.classroomIds as string[] | undefined)?.includes(classroomId))
+function AssessmentsTab({ classroomId, assessments }: { classroomId: string, assessments: AssessmentSummary[] }) {
+  const upcomingRows: AssessmentRow[] = assessments
+    .filter(a => a.status === 'Upcoming' && a.classroomIds.includes(classroomId))
     .map((u) => ({
       id: u.id,
-      name: u.name,
+      name: u.title,
       date: u.scheduledDate,
       time: u.scheduledTime,
       duration: u.duration,
       status: "upcoming" as const,
     }))
 
-  const completedRows: AssessmentRow[] = completed
-    .filter((c) => CLS_ID_MAP[c.cls] === classroomId)
+  const completedRows: AssessmentRow[] = assessments
+    .filter(a => a.status === 'Completed' && a.classroomIds.includes(classroomId))
     .map((c, i) => ({
-      id: `comp-${i}`,
+      id: c.id,
       name: c.title,
       date: "",
       status: "completed" as const,
@@ -712,6 +688,7 @@ function ClassroomWorkspace({
   onArchive,
   onAddStudents,
   onRemoveStudent,
+  assessments,
 }: {
   classroom: Classroom
   students: Student[]
@@ -720,6 +697,7 @@ function ClassroomWorkspace({
   onArchive: () => void
   onAddStudents: (emails: string[]) => void
   onRemoveStudent: (student: Student) => void
+  assessments: AssessmentSummary[]
 }) {
   const [activeTab, setActiveTab] = useState<"students" | "assessments">("students")
   const [showAddStudents, setShowAddStudents] = useState(false)
@@ -813,7 +791,7 @@ function ClassroomWorkspace({
         {activeTab === "students" ? (
           <StudentsTab classroom={classroom} students={students} onRemove={onRemoveStudent} />
         ) : (
-          <AssessmentsTab classroomId={classroom.id} />
+          <AssessmentsTab classroomId={classroom.id} assessments={assessments} />
         )}
       </div>
     </>
@@ -1078,13 +1056,45 @@ function ClassroomDashboard({
 let _studentIdCounter = 100
 
 export function ClassroomPage() {
-  const [classrooms, setClassrooms] = useState<Classroom[]>(INITIAL_CLASSROOMS)
-  const [students, setStudents] = useState<Student[]>(INITIAL_STUDENTS)
+  const [classrooms, setClassrooms] = useState<Classroom[]>([])
+  const [allStudents, setAllStudents] = useState<Student[]>([])
+  const [assessments, setAssessments] = useState<AssessmentSummary[]>([])
   const [activeClassroomId, setActiveClassroomId] = useState<string | null>(null)
   const [showCreate, setShowCreate] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    Promise.all([
+      adminApi.getClassrooms(),
+      adminApi.getAssessments()
+    ]).then(([cl, asmt]) => {
+      setClassrooms(cl)
+      setAssessments(asmt)
+      setLoading(false)
+    }).catch(console.error)
+  }, [])
+
+  // When a classroom is selected, fetch its students if not already fetched
+  useEffect(() => {
+    if (activeClassroomId) {
+      const hasStudents = allStudents.some(s => s.classroomId === activeClassroomId)
+      if (!hasStudents) {
+        adminApi.getClassroomStudents(activeClassroomId).then(res => {
+          setAllStudents(prev => [...prev.filter(s => s.classroomId !== activeClassroomId), ...res])
+        }).catch(console.error)
+      }
+    } else {
+      // In dashboard view, we need ALL students for global search/filtering
+      adminApi.getClassrooms().then(async (cls) => {
+        const studentPromises = cls.map(c => adminApi.getClassroomStudents(c.id));
+        const allStudentsRes = await Promise.all(studentPromises);
+        setAllStudents(allStudentsRes.flat());
+      }).catch(console.error);
+    }
+  }, [activeClassroomId])
 
   const activeClassroom = classrooms.find((c) => c.id === activeClassroomId) ?? null
-  const activeStudents = students.filter((s) => s.classroomId === activeClassroomId)
+  const activeStudents = allStudents.filter((s) => s.classroomId === activeClassroomId)
 
   function handleCreateClassroom(classroom: Classroom) {
     setClassrooms((prev) => [...prev, classroom])
@@ -1103,7 +1113,7 @@ export function ClassroomPage() {
       score: "—",
       classroomId: activeClassroomId,
     }))
-    setStudents((prev) => [...prev, ...newStudents])
+    setAllStudents((prev) => [...prev, ...newStudents])
     setClassrooms((prev) =>
       prev.map((c) =>
         c.id === activeClassroomId ? { ...c, students: c.students + newStudents.length } : c
@@ -1112,7 +1122,7 @@ export function ClassroomPage() {
   }
 
   function handleRemoveStudent(student: Student) {
-    setStudents((prev) => prev.filter((s) => s.id !== student.id))
+    setAllStudents((prev) => prev.filter((s) => s.id !== student.id))
     setClassrooms((prev) =>
       prev.map((c) =>
         c.id === student.classroomId ? { ...c, students: Math.max(0, c.students - 1) } : c
@@ -1153,11 +1163,12 @@ export function ClassroomPage() {
           onArchive={handleArchive}
           onAddStudents={handleAddStudents}
           onRemoveStudent={handleRemoveStudent}
+          assessments={assessments}
         />
       ) : (
         <ClassroomDashboard
           classrooms={classrooms}
-          students={students}
+          students={allStudents}
           activeId={activeClassroomId}
           onSelectClass={setActiveClassroomId}
           onCreateClassroom={() => setShowCreate(true)}

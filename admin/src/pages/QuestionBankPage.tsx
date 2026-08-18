@@ -2,20 +2,25 @@ import { useState } from "react"
 import { FilterMenu } from "../components/ui"
 
 import {
-  Search,
-  Upload,
-  Plus,
   ArrowUpDown,
   Filter,
-  BarChart2,
+  Plus,
+  Search,
   Tag,
+  TrendingUp,
+  Upload,
+  Pencil,
+  BarChart2,
 } from "lucide-react"
 
-import {
-  difficultyFilters,
-  questions,
-  DIFFICULTY_COLORS,
-} from "../data/mockData"
+import { adminApi, type QuestionSummary } from "../services/api"
+import { useEffect } from "react"
+
+const DIFFICULTY_COLORS: Record<string, string> = {
+  Easy: "#1cbaba",
+  "Med.": "#ffb700",
+  Hard: "#ef4743",
+}
 
 const AVAILABLE_FILTERS = [
   {
@@ -44,9 +49,17 @@ const AVAILABLE_FILTERS = [
 
 export function QuestionBankPage({
   onNewQuestion,
+  onEditQuestion,
 }: {
   onNewQuestion: () => void
+  onEditQuestion: (id: string) => void
 }) {
+  const [questions, setQuestions] = useState<QuestionSummary[]>([])
+  
+  useEffect(() => {
+    adminApi.getQuestions().then(setQuestions).catch(console.error)
+  }, [])
+
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -58,8 +71,8 @@ export function QuestionBankPage({
             Question Bank
           </h1>
           <p className="mt-1 text-text-sm text-text-muted">
-            1,248 questions <span className="mx-0.5">·</span> 1,190 active{" "}
-            <span className="mx-0.5">·</span> 58 archived
+            {questions.length} questions <span className="mx-0.5">·</span> {questions.length} active{" "}
+            <span className="mx-0.5">·</span> 0 archived
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2.5">
@@ -113,9 +126,9 @@ export function QuestionBankPage({
 
       <div className="flex flex-col gap-0.5">
         {questions.map((q, i) => (
-          <button
+          <div
             key={`${q.num}-${i}`}
-            className={`group flex h-11 cursor-pointer items-center gap-3 rounded border border-border-default px-4 text-left transition-colors ${
+            className={`group flex h-11 items-center gap-3 rounded border border-border-default px-4 text-left transition-colors ${
               i % 2 === 0 ? "bg-surface-base" : "bg-transparent"
             } hover:bg-bg-base/[0.09]`}
           >
@@ -131,7 +144,14 @@ export function QuestionBankPage({
             >
               {q.difficulty}
             </span>
-          </button>
+            <button
+              onClick={() => q.id && onEditQuestion(q.id)}
+              className="ml-2 flex h-7 w-7 items-center justify-center rounded-md text-text-secondary opacity-0 transition-all hover:bg-surface-hover hover:text-text-primary group-hover:opacity-100"
+              title="Edit Question"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+            </button>
+          </div>
         ))}
       </div>
     </div>

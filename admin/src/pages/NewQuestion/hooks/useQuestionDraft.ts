@@ -16,6 +16,7 @@ import {
 type CaseKind = "sample" | "hidden"
 
 type Action =
+  | { type: "LOAD_DRAFT"; draft: QuestionDraft }
   | { type: "SET_TITLE"; title: string }
   | { type: "SET_DIFFICULTY"; difficulty: Difficulty }
   | { type: "ADD_TAG"; tag: string }
@@ -58,6 +59,8 @@ function moveItem<T>(list: T[], index: number, direction: "up" | "down"): T[] {
 
 function reducer(draft: QuestionDraft, action: Action): QuestionDraft {
   switch (action.type) {
+    case "LOAD_DRAFT":
+      return action.draft
     case "SET_TITLE":
       return { ...draft, title: action.title }
     case "SET_DIFFICULTY":
@@ -191,6 +194,7 @@ export function useQuestionDraft(initial: QuestionDraft) {
 
   const actions = useMemo(
     () => ({
+      loadDraft: (draft: QuestionDraft) => dispatch({ type: "LOAD_DRAFT", draft }),
       setTitle: (title: string) => dispatch({ type: "SET_TITLE", title }),
       setDifficulty: (difficulty: Difficulty) => dispatch({ type: "SET_DIFFICULTY", difficulty }),
       addTag: (tag: string) => dispatch({ type: "ADD_TAG", tag }),

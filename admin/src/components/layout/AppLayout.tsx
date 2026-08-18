@@ -32,9 +32,9 @@ export function AppLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-base text-text-primary">
+    <div className="flex min-h-screen flex-col bg-bg-base text-text-primary">
       <TopBar />
-      <div className="flex">
+      <div className="flex flex-1 items-stretch">
         <Sidebar active={getActiveTab()} onSelect={handleSelectTab} />
         <main className="min-w-0 flex-1 px-5 py-6 pb-12 lg:px-8">
           <Outlet />

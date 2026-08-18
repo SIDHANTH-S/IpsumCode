@@ -1,19 +1,18 @@
 import React, { useState } from "react"
 import { ChevronLeft, Filter, ArrowUpDown, Plus } from "lucide-react"
-import { completed } from "../data/mockData"
+import { adminApi, Classroom, AssessmentSummary } from "../services/api"
 import { FilterMenu, FilterDefinition } from "../components/ui/FilterMenu"
 import { GraduationCap, Calendar as CalendarIcon, Calculator } from "lucide-react"
-import { classrooms } from "../data/mockData"
 import { useNavigation } from "../hooks/useNavigation"
 import { useLocation } from "react-router-dom"
 
-const contestFilters: FilterDefinition[] = [
+const contestFilters = (classes: string[]): FilterDefinition[] => [
   {
     id: "class",
     label: "Class",
     icon: GraduationCap,
     type: "multi-select",
-    options: Array.from(new Set(classrooms.map((c) => c.name))).map((name) => ({
+    options: classes.map((name) => ({
       value: name,
       label: name,
     })),
@@ -42,9 +41,24 @@ export function CompletedAssessmentsPage() {
 
   const [activeFilters, setActiveFilters] = useState<any[]>([])
   const [selectedDate, setSelectedDate] = useState<number | null>(initialDate || null)
+  
+  const [completed, setCompleted] = useState<AssessmentSummary[]>([])
+  const [classes, setClasses] = useState<string[]>([])
+
+  React.useEffect(() => {
+    Promise.all([
+      adminApi.getAssessments(),
+      adminApi.getClassrooms()
+    ]).then(([asmts, cls]) => {
+      setCompleted(asmts.filter(a => a.status === 'Completed'))
+      setClasses(Array.from(new Set(cls.map(c => c.name))))
+    }).catch(console.error)
+  }, [])
+
+  const filters = contestFilters(classes)
 
   const getFilterSummary = (f: any) => {
-    const def = contestFilters.find((d) => d.id === f.definitionId)
+    const def = filters.find((d) => d.id === f.definitionId)
     if (!def) return null
     if (def.type === "number") {
       const op =
@@ -119,7 +133,7 @@ export function CompletedAssessmentsPage() {
             </span>
           ))}
           <FilterMenu
-            availableFilters={contestFilters}
+            availableFilters={filters}
             initialFilters={activeFilters}
             onApply={(filters) => setActiveFilters(filters)}
             trigger={
@@ -164,7 +178,7 @@ export function CompletedAssessmentsPage() {
                 <td className="px-5 py-3">
                   <p className="font-semibold text-text-primary text-text-base">{row.title}</p>
                   <p className="mt-0.5 text-text-xs text-text-muted">
-                    {row.cls}
+                    {row.classrooms.join(", ")}
                   </p>
                 </td>
                 <td className="px-5 py-3 text-text-base text-text-muted">

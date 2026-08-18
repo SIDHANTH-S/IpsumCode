@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useParams } from "react-router-dom"
 import { AlertCircle, ChevronDown, ChevronRight } from "lucide-react"
 
 import type { QuestionStatus, WorkspaceTab } from "../../types"
@@ -11,20 +12,71 @@ import { useQuestionDraft } from "./hooks/useQuestionDraft"
 import { validateDraft } from "./lib/validation"
 
 import { useNavigation } from "../../hooks/useNavigation"
+import { adminApi } from "../../services/api"
 
 const WORKSPACE_TABS: readonly WorkspaceTab[] = ["Problem Details", "Test Cases", "Settings"]
 
 export function NewQuestionPage() {
+  const { id } = useParams()
   const { navigate } = useNavigation()
   const onExit = () => navigate(-1)
   const [tab, setTab] = useState<WorkspaceTab>("Problem Details")
   const { draft, actions } = useQuestionDraft(createEmptyDraft())
 
+  const [loading, setLoading] = useState(!!id)
   const [touched, setTouched] = useState<Set<TouchableField>>(new Set())
   const [attemptedSave, setAttemptedSave] = useState(false)
   const summaryRef = useRef<HTMLDivElement>(null)
 
   const validation = useMemo(() => validateDraft(draft), [draft])
+
+  useEffect(() => {
+    if (id) {
+      adminApi.getQuestion(id).then(q => {
+        const diffMap: any = { "EASY": "Easy", "MEDIUM": "Med.", "HARD": "Hard" };
+        actions.loadDraft({
+          id: q.id,
+          title: q.title,
+          statement: q.content,
+          difficulty: diffMap[q.difficulty] || "Easy",
+          timeLimitSeconds: q.timeLimitSeconds,
+          memoryLimitMB: q.memoryLimitKb / 1024,
+          tags: q.tags,
+          sampleTestCases: q.testCases.filter((tc: any) => !tc.isHidden).map((tc: any) => ({
+            id: tc.id,
+            label: "Sample Case",
+            input: tc.input,
+            expectedOutput: tc.expectedOutput,
+            explanation: "",
+            isExpanded: false
+          })),
+          hiddenTestCases: q.testCases.filter((tc: any) => tc.isHidden).map((tc: any) => ({
+            id: tc.id,
+            label: "Hidden Case",
+            input: tc.input,
+            expectedOutput: tc.expectedOutput,
+            explanation: "",
+            isExpanded: false,
+            weight: tc.weight || 1,
+            isEnabled: true
+          })),
+          languages: q.languages.map((l: any) => ({
+            id: l.languageCode.toLowerCase(),
+            name: l.languageCode === "PYTHON" ? "Python" : l.languageCode === "CPP" ? "C++" : "Java",
+            hasReferenceSolution: false,
+            referenceSolution: ""
+          })),
+          status: "draft",
+          inputFormat: "",
+          outputFormat: "",
+          constraints: "",
+          createdAt: q.createdAt || new Date().toISOString(),
+          updatedAt: q.updatedAt || new Date().toISOString()
+        });
+        setLoading(false);
+      }).catch(console.error);
+    }
+  }, [id])
 
   useEffect(() => {
     if (attemptedSave && !validation.isValid) {
@@ -46,9 +98,24 @@ export function NewQuestionPage() {
       return
     }
 
-    // Swap this for a real API/Supabase call — `draft` is already the full
-    // typed payload, so the UI layer doesn't need to change when it does.
-    onExit()
+    const payload = {
+      title: draft.title,
+      content: draft.statement,
+      difficulty: draft.difficulty,
+      timeLimitSeconds: draft.timeLimitSeconds,
+      memoryLimitKb: draft.memoryLimitMB * 1024,
+      tags: draft.tags,
+      testCases: [...draft.sampleTestCases, ...draft.hiddenTestCases],
+      languages: draft.languages.map(l => l.name)
+    }
+
+    const promise = id 
+      ? adminApi.updateQuestion(id, payload)
+      : adminApi.createQuestion(payload)
+
+    promise.then(() => {
+      onExit()
+    }).catch(console.error)
   }
 
   const errorCount =
@@ -84,7 +151,13 @@ export function NewQuestionPage() {
 
   return (
     <div className="mx-auto w-full max-w-[888px] space-y-5 xl:max-w-screen-xl">
-      <div className="pt-2 pb-4">
+      {loading ? (
+        <div className="flex h-64 items-center justify-center">
+          <p className="text-text-muted">Loading question...</p>
+        </div>
+      ) : (
+        <>
+          <div className="pt-2 pb-4">
         <div className="flex gap-4 mb-4">
           <div className="grow">
             <input
@@ -171,7 +244,6 @@ export function NewQuestionPage() {
           </span>
         </div>
       )}
-
       <TabBar
         idPrefix="question"
         tabs={WORKSPACE_TABS}
@@ -191,6 +263,8 @@ export function NewQuestionPage() {
           {tab === t && tabContent[t]}
         </div>
       ))}
+        </>
+      )}
     </div>
   )
 }

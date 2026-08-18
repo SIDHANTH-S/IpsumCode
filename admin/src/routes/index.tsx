@@ -11,7 +11,10 @@ import { CompletedAssessmentsPage } from "../pages/CompletedAssessmentsPage"
 
 function QuestionBankPageWrapper() {
   const navigate = useNavigate()
-  return <QuestionBankPage onNewQuestion={() => navigate("/question-bank/new")} />
+  return <QuestionBankPage 
+    onNewQuestion={() => navigate("/question-bank/new")} 
+    onEditQuestion={(id: string) => navigate(`/question-bank/edit/${id}`)}
+  />
 }
 
 export const router = createBrowserRouter([
@@ -42,6 +45,11 @@ export const router = createBrowserRouter([
         path: "question-bank/new",
         element: <NewQuestionPage />,
         handle: { title: "Create Question" }
+      },
+      {
+        path: "question-bank/edit/:id",
+        element: <NewQuestionPage />,
+        handle: { title: "Edit Question" }
       },
       {
         path: "assessments/create",

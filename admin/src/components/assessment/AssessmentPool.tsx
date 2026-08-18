@@ -1,21 +1,23 @@
 import React from "react"
 import { GripVertical, X, ArrowRight } from "lucide-react"
 import { Droppable, Draggable } from "@hello-pangea/dnd"
-import { questions } from "../../data/mockData"
 import { DiffPill } from "./QuestionBankSelector"
+import { QuestionSummary } from "../../services/api"
 
 export function AssessmentPool({
   selectedIds,
   onToggle,
   readonly,
+  questions,
 }: {
   selectedIds: number[]
   onToggle: (id: number) => void
   readonly?: boolean
+  questions: QuestionSummary[]
 }) {
   const selectedQuestions = selectedIds
     .map((id) => questions.find((q) => q.num === id))
-    .filter((q): q is typeof questions[number] => Boolean(q))
+    .filter((q): q is QuestionSummary => Boolean(q))
 
   return (
     <div className="flex flex-col h-full">

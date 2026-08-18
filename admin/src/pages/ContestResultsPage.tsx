@@ -18,11 +18,12 @@ import {
   Circle,
 } from "lucide-react"
 import {
-  mockContestRanking,
   mockStudentTimeline,
   mockStudentQuestions,
 } from "../data/mockData"
 import { useParams, useNavigate } from "react-router-dom"
+import { adminApi } from "../services/api"
+import { useEffect } from "react"
 
 const FOCUS_RING =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base"
@@ -81,22 +82,24 @@ function ContestRankingReport({
   contestId,
   onViewStudent,
   onBack,
+  leaderboard,
 }: {
   contestId: string
   onViewStudent: (id: string) => void
   onBack: () => void
+  leaderboard: any[]
 }) {
   const [searchQuery, setSearchQuery] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
 
   const filteredRows = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
-    if (!q) return mockContestRanking
-    return mockContestRanking.filter(
+    if (!q) return leaderboard
+    return leaderboard.filter(
       (row) =>
         row.name.toLowerCase().includes(q) || row.cls.toLowerCase().includes(q),
     )
-  }, [searchQuery])
+  }, [searchQuery, leaderboard])
 
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE))
   const safePage = Math.min(currentPage, totalPages)
@@ -125,7 +128,7 @@ function ContestRankingReport({
           </span>
           <span className="flex items-center gap-1.5">
             <ListOrdered className="h-3.5 w-3.5" aria-hidden="true" />
-            {mockContestRanking.length} Participants
+            {leaderboard.length} Participants
           </span>
         </div>
       </div>
@@ -137,7 +140,7 @@ function ContestRankingReport({
             <Users className="h-3.5 w-3.5" aria-hidden="true" /> Joined
           </dt>
           <dd className="text-xl font-semibold text-text-primary">
-            {mockContestRanking.length}
+            {leaderboard.length}
           </dd>
         </div>
         <div className="space-y-1.5 border-border-default sm:border-l sm:pl-4">
@@ -326,12 +329,14 @@ function ContestRankingReport({
 function StudentDetailReport({
   studentId,
   onBack,
+  leaderboard,
 }: {
   studentId: string
   onBack: () => void
+  leaderboard: any[]
 }) {
   const student =
-    mockContestRanking.find((s) => s.id === studentId) || mockContestRanking[0]
+    leaderboard.find((s) => s.id === studentId) || leaderboard[0] || { name: 'Unknown', cls: 'Unknown', rank: 0, score: 0, solved: 0, time: 0 }
   const [expandedQ, setExpandedQ] = useState<string | null>(null)
 
   return (
@@ -593,6 +598,17 @@ export function ContestResultsPage() {
   const onBack = () => navigate(-1)
 
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
+  const [leaderboard, setLeaderboard] = useState<any[]>([])
+
+  useEffect(() => {
+    // If it's a UUID, it's a real assessment ID
+    if (contestId.length > 20) {
+      adminApi.getLeaderboard(contestId).then(setLeaderboard).catch(console.error)
+    } else {
+      // Mock data for static "live-0", etc
+      // We'll leave it empty for static pages or they can just show 0
+    }
+  }, [contestId])
 
   return (
     <div className="w-full max-w-[1200px] mx-auto pb-12">
@@ -600,12 +616,14 @@ export function ContestResultsPage() {
         <StudentDetailReport
           studentId={selectedStudentId}
           onBack={() => setSelectedStudentId(null)}
+          leaderboard={leaderboard}
         />
       ) : (
         <ContestRankingReport
           contestId={contestId}
           onViewStudent={setSelectedStudentId}
           onBack={onBack}
+          leaderboard={leaderboard}
         />
       )}
     </div>

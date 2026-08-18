@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import studentRoutes from './routes/student';
 import attemptRoutes from './routes/attempt';
+import adminRoutes from './routes/admin';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get('/api/health', (req, res) => {
 // Use the routers
 app.use('/api/student', studentRoutes);
 app.use('/api/attempts', attemptRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);

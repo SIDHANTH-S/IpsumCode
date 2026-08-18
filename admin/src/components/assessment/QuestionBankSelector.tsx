@@ -1,9 +1,14 @@
 import React, { useState } from "react"
 import { Search, Check, Filter, Gauge, Tag } from "lucide-react"
 import { Droppable, Draggable } from "@hello-pangea/dnd"
-import { questions, DIFFICULTY_COLORS } from "../../data/mockData"
-import { Difficulty } from "../../types"
 import { FilterMenu, ActiveFilter, FilterDefinition } from "../ui/FilterMenu"
+import { QuestionSummary } from "../../services/api"
+
+const DIFFICULTY_COLORS: Record<string, string> = {
+  Easy: "#1cbaba",
+  "Med.": "#ffb700",
+  Hard: "#ef4743",
+}
 
 const availableFilters: FilterDefinition[] = [
   {
@@ -30,7 +35,7 @@ const availableFilters: FilterDefinition[] = [
   },
 ]
 
-function DiffPill({ difficulty }: { difficulty: Difficulty }) {
+function DiffPill({ difficulty }: { difficulty: string }) {
   const color = DIFFICULTY_COLORS[difficulty]
 
   const getStyle = (hex: string) => {
@@ -52,10 +57,12 @@ export function QuestionBankSelector({
   selectedIds,
   onToggle,
   readonly,
+  questions,
 }: {
   selectedIds: number[]
   onToggle: (id: number) => void
   readonly?: boolean
+  questions: QuestionSummary[]
 }) {
   const [query, setQuery] = useState("")
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([
