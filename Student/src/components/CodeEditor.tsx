@@ -20,13 +20,52 @@ const LANGUAGE_MAP: Record<Lang, string> = {
 };
 
 const STARTER_CODE: Record<Lang, string> = {
-  "Python 3":
-    "class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        ",
-  Java: "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        \n    }\n}",
-  "C++":
-    "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};",
-  C: "/**\n * Note: The returned array must be malloced, assume caller calls free().\n */\nint* twoSum(int* nums, int numsSize, int target, int* returnSize) {\n    \n}",
+  "Python 3": `import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    # TODO: parse input_data and write your solution
+
+
+if __name__ == "__main__":
+    main()
+`,
+
+  Java: `import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        // TODO: read input and write your solution
+
+    }
+}
+`,
+
+  "C++": `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    // TODO: read input and write your solution
+
+    return 0;
+}
+`,
+
+  C: `#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    // TODO: read input and write your solution
+
+    return 0;
+}
+`,
 };
+
 
 // Stable model URIs — one per language, never recreated
 const MODEL_URIS: Record<Lang, string> = {
@@ -100,7 +139,7 @@ export interface CodeEditorProps {
   onLanguageChange: (lang: Lang) => void;
   dark: boolean;
   /** Called every time the drag-resize finishes so we can force layout() */
-  onEditorRef?: (ref: { layout: () => void } | null) => void;
+  onEditorRef?: (ref: { layout: () => void; getValue: () => string } | null) => void;
 }
 
 // ─── CodeEditor ───────────────────────────────────────────────────────────────
@@ -185,6 +224,9 @@ export default function CodeEditor({
           editorRef.current.layout({ width: clientWidth, height: clientHeight });
         }
       },
+      getValue: () => {
+        return editorRef.current?.getValue() || "";
+      }
     });
     return () => onEditorRef(null);
   }, [onEditorRef]);
